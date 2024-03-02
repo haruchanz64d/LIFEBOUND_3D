@@ -1,7 +1,6 @@
-using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.UI;
-public class LBRoleAssigner : NetworkBehaviour
+public class LBRoleAssigner : MonoBehaviour
 {
     [Header("Models")]
     [SerializeField] private GameObject solModel;
