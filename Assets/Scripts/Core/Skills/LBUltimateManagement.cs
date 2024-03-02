@@ -10,7 +10,6 @@ namespace LB.Character
         [SerializeField] private GameObject lunaModel;
         [SerializeField] private InputActionReference ultimateInput;
         [SerializeField] private Image soulSwapIcon;
-        [SerializeField] private LBRoleAssigner roleAssigner;
         private float soulSwapCooldown = 30f; // 30 seconds
         private bool isSoulSwapCooldown;
         private bool isSoulSwapping;

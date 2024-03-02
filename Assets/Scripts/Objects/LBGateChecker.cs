@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class LBGateChecker : MonoBehaviour
 {
-    private LBRoleAssigner role;
 
     private void OnCollisionEnter(Collision collision)
     {
