@@ -1,10 +1,9 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
-using Unity.Netcode;
 namespace LB.Character
 {
-    public class LBSkillManagement : NetworkBehaviour
+    public class LBSkillManagement : MonoBehaviour
     {
         [SerializeField] private InputActionReference skillInput;
         [SerializeField] private Image thirdEyeSkillIcon;

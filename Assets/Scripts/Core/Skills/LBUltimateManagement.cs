@@ -1,11 +1,10 @@
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
-using Unity.Netcode;
 using UnityEngine;
 
 namespace LB.Character
 {
-    public class LBUltimateManagement : NetworkBehaviour
+    public class LBUltimateManagement : MonoBehaviour
     {
         [SerializeField] private GameObject solModel;
         [SerializeField] private GameObject lunaModel;
