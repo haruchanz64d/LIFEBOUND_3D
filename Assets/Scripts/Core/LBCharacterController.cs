@@ -27,11 +27,17 @@ namespace LB.Character
         private Animator animator;
         [SerializeField] private Transform cameraTransform;
 
+        private Transform spawnPoint;
+
         private void Awake()
         {
             controller = GetComponent<CharacterController>();
             originalStepOffset = controller.stepOffset;
             animator = GetComponent<Animator>();
+
+            spawnPoint = GameObject.FindGameObjectWithTag("Spawn Point").transform;
+
+            transform.position = spawnPoint.position;
         }
 
         private void Update()

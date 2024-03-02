@@ -26,7 +26,7 @@ Transform:
   m_GameObject: {fileID: 140957234033969487}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.25, y: 0.25, z: 1}
+  m_LocalScale: {x: 0.1, y: 0.1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3280986727314133952}
@@ -779,7 +779,6 @@ GameObject:
   - component: {fileID: 7326435478260167535}
   - component: {fileID: 7157655137003619779}
   - component: {fileID: 1812437175628612866}
-  - component: {fileID: 7512358427249281488}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -871,19 +870,6 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &7512358427249281488
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1589935487125350357}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e8ca28880f1d0aa45bf49d38615584d9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  interactionPanel: {fileID: 4006480974270960065}
 --- !u!1 &1940123211207786241
 GameObject:
   m_ObjectHideFlags: 0
@@ -2742,7 +2728,6 @@ GameObject:
   - component: {fileID: 7174004991162099984}
   - component: {fileID: 7174004991162099986}
   - component: {fileID: 1027725364173753884}
-  - component: {fileID: 3814051971765396929}
   - component: {fileID: 8278785569312809585}
   m_Layer: 0
   m_Name: LB_ThirdPersonCamera
@@ -2911,20 +2896,6 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7174004991162099990}
   m_Enabled: 1
---- !u!114 &3814051971765396929
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7174004991162099990}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 879267fb544bfd341b8a2f45d122cc1b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  freeLook: {fileID: 0}
-  listener: {fileID: 0}
 --- !u!114 &8278785569312809585
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2939,7 +2910,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PlayerIndex: -1
   AutoEnableInputs: 1
-  XYAxis: {fileID: 3986293016633616460, guid: 9f3e70a017aa7974885e810708cf667d, type: 3}
+  XYAxis: {fileID: 3986293016633616460, guid: 577e95fc37a387d408b1137d106ecda7, type: 3}
   ZAxis: {fileID: 0}
 --- !u!1 &7307840633866057635
 GameObject:
@@ -3753,7 +3724,6 @@ GameObject:
   - component: {fileID: 8771117242785685883}
   - component: {fileID: 8771117242785685886}
   - component: {fileID: 8771117242785685884}
-  - component: {fileID: 7910813392790176959}
   m_Layer: 0
   m_Name: Minimap Camera
   m_TagString: Untagged
@@ -3852,26 +3822,6 @@ MonoBehaviour:
   m_RequiresDepthTexture: 0
   m_RequiresColorTexture: 0
   m_Version: 2
---- !u!114 &7910813392790176959
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8771117242785685882}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 859000629
-  AlwaysReplicateAsRoot: 0
-  SynchronizeTransform: 1
-  ActiveSceneSynchronization: 0
-  SceneMigrationSynchronization: 1
-  SpawnWithObservers: 1
-  DontDestroyWithOwner: 0
-  AutoObjectParentSync: 1
 --- !u!1 &8771117243404054003
 GameObject:
   m_ObjectHideFlags: 0
@@ -4026,11 +3976,11 @@ GameObject:
   m_Component:
   - component: {fileID: 8771117243489437325}
   - component: {fileID: 8771117243489437326}
-  - component: {fileID: 4382103819289713870}
   - component: {fileID: 8771117243489437327}
   - component: {fileID: 9159337649929298240}
-  - component: {fileID: -4051598152466170013}
-  - component: {fileID: 8577501874189628629}
+  - component: {fileID: 7593104785506223011}
+  - component: {fileID: 3129205087189391255}
+  - component: {fileID: -8757566722442856172}
   m_Layer: 0
   m_Name: LUNA
   m_TagString: Player
@@ -4076,26 +4026,6 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0.95, z: 0}
---- !u!114 &4382103819289713870
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8771117243489437324}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 859000629
-  AlwaysReplicateAsRoot: 0
-  SynchronizeTransform: 1
-  ActiveSceneSynchronization: 0
-  SceneMigrationSynchronization: 1
-  SpawnWithObservers: 1
-  DontDestroyWithOwner: 0
-  AutoObjectParentSync: 1
 --- !u!114 &8771117243489437327
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4134,7 +4064,7 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &-4051598152466170013
+--- !u!114 &7593104785506223011
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4143,12 +4073,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 8771117243489437324}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ad8deae8091111f4eb30a56c1f4e0d3e, type: 3}
+  m_Script: {fileID: 11500000, guid: 7f6f3bf89aa97405989c802ba270f815, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TransitionStateInfoList: []
-  m_Animator: {fileID: 9159337649929298240}
---- !u!114 &8577501874189628629
+  syncDirection: 1
+  syncMode: 0
+  syncInterval: 0
+  clientAuthority: 1
+  animator: {fileID: 9159337649929298240}
+--- !u!114 &3129205087189391255
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4157,27 +4090,49 @@ MonoBehaviour:
   m_GameObject: {fileID: 8771117243489437324}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: df2868252ab5c4d1da357e8f11f1b524, type: 3}
+  m_Script: {fileID: 11500000, guid: a553cb17010b2403e8523b558bffbc14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SyncPositionX: 1
-  SyncPositionY: 1
-  SyncPositionZ: 1
-  SyncRotAngleX: 1
-  SyncRotAngleY: 1
-  SyncRotAngleZ: 1
-  SyncScaleX: 1
-  SyncScaleY: 1
-  SyncScaleZ: 1
-  PositionThreshold: 0.001
-  RotAngleThreshold: 0.01
-  ScaleThreshold: 0.01
-  UseQuaternionSynchronization: 0
-  UseQuaternionCompression: 0
-  UseHalfFloatPrecision: 0
-  InLocalSpace: 0
-  Interpolate: 1
-  SlerpPosition: 0
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
+  target: {fileID: 8771117243489437325}
+  syncPosition: 1
+  syncRotation: 1
+  syncScale: 0
+  interpolatePosition: 1
+  interpolateRotation: 1
+  interpolateScale: 1
+  coordinateSpace: 0
+  sendIntervalMultiplier: 1
+  timelineOffset: 0
+  showGizmos: 0
+  showOverlay: 0
+  overlayColor: {r: 0, g: 0, b: 0, a: 0.5}
+  onlySyncOnChange: 1
+  compressRotation: 1
+  bufferResetMultiplier: 3
+  positionSensitivity: 0.01
+  rotationSensitivity: 0.01
+  scaleSensitivity: 0.01
+--- !u!114 &-8757566722442856172
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8771117243489437324}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clientStarted: 0
+  sceneId: 0
+  _assetId: 1535630552
+  serverOnly: 0
+  visible: 0
+  hasSpawned: 0
 --- !u!1 &8882178398949862394
 GameObject:
   m_ObjectHideFlags: 3
@@ -4202,7 +4157,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8882178398949862394}
-  m_LocalRotation: {x: 0.055985224, y: 2.1144896e-23, z: -2.4731876e-24, w: 0.9984316}
+  m_LocalRotation: {x: 0.055985227, y: -1.4531022e-16, z: -1.9654824e-17, w: 0.9984316}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
