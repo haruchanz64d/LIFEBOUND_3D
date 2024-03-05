@@ -1,8 +1,9 @@
 using UnityEngine;
+using Mirror;
 using UnityEngine.InputSystem;
 namespace LB.Character
 {
-    public class LBCharacterController : MonoBehaviour
+    public class LBCharacterController : NetworkBehaviour
     {
         [Header("Input Action References")]
         [SerializeField] private InputActionReference movementInput;
@@ -42,6 +43,7 @@ namespace LB.Character
 
         private void Update()
         {
+            if(!isLocalPlayer) return; 
             HandleMovement();
         }
 
