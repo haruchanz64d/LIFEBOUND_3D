@@ -4038,6 +4038,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc4d52b4dee540541ad9f0b9e1c069c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
   movementInput: {fileID: -4994890371925248262, guid: 577e95fc37a387d408b1137d106ecda7,
     type: 3}
   jumpInput: {fileID: -3088989869937338722, guid: 577e95fc37a387d408b1137d106ecda7,
@@ -4093,7 +4096,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a553cb17010b2403e8523b558bffbc14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  syncDirection: 0
+  syncDirection: 1
   syncMode: 0
   syncInterval: 0
   target: {fileID: 8771117243489437325}
@@ -4106,8 +4109,8 @@ MonoBehaviour:
   coordinateSpace: 0
   sendIntervalMultiplier: 1
   timelineOffset: 0
-  showGizmos: 0
-  showOverlay: 0
+  showGizmos: 1
+  showOverlay: 1
   overlayColor: {r: 0, g: 0, b: 0, a: 0.5}
   onlySyncOnChange: 1
   compressRotation: 1
@@ -4127,7 +4130,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  clientStarted: 0
+  clientStarted: 1
   sceneId: 0
   _assetId: 1535630552
   serverOnly: 0
@@ -4157,7 +4160,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8882178398949862394}
-  m_LocalRotation: {x: 0.055985227, y: -1.4531022e-16, z: -1.9654824e-17, w: 0.9984316}
+  m_LocalRotation: {x: 0.055985224, y: -2.1144896e-23, z: 2.4731876e-24, w: 0.9984316}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
