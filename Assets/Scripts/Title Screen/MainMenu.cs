@@ -15,6 +15,11 @@ public class MainMenu : MonoBehaviour
     public GameObject ps4Visual;
     public GameObject controllers;
 
+    private void Awake(){
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+    }
+
     private void Start()
     {
         titleMenu.SetActive(true);
