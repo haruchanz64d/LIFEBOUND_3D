@@ -43,7 +43,6 @@ namespace LB.Character
 
         private void Update()
         {
-            if(!isLocalPlayer) return; 
             HandleMovement();
         }
 

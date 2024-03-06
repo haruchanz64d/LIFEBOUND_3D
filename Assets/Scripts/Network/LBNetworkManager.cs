@@ -1,29 +1,31 @@
 using Mirror;
-using TMPro;
+using System.Collections;
+using System.Collections.Generic;
+using Unity.Services.Core;
+using Unity.Services.Authentication;
+using Unity.Services.Relay;
+using UnityEngine.SceneManagement;
 using UnityEngine;
+using Utp;
 public class LBNetworkManager : MonoBehaviour
 {
-    private NetworkManager manager;
-    [SerializeField] private Canvas selectionCanvas;
-    [SerializeField] private TMP_InputField inputField;
-    [SerializeField] private GameObject solGameplayPrefab; // HOST
-    [SerializeField] private GameObject lunaGameplayPrefab; // CLIENT
+    private RelayNetworkManager relay;
+    private int maxPlayers = 2;
+    private string region;
 
-    private void Awake(){
-        manager = GetComponent<NetworkManager>();
-    }
-    
-    // Server + Client
-    public void PlayAsSol(){
-        GameObject solPlayer = Instantiate(solGameplayPrefab);
-        NetworkServer.Spawn(solPlayer);
-        selectionCanvas.enabled = false;
+    private async void Awake()
+    {
+        await UnityServices.InitializeAsync();
+        await AuthenticationService.Instance.SignInAnonymouslyAsync();
     }
 
-    // Client + IP (Port)
-    public void PlayAsLuna(){
-        GameObject lunaPlayer = Instantiate(lunaGameplayPrefab);   
-        NetworkServer.Spawn(lunaPlayer);
-        selectionCanvas.enabled = false;
+    public void CreateGame()
+    {
+        relay.StartRelayHost(maxPlayers, region);
+    }
+
+    public void JoinGame()
+    {
+        relay.JoinRelayServer();
     }
 }
