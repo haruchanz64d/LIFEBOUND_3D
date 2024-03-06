@@ -17,6 +17,8 @@ public class LBNetworkManager : MonoBehaviour
     {
         await UnityServices.InitializeAsync();
         await AuthenticationService.Instance.SignInAnonymouslyAsync();
+
+        relay = GameObject.FindObjectOfType<RelayNetworkManager>();
     }
 
     public void CreateGame()

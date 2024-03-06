@@ -632,7 +632,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1671022570}
         m_TargetAssemblyTypeName: LBNetworkManager, Assembly-CSharp
-        m_MethodName: PlayAsLuna
+        m_MethodName: JoinGame
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -680,6 +680,50 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 714464908}
   m_CullTransparentMesh: 1
+--- !u!1 &741813024
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 741813026}
+  - component: {fileID: 741813025}
+  m_Layer: 0
+  m_Name: CharacterSelector
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &741813025
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 741813024}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9211fb4e31674b345b1f23fe1178501d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &741813026
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 741813024}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &766009618
 GameObject:
   m_ObjectHideFlags: 0
@@ -1016,15 +1060,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6953e3303ce63a4c8d0dd345f925559, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectionCanvas: {fileID: 1108159036}
-  solGameplayPrefab: {fileID: 8771117243489437324, guid: 4ff52e3c5f378fb4191f8e3a8599f6ab,
-    type: 3}
-  lunaGameplayPrefab: {fileID: 8771117243489437324, guid: 1c0a0d345cf424d4a9cfda77b1428314,
-    type: 3}
-  characterSelectSceneField: {fileID: 102900000, guid: 251ae7a54ea6fb541aa77504db83aa35,
-    type: 3}
-  gameplaySceneField: {fileID: 102900000, guid: 7768c3cd8e1e3e948b6a2bc6a5038e56,
-    type: 3}
 --- !u!4 &1671022571
 Transform:
   m_ObjectHideFlags: 0
@@ -1244,7 +1279,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1671022570}
         m_TargetAssemblyTypeName: LBNetworkManager, Assembly-CSharp
-        m_MethodName: PlayAsSol
+        m_MethodName: CreateGame
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

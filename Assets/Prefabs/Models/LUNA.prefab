@@ -2728,7 +2728,6 @@ GameObject:
   - component: {fileID: 7174004991162099984}
   - component: {fileID: 7174004991162099986}
   - component: {fileID: 1027725364173753884}
-  - component: {fileID: 8278785569312809585}
   m_Layer: 0
   m_Name: LB_ThirdPersonCamera
   m_TagString: Untagged
@@ -2896,22 +2895,6 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7174004991162099990}
   m_Enabled: 1
---- !u!114 &8278785569312809585
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7174004991162099990}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fb7194dc27b9df64c8beca7482ee8e0d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  PlayerIndex: -1
-  AutoEnableInputs: 1
-  XYAxis: {fileID: 3986293016633616460, guid: 577e95fc37a387d408b1137d106ecda7, type: 3}
-  ZAxis: {fileID: 0}
 --- !u!1 &7307840633866057635
 GameObject:
   m_ObjectHideFlags: 0
@@ -3773,7 +3756,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 15
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
