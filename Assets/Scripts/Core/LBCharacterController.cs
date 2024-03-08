@@ -19,19 +19,24 @@ namespace LB.Character
         private float? jumpButtonPressedTime;
         private bool isGrounded;
         private bool isJumping;
-        private bool isDead = false;
         private float jumpHorizontalSpeed = 1f;
         private float rotationSpeed = 5f;
         [Space(10)]
         [Header("Components")]
         private CharacterController controller;
         private Animator animator;
+        private LBCanvasManager canvas;
+        private LBCollisionHandler collision;
+        private LBSkillManagement skill;
+        private LBUltimateManagement ultimate;
         [SerializeField] private Transform cameraTransform;
 
         private Transform spawnPoint;
 
         private void Awake()
         {
+            collision = GetComponent<LBCollisionHandler>();
+            canvas = FindObjectOfType<LBCanvasManager>();
             controller = GetComponent<CharacterController>();
             originalStepOffset = controller.stepOffset;
             animator = GetComponent<Animator>();
@@ -39,16 +44,21 @@ namespace LB.Character
             spawnPoint = GameObject.FindGameObjectWithTag("Spawn Point").transform;
 
             transform.position = spawnPoint.position;
+
+
+            skill = GetComponent<LBSkillManagement>();
+            ultimate = GetComponent<LBUltimateManagement>();
         }
 
         private void Update()
         {
+            if (canvas.GetGameplayPaused) return;
             HandleMovement();
         }
 
         private void HandleMovement()
         {
-            if (isDead) return;
+            if (collision.IsPlayerDead) return;
             Vector2 movement = movementInput.action.ReadValue<Vector2>();
             Vector3 direction = new Vector3(movement.x, 0f, movement.y);
             float magnitude = Mathf.Clamp01(direction.magnitude) * movementSpeed;

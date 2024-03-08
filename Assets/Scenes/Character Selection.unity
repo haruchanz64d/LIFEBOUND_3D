@@ -709,6 +709,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9211fb4e31674b345b1f23fe1178501d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  solPrefab: {fileID: 0}
+  lunaPrefab: {fileID: 0}
 --- !u!4 &741813026
 Transform:
   m_ObjectHideFlags: 0
