@@ -42,7 +42,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -115,7 +115,28 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: OPTIONS (Hover)_0
+      rect:
+        serializedVersion: 2
+        x: 53
+        y: 317
+        width: 1859
+        height: 449
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 485772fc76677c04087b816220ce1ce9
+      internalID: 358786249
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -126,7 +147,14 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      OPTIONS (Hover)_0: 358786249
+      OPTIONS (Hover)_1: -478130431
+      OPTIONS (Hover)_2: 658112634
+      OPTIONS (Hover)_3: -248788717
+      OPTIONS (Hover)_4: -626883048
+      OPTIONS (Hover)_5: -478707545
+      OPTIONS (Hover)_6: -1999383933
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

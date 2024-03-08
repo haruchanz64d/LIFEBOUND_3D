@@ -42,7 +42,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -115,7 +115,28 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: OPTIONS (Selected)_0
+      rect:
+        serializedVersion: 2
+        x: 53
+        y: 317
+        width: 1859
+        height: 449
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 000250bca1c45cf49966587400dbb081
+      internalID: -1854395953
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -126,7 +147,14 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      OPTIONS (Selected)_0: -1854395953
+      OPTIONS (Selected)_1: 760402185
+      OPTIONS (Selected)_2: 1333320161
+      OPTIONS (Selected)_3: -972934880
+      OPTIONS (Selected)_4: -753640663
+      OPTIONS (Selected)_5: -1526845322
+      OPTIONS (Selected)_6: -152773355
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

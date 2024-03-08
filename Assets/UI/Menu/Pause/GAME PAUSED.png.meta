@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: bbabe3b59b3919d4797c276c735aa799
+guid: 00cdf68009d75d04d8755be624fad489
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -90,18 +90,6 @@ TextureImporter:
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
-    buildTarget: Android
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 3
     buildTarget: Server
     maxTextureSize: 2048
     resizeAlgorithm: 0
@@ -117,13 +105,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: PLAY (Inactive1)_0
+      name: GAME PAUSED_0
       rect:
         serializedVersion: 2
-        x: 89
-        y: 329
-        width: 1226
-        height: 449
+        x: 177
+        y: 369
+        width: 1613
+        height: 361
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -131,8 +119,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 81413d5ef04d66f4bb34cb5ce5dd52cf
-      internalID: -306110354
+      spriteID: bc1d26dff1473784ebfbb859f329dd6f
+      internalID: 869373801
       vertices: []
       indices: 
       edges: []
@@ -148,7 +136,7 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      PLAY (Inactive1)_0: -306110354
+      GAME PAUSED_0: 869373801
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
