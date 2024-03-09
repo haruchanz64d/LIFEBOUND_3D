@@ -1,6 +1,7 @@
 using UnityEngine;
-using Mirror;
+using Unity.Netcode;
 using UnityEngine.InputSystem;
+using System.Collections;
 namespace LB.Character
 {
     public class LBCharacterController : NetworkBehaviour
@@ -58,7 +59,10 @@ namespace LB.Character
 
         private void HandleMovement()
         {
-            if (collision.IsPlayerDead) return;
+            if (collision.IsPlayerDead){
+                StartCoroutine(collision.RespawnPlayer());
+                return;
+            }
             Vector2 movement = movementInput.action.ReadValue<Vector2>();
             Vector3 direction = new Vector3(movement.x, 0f, movement.y);
             float magnitude = Mathf.Clamp01(direction.magnitude) * movementSpeed;

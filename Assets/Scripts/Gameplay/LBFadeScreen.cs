@@ -7,10 +7,7 @@ public class LBFadeScreen : MonoBehaviour
 {
     public Image imageToFade;
     public float fadeTime = 1.0f;
-
-    private bool isFadingIn = false;
-
-    private void Start()
+    void Start()
     {
         imageToFade.enabled = false;
     }
@@ -36,6 +33,7 @@ public class LBFadeScreen : MonoBehaviour
             yield return null;
         }
         imageToFade.color = new Color(imageToFade.color.r, imageToFade.color.g, imageToFade.color.b, targetAlpha);
+    
         imageToFade.enabled = false;
     }
 }

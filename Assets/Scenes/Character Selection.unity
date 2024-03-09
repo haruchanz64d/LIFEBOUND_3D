@@ -538,14 +538,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 558155781}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bc0a7340da7a5a04293efdcfbc16ce5c, type: 3}
+  m_Script: {fileID: 11500000, guid: 9211fb4e31674b345b1f23fe1178501d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterSelectedDisplay: {fileID: 766009618}
-  characterPreviewParents:
-  - {fileID: 1582418960}
-  - {fileID: 332944672}
-  turnSpeed: 90
 --- !u!1 &714464908
 GameObject:
   m_ObjectHideFlags: 0
@@ -559,7 +554,7 @@ GameObject:
   - component: {fileID: 714464911}
   - component: {fileID: 714464910}
   m_Layer: 0
-  m_Name: Start Client
+  m_Name: PLAY AS LUNA
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -630,13 +625,14 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1671022570}
-        m_TargetAssemblyTypeName: LBNetworkManager, Assembly-CSharp
-        m_MethodName: JoinGame
-        m_Mode: 1
+      - m_Target: {fileID: 741813025}
+        m_TargetAssemblyTypeName: LBCharacterSelector, Assembly-CSharp
+        m_MethodName: PlayAsLuna
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 8771117243489437324, guid: 7e7dbd273731f224f8e93dadbbbb3701,
+            type: 3}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -709,8 +705,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9211fb4e31674b345b1f23fe1178501d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  solPrefab: {fileID: 0}
-  lunaPrefab: {fileID: 0}
 --- !u!4 &741813026
 Transform:
   m_ObjectHideFlags: 0
@@ -724,7 +718,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &766009618
 GameObject:
@@ -1033,50 +1027,6 @@ Transform:
   m_Father: {fileID: 766009619}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
---- !u!1 &1671022569
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1671022571}
-  - component: {fileID: 1671022570}
-  m_Layer: 0
-  m_Name: LBNetworkManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1671022570
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1671022569}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d6953e3303ce63a4c8d0dd345f925559, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!4 &1671022571
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1671022569}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1729968596
 GameObject:
   m_ObjectHideFlags: 0
@@ -1208,7 +1158,7 @@ GameObject:
   - component: {fileID: 1760871906}
   - component: {fileID: 1760871905}
   m_Layer: 0
-  m_Name: Start Host
+  m_Name: PLAY AS SOL
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1279,13 +1229,14 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1671022570}
-        m_TargetAssemblyTypeName: LBNetworkManager, Assembly-CSharp
-        m_MethodName: CreateGame
-        m_Mode: 1
+      - m_Target: {fileID: 741813025}
+        m_TargetAssemblyTypeName: LBCharacterSelector, Assembly-CSharp
+        m_MethodName: PlayAsSol
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 8771117243489437324, guid: fc50d6a3c6f529443a8451a55143cee3,
+            type: 3}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -1624,7 +1575,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 919132149203889968}
   m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -0.8, y: -77.1, z: 217.78044}
+  m_LocalPosition: {x: -0.8, y: -84, z: 217.78}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

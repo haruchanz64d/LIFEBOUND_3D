@@ -1,31 +1,28 @@
-using Mirror;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.Services.Core;
-using Unity.Services.Authentication;
-using Unity.Services.Relay;
-using UnityEngine.SceneManagement;
 using UnityEngine;
-using Utp;
+using Unity.Netcode;
+using UnityEngine.SceneManagement;
 
 public class LBCharacterSelector : MonoBehaviour
 {
-    private RelayNetworkManager relay;
-    [SerializeField] private GameObject solPrefab;
-    [SerializeField] private GameObject lunaPrefab;
-
-    private void Awake()
+    public void PlayAsSol(GameObject solPrefab)
     {
-        relay = FindObjectOfType<RelayNetworkManager>();
+        LoadGameplayScene(solPrefab);
     }
 
-    public void PlayAsSol() 
+    public void PlayAsLuna(GameObject lunaPrefab)
     {
-        
+        LoadGameplayScene(lunaPrefab);
     }
 
-    public void PlayAsLuna()
+    public void LoadGameplayScene(GameObject selectedCharacter)
     {
+        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync("Gameplay Scene", LoadSceneMode.Single);
+        asyncLoad.completed += OnSceneLoaded;
 
+        void OnSceneLoaded(AsyncOperation asyncLoad)
+        {
+            Instantiate(selectedCharacter, GameObject.FindGameObjectWithTag("Spawn Point").transform.position, Quaternion.identity);
+        }
     }
+
 }

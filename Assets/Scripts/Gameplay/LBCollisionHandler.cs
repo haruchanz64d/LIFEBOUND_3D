@@ -6,9 +6,11 @@ public class LBCollisionHandler : MonoBehaviour
     private bool isPlayerDead = false;
     public bool IsPlayerDead { get { return isPlayerDead; } set { isPlayerDead = value; } }
     private Animator animator;
-    [SerializeField] private LBFadeScreen lBFadeScreen;
+    [SerializeField] private Image lBFadeScreen;
     private Transform originalSpawnPoint;
-    private Transform checkpointSpawnPoint; // UNUSED
+    private Transform checkpointSpawnPoint;
+
+    private Vector3 lastCheckpointInteracted;
 
     private void Awake()
     {
@@ -24,8 +26,12 @@ public class LBCollisionHandler : MonoBehaviour
             isPlayerDead = true;
         }
     }
-    private IEnumerator Respawn()
+    public IEnumerator RespawnPlayer()
     {
-        yield return null;
+        yield return new WaitForSeconds(5f);
+        // temporarily respawn from the original spawn point
+        transform.position = originalSpawnPoint.transform.position;
+        isPlayerDead = false;
+        animator.SetTrigger("IsAlive");
     }
 }

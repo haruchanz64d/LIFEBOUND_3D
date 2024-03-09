@@ -6,14 +6,15 @@ using UnityEngine.UI;
 
 public class MainMenu : MonoBehaviour
 {
-    public GameObject optionMenu;
-    public GameObject titleMenu;
-    public GameObject controlMenu;
-    public GameObject audioMenu;
-    public GameObject keyboardVisual;
-    public GameObject xboxVisual;
-    public GameObject ps4Visual;
-    public GameObject controllers;
+    [SerializeField] private GameObject gameCreationMenu;
+    [SerializeField] private GameObject optionMenu;
+    [SerializeField] private GameObject titleMenu;
+    [SerializeField] private GameObject controlMenu;
+    [SerializeField] private GameObject audioMenu;
+    [SerializeField] private GameObject keyboardVisual;
+    [SerializeField] private GameObject xboxVisual;
+    [SerializeField] private GameObject ps4Visual;
+    [SerializeField] private GameObject controllers;
 
     private void Awake(){
         Cursor.lockState = CursorLockMode.None;
@@ -23,9 +24,16 @@ public class MainMenu : MonoBehaviour
     private void Start()
     {
         titleMenu.SetActive(true);
+        gameCreationMenu.SetActive(false);
         optionMenu.SetActive(false);
     }
 
+    public void OnGameCreate()
+    {
+        titleMenu.SetActive(false);
+        gameCreationMenu.SetActive(true);
+        optionMenu.SetActive(false);
+    }
     public void GoToScene(string sceneName)
     {
         SceneManager.LoadScene(sceneName);
