@@ -2,6 +2,7 @@ using UnityEngine;
 using Unity.Netcode;
 using UnityEngine.InputSystem;
 using System.Collections;
+using Cinemachine;
 namespace LB.Character
 {
     public class LBCharacterController : NetworkBehaviour
@@ -30,9 +31,28 @@ namespace LB.Character
         private LBCollisionHandler collision;
         private LBSkillManagement skill;
         private LBUltimateManagement ultimate;
+
+        [SerializeField] private CinemachineFreeLook camera;
+        [SerializeField] private AudioListener listener;
+
         [SerializeField] private Transform cameraTransform;
 
         private Transform spawnPoint;
+
+
+        public override void OnNetworkSpawn()
+        {
+            if(IsOwner) 
+            {
+                listener.enabled = true;
+                camera.Priority = 1;
+            }
+            else 
+            {
+                camera.Priority = 0;
+            }
+        }
+
 
         private void Awake()
         {
@@ -41,12 +61,6 @@ namespace LB.Character
             controller = GetComponent<CharacterController>();
             originalStepOffset = controller.stepOffset;
             animator = GetComponent<Animator>();
-
-            spawnPoint = GameObject.FindGameObjectWithTag("Spawn Point").transform;
-
-            transform.position = spawnPoint.position;
-
-
             skill = GetComponent<LBSkillManagement>();
             ultimate = GetComponent<LBUltimateManagement>();
         }
@@ -54,6 +68,7 @@ namespace LB.Character
         private void Update()
         {
             if (canvas.GetGameplayPaused) return;
+            if(!IsOwner) return;
             HandleMovement();
         }
 

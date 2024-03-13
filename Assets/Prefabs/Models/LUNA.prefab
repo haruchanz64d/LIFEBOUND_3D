@@ -4833,7 +4833,7 @@ GameObject:
   - component: {fileID: 142438445496574476}
   - component: {fileID: 9068435407956776588}
   - component: {fileID: 6771205214654493692}
-  - component: {fileID: 5350387204805503371}
+  - component: {fileID: 2875989378026660509}
   m_Layer: 0
   m_Name: LUNA
   m_TagString: Player
@@ -4915,6 +4915,8 @@ MonoBehaviour:
     type: 3}
   jumpInput: {fileID: -3088989869937338722, guid: 577e95fc37a387d408b1137d106ecda7,
     type: 3}
+  camera: {fileID: 7174004991162099984}
+  listener: {fileID: 1027725364173753884}
   cameraTransform: {fileID: 8771117243404054006}
 --- !u!95 &9159337649929298240
 Animator:
@@ -5010,7 +5012,7 @@ MonoBehaviour:
   InLocalSpace: 0
   Interpolate: 1
   SlerpPosition: 0
---- !u!114 &5350387204805503371
+--- !u!114 &2875989378026660509
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

@@ -1,28 +1,48 @@
 using UnityEngine;
 using Unity.Netcode;
-using UnityEngine.SceneManagement;
 
-public class LBCharacterSelector : MonoBehaviour
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+public class LBCharacterSelector : NetworkBehaviour
 {
-    public void PlayAsSol(GameObject solPrefab)
+    [SerializeField] private GameObject solPrefab;
+    [SerializeField] private GameObject lunaPrefab;
+    [SerializeField] private int clientID;
+
+    [SerializeField] private GameObject characterSelectScreen;
+
+    private GameObject m_Player;
+
+    public override void OnNetworkSpawn()
     {
-        LoadGameplayScene(solPrefab);
+        base.OnNetworkSpawn();
+
+        clientID = (int)OwnerClientId;
     }
 
-    public void PlayAsLuna(GameObject lunaPrefab)
+    public void SetSelectedCharacter(int characterID)
     {
-        LoadGameplayScene(lunaPrefab);
-    }
-
-    public void LoadGameplayScene(GameObject selectedCharacter)
-    {
-        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync("Gameplay Scene", LoadSceneMode.Single);
-        asyncLoad.completed += OnSceneLoaded;
-
-        void OnSceneLoaded(AsyncOperation asyncLoad)
+        GameObject spawnPoint = GameObject.FindGameObjectWithTag("Spawn Point");
+        GameObject player = null;
+        switch (characterID)
         {
-            Instantiate(selectedCharacter, GameObject.FindGameObjectWithTag("Spawn Point").transform.position, Quaternion.identity);
+            case 0:
+                player = Instantiate(solPrefab, spawnPoint.transform.position, Quaternion.identity);
+                break;
+            case 1:
+                player = Instantiate(lunaPrefab, spawnPoint.transform.position, Quaternion.identity);
+                break;
+        }
+
+        if (IsClient && m_Player != null)
+            Destroy(m_Player);
+
+        if (player != null)
+        {
+            player.GetComponent<NetworkObject>().SpawnAsPlayerObject(OwnerClientId);
+            characterSelectScreen.SetActive(false);
+            m_Player = player;
         }
     }
-
 }

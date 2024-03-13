@@ -266,7 +266,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 459784728074286363}
-  m_LocalRotation: {x: 0.28978413, y: -0.000000016468091, z: 0.0000000049861364, w: 0.95709205}
+  m_LocalRotation: {x: 0.28978413, y: 0.000000016468091, z: -0.0000000049861364, w: 0.95709205}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1695,7 +1695,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4440350235046671791}
-  - component: {fileID: 7746024060491575253}
   m_Layer: 0
   m_Name: SOL
   m_TagString: Untagged
@@ -1720,27 +1719,6 @@ Transform:
   m_Father: {fileID: 8771117243489437325}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!95 &7746024060491575253
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3950953952739536661}
-  m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: aae0e03d4bbe68547b8d4f707b1c32c5, type: 3}
-  m_Controller: {fileID: 0}
-  m_CullingMode: 1
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &3985019440673654226
 GameObject:
   m_ObjectHideFlags: 0
@@ -3783,8 +3761,8 @@ MonoBehaviour:
   m_StreamingVersion: 20170927
   m_Priority: 10
   m_StandbyUpdate: 2
-  m_LookAt: {fileID: 0}
-  m_Follow: {fileID: 0}
+  m_LookAt: {fileID: 4440350235046671791}
+  m_Follow: {fileID: 4440350235046671791}
   m_CommonLens: 1
   m_Lens:
     FieldOfView: 80
@@ -4754,7 +4732,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8771117243404054003}
-  m_LocalRotation: {x: 0.24948108, y: -0.0000000083311535, z: 0.000000002146333, w: 0.9683797}
+  m_LocalRotation: {x: 0.2494811, y: -0.000000016662309, z: 0.0000000042926662, w: 0.9683797}
   m_LocalPosition: {x: 0, y: 10, z: -15}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -4889,7 +4867,7 @@ GameObject:
   - component: {fileID: 142438445496574476}
   - component: {fileID: 9068435407956776588}
   - component: {fileID: 6771205214654493692}
-  - component: {fileID: 5350387204805503371}
+  - component: {fileID: 4589628733553638891}
   m_Layer: 0
   m_Name: SOL
   m_TagString: Player
@@ -4971,6 +4949,8 @@ MonoBehaviour:
     type: 3}
   jumpInput: {fileID: -3088989869937338722, guid: 577e95fc37a387d408b1137d106ecda7,
     type: 3}
+  camera: {fileID: 7174004991162099984}
+  listener: {fileID: 1027725364173753884}
   cameraTransform: {fileID: 8771117243404054006}
 --- !u!95 &9159337649929298240
 Animator:
@@ -5066,7 +5046,7 @@ MonoBehaviour:
   InLocalSpace: 0
   Interpolate: 1
   SlerpPosition: 0
---- !u!114 &5350387204805503371
+--- !u!114 &4589628733553638891
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

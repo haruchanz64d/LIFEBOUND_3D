@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class MainMenu : MonoBehaviour
 {
-    [SerializeField] private GameObject gameCreationMenu;
+    [SerializeField] private GameObject gameSelectionCanvas;
     [SerializeField] private GameObject optionMenu;
     [SerializeField] private GameObject titleMenu;
     [SerializeField] private GameObject controlMenu;
@@ -24,17 +24,17 @@ public class MainMenu : MonoBehaviour
     private void Start()
     {
         titleMenu.SetActive(true);
-        gameCreationMenu.SetActive(false);
         optionMenu.SetActive(false);
+        gameSelectionCanvas.SetActive(false);
     }
 
-    public void OnGameCreate()
+    public void OnSelectGameMode()
     {
         titleMenu.SetActive(false);
-        gameCreationMenu.SetActive(true);
-        optionMenu.SetActive(false);
+        gameSelectionCanvas.SetActive(true);
     }
-    public void GoToScene(string sceneName)
+
+    public void OnModeSelected(string sceneName)
     {
         SceneManager.LoadScene(sceneName);
     }
