@@ -34,11 +34,11 @@ namespace LB.Character
             if (isSoulSwapCooldown)
             {
                 soulSwapCooldownText.enabled = true;
-                soulSwapIcon.fillAmount -= 1 / soulSwapCooldown * Time.deltaTime;
-                soulSwapCooldownText.text = ((int)(1 - soulSwapIcon.fillAmount) * soulSwapCooldown).ToString();
-                if (soulSwapIcon.fillAmount <= 0)
+                soulSwapIcon.fillAmount += 1 / soulSwapCooldown * Time.deltaTime;
+                soulSwapCooldownText.text = ((int)(soulSwapIcon.fillAmount * soulSwapCooldown)).ToString();
+                if (soulSwapIcon.fillAmount >= 1)
                 {
-                    soulSwapIcon.fillAmount = 1;
+                    soulSwapIcon.fillAmount = 0;
                     isSoulSwapCooldown = false;
                     soulSwapCooldownText.enabled = false;
                 }

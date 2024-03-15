@@ -47,13 +47,12 @@ public class LBLanNetworkManager : MonoBehaviour
         GetLocalIPAddress();
     }
 
-    public void JoinGame()
+    public void JoinGame(TMP_InputField inputField)
     {
+        if (inputField.text == null) return;
         NetworkManager.Singleton.StartClient();
         preJoinLobbyCanvas.SetActive(false);
         characterSelection.SetActive(true);
-
-        SetIPAddress();
     }
 
     private IEnumerator WaitingScreen()

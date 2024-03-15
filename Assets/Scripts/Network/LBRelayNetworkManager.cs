@@ -56,6 +56,8 @@ public class LBRelayNetworkManager : MonoBehaviour
 
             joinCodeText.SetText(RelayService.Instance.GetJoinCodeAsync(allocation.AllocationId).ToString());
 
+            Debug.Log($"Join Code {RelayService.Instance.GetJoinCodeAsync(allocation.AllocationId)}");
+
             RelayServerData serverData = new RelayServerData(allocation, "dtls");
 
             NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(serverData);
@@ -67,7 +69,7 @@ public class LBRelayNetworkManager : MonoBehaviour
         catch (RelayServiceException ex) { Debug.Log(ex); }
     }
 
-    public async void JoinGame()
+    public async void JoinGame(TMP_InputField inputField)
     {
         try
         {
