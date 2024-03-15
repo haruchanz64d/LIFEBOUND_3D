@@ -29,10 +29,10 @@ namespace LB.Character
         private Animator animator;
         private LBCanvasManager canvas;
         private LBCollisionHandler collision;
-        private LBSkillManagement skill;
-        private LBUltimateManagement ultimate;
+        private LBThirdEye skill;
+        private LBSoulSwap ultimate;
 
-        [SerializeField] private CinemachineFreeLook camera;
+        [SerializeField] private new CinemachineFreeLook camera;
         [SerializeField] private AudioListener listener;
 
         [SerializeField] private Transform cameraTransform;
@@ -61,8 +61,8 @@ namespace LB.Character
             controller = GetComponent<CharacterController>();
             originalStepOffset = controller.stepOffset;
             animator = GetComponent<Animator>();
-            skill = GetComponent<LBSkillManagement>();
-            ultimate = GetComponent<LBUltimateManagement>();
+            skill = GetComponent<LBThirdEye>();
+            ultimate = GetComponent<LBSoulSwap>();
         }
 
         private void Update()

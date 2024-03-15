@@ -2,13 +2,15 @@ using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using UnityEngine;
 using System.Collections;
+using TMPro;
 
 namespace LB.Character
 {
-    public class LBUltimateManagement : MonoBehaviour
+    public class LBSoulSwap : MonoBehaviour
     {
         [SerializeField] private InputActionReference ultimateInput;
         [SerializeField] private Image soulSwapIcon;
+        [SerializeField] private TextMeshProUGUI soulSwapCooldownText;
         private float soulSwapCooldown = 30f; // 30 seconds
         private bool isSoulSwapCooldown;
         private bool isSoulSwapping;
@@ -17,6 +19,7 @@ namespace LB.Character
         private void Awake()
         {
             animator = GetComponent<Animator>();
+            soulSwapCooldownText.enabled = false;
         }
 
         private void Update()
@@ -30,12 +33,14 @@ namespace LB.Character
 
             if (isSoulSwapCooldown)
             {
+                soulSwapCooldownText.enabled = true;
                 soulSwapIcon.fillAmount += 1 / soulSwapCooldown * Time.deltaTime;
-
+                soulSwapCooldownText.text = ((int)(soulSwapIcon.fillAmount * soulSwapCooldown)).ToString();
                 if (soulSwapIcon.fillAmount >= 1)
                 {
                     soulSwapIcon.fillAmount = 0;
                     isSoulSwapCooldown = false;
+                    soulSwapCooldownText.enabled = false;
                 }
             }
         }
