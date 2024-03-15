@@ -1,3 +1,7 @@
+/// <summary>
+/// Manages the network functionality for the relay server.
+/// </summary>
+
 using Unity.Netcode;
 using System.Collections;
 using UnityEngine.UI;
@@ -27,12 +31,19 @@ public class LBRelayNetworkManager : MonoBehaviour
     [SerializeField] private Image loadingBarFill;
     private int maxPlayers = 2;
 
+    /// <summary>
+    /// Initializes the pre-lobby, loading screen, and character selection.
+    /// </summary>
     private void Awake()
     {
         preJoinLobbyCanvas.SetActive(true);
         loadingScreenCanvas.SetActive(false);
         characterSelection.SetActive(false);
     }
+
+    /// <summary>
+    /// Initializes the authentication service and signs in anonymously.
+    /// </summary>
     private async void Start()
     {
         waitingCanvasAsHost.SetActive(false);
@@ -48,6 +59,9 @@ public class LBRelayNetworkManager : MonoBehaviour
         await AuthenticationService.Instance.SignInAnonymouslyAsync();
     }
 
+    /// <summary>
+    /// Creates a game session by allocating a server and setting up the relay server data.
+    /// </summary>
     public async void CreateGame()
     {
         try
@@ -69,6 +83,10 @@ public class LBRelayNetworkManager : MonoBehaviour
         catch (RelayServiceException ex) { Debug.Log(ex); }
     }
 
+    /// <summary>
+    /// Joins an existing game session by connecting to the allocated server.
+    /// </summary>
+    /// <param name="inputField">The input field containing the join code.</param>
     public async void JoinGame(TMP_InputField inputField)
     {
         try
@@ -86,6 +104,9 @@ public class LBRelayNetworkManager : MonoBehaviour
         catch (RelayServiceException ex) { Debug.Log(ex); }
     }
 
+    /// <summary>
+    /// Displays the waiting screen until all players have connected.
+    /// </summary>
     private IEnumerator WaitingScreen()
     {
         if (NetworkManager.Singleton.IsServer)
