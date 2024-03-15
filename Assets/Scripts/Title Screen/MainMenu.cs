@@ -28,6 +28,11 @@ public class MainMenu : MonoBehaviour
         gameSelectionCanvas.SetActive(false);
     }
 
+    private void LateUpdate()
+    {
+        OnLoadDebugRoom();
+    }
+
     public void OnSelectGameMode()
     {
         titleMenu.SetActive(false);
@@ -104,4 +109,9 @@ public class MainMenu : MonoBehaviour
         ps4Visual.SetActive(true);
     }
 
+    // DEBUG ONLY
+    private void OnLoadDebugRoom()
+    {
+        if (Input.GetKey(KeyCode.LeftControl) && Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.R)) SceneManager.LoadScene("Developer Room");
+    }
 }

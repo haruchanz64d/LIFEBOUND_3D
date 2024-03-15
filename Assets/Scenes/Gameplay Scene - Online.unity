@@ -886,13 +886,13 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1771062220}
-        m_TargetAssemblyTypeName: LBNetworkPlayer, Assembly-CSharp
-        m_MethodName: OnNetworkSpawn
+        m_TargetAssemblyTypeName: LBCharacterSelector, Assembly-CSharp
+        m_MethodName: SpawnLuna
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
+          m_IntArgument: 1
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -2002,8 +2002,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1771062220}
-        m_TargetAssemblyTypeName: LBNetworkPlayer, Assembly-CSharp
-        m_MethodName: OnNetworkSpawn
+        m_TargetAssemblyTypeName: LBCharacterSelector, Assembly-CSharp
+        m_MethodName: SpawnSol
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2570,7 +2570,7 @@ Transform:
   - {fileID: 602382787}
   - {fileID: 244049416}
   m_Father: {fileID: 1414533068}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1172228346
 GameObject:
@@ -3386,13 +3386,12 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1649152501}
   - {fileID: 543450652842101661}
   - {fileID: 543450651716578664}
   - {fileID: 1122327634}
   - {fileID: 1461691438}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1461691437
 GameObject:
@@ -3447,7 +3446,7 @@ Transform:
   - {fileID: 543450652448299150}
   - {fileID: 543450653592467028}
   m_Father: {fileID: 1414533068}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!1 &1485287939
 GameObject:
@@ -3791,14 +3790,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1649152500}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
   m_LocalPosition: {x: -393, y: 38.4, z: 3930}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1414533068}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Father: {fileID: 0}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!1 &1688723883
 GameObject:
   m_ObjectHideFlags: 0
@@ -3945,12 +3944,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 297a55028a0342b4986118acf8ae66cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  solPrefab: {fileID: 8771117243489437324, guid: 5f55d6bdb22287e488dc241cd5cb044b,
-    type: 3}
-  lunaPrefab: {fileID: 8771117243489437324, guid: 7e7dbd273731f224f8e93dadbbbb3701,
-    type: 3}
-  clientID: 0
-  characterSelectScreen: {fileID: 1485287939}
+  characters:
+  - {fileID: 8771117243489437324, guid: d2fb6da9adc0b314e8ac3cebe3c9a0f5, type: 3}
+  - {fileID: 8771117243489437324, guid: 7e7dbd273731f224f8e93dadbbbb3701, type: 3}
+  characterSelection: {fileID: 1485287939}
 --- !u!1 &1772893143
 GameObject:
   m_ObjectHideFlags: 0
@@ -4635,7 +4632,7 @@ Transform:
   - {fileID: 543450651974637538}
   - {fileID: 543450653386929070}
   m_Father: {fileID: 1414533068}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &543450651719322697
 Transform:
@@ -5559,7 +5556,7 @@ Transform:
   - {fileID: 543450652213391798}
   - {fileID: 543450652947989791}
   m_Father: {fileID: 1414533068}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!4 &543450652890865653
 Transform:
@@ -14071,7 +14068,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1757242320878534495
 GameObject:

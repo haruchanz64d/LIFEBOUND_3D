@@ -68,7 +68,7 @@ namespace LB.Character
         private void Update()
         {
             if (canvas.GetGameplayPaused) return;
-            if(!IsOwner) return;
+            if (!IsLocalPlayer) return;
             HandleMovement();
         }
 

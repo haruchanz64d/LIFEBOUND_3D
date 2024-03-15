@@ -1,48 +1,38 @@
 using UnityEngine;
 using Unity.Netcode;
+using System;
+using System.Collections.Generic;
 
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
 public class LBCharacterSelector : NetworkBehaviour
 {
-    [SerializeField] private GameObject solPrefab;
-    [SerializeField] private GameObject lunaPrefab;
-    [SerializeField] private int clientID;
-
-    [SerializeField] private GameObject characterSelectScreen;
-
-    private GameObject m_Player;
+    [SerializeField] private List<GameObject> characters = new List<GameObject>();
+    [SerializeField] private GameObject characterSelection;
 
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
 
-        clientID = (int)OwnerClientId;
+        if (!IsOwner) characterSelection.SetActive(false);
     }
 
-    public void SetSelectedCharacter(int characterID)
+    public void SpawnSol()
     {
-        GameObject spawnPoint = GameObject.FindGameObjectWithTag("Spawn Point");
-        GameObject player = null;
-        switch (characterID)
-        {
-            case 0:
-                player = Instantiate(solPrefab, spawnPoint.transform.position, Quaternion.identity);
-                break;
-            case 1:
-                player = Instantiate(lunaPrefab, spawnPoint.transform.position, Quaternion.identity);
-                break;
-        }
-
-        if (IsClient && m_Player != null)
-            Destroy(m_Player);
-
-        if (player != null)
-        {
-            player.GetComponent<NetworkObject>().SpawnAsPlayerObject(OwnerClientId);
-            characterSelectScreen.SetActive(false);
-            m_Player = player;
-        }
+        SpawnServerRpc(0, true);
+        characterSelection.SetActive(false);
     }
+
+    public void SpawnLuna()
+    {
+        SpawnServerRpc(1, true);
+        characterSelection.SetActive(false);
+    }
+
+    [ServerRpc]
+    public void SpawnServerRpc(int characterIndex, bool isLocalPlayer)
+    {
+        GameObject player = Instantiate(characters[characterIndex], GameObject.FindGameObjectWithTag("Spawn Point").transform.position, Quaternion.identity);
+        isLocalPlayer = player.GetComponent<NetworkObject>().IsLocalPlayer;
+        
+    }
+
 }

@@ -54,9 +54,9 @@ public class LBRelayNetworkManager : MonoBehaviour
         {
             Allocation allocation = await RelayService.Instance.CreateAllocationAsync(maxPlayers);
 
-            joinCodeText.SetText(RelayService.Instance.GetJoinCodeAsync(allocation.AllocationId).ToString());
+            string joinCode = await RelayService.Instance.GetJoinCodeAsync(allocation.AllocationId);
 
-            Debug.Log($"Join Code {RelayService.Instance.GetJoinCodeAsync(allocation.AllocationId)}");
+            joinCodeText.SetText(joinCode);
 
             RelayServerData serverData = new RelayServerData(allocation, "dtls");
 
