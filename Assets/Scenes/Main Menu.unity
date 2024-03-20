@@ -3791,6 +3791,7 @@ MonoBehaviour:
   xboxVisual: {fileID: 1485431868}
   ps4Visual: {fileID: 1483645839}
   controllers: {fileID: 1352529107}
+  fadeTransitionUI: {fileID: 0}
 --- !u!1 &957122665
 GameObject:
   m_ObjectHideFlags: 0
@@ -4129,14 +4130,14 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 909532170}
         m_TargetAssemblyTypeName: MainMenu, Assembly-CSharp
-        m_MethodName: OnModeSelected
+        m_MethodName: OnPlaySelected
         m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: Gameplay Scene - Online
+          m_StringArgument: Character Select
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!1 &998685375

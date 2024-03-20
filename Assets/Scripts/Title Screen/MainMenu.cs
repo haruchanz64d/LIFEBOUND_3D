@@ -16,6 +16,8 @@ public class MainMenu : MonoBehaviour
     [SerializeField] private GameObject ps4Visual;
     [SerializeField] private GameObject controllers;
 
+    [SerializeField] private GameObject fadeTransitionUI;
+
     private void Awake(){
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
@@ -26,24 +28,21 @@ public class MainMenu : MonoBehaviour
         titleMenu.SetActive(true);
         optionMenu.SetActive(false);
         gameSelectionCanvas.SetActive(false);
+
+        fadeTransitionUI.SetActive(false);
     }
 
     private void LateUpdate()
     {
-        OnLoadDebugRoom();
+        //OnLoadDebugRoom();
     }
 
-    public void OnSelectGameMode()
+    public void OnPlaySelected(string sceneName)
     {
-        titleMenu.SetActive(false);
-        gameSelectionCanvas.SetActive(true);
+        StartCoroutine(LoadingScreenBeforeSceneLoad(sceneName));
     }
 
-    public void OnModeSelected(string sceneName)
-    {
-        SceneManager.LoadScene(sceneName);
-    }
-
+    // please create a UI for confirmation that the player wants to quit instead of quitting :)
     public void QuitApp()
     {
         Application.Quit();
@@ -109,9 +108,18 @@ public class MainMenu : MonoBehaviour
         ps4Visual.SetActive(true);
     }
 
-    // DEBUG ONLY
-    private void OnLoadDebugRoom()
+    private IEnumerator LoadingScreenBeforeSceneLoad(string sceneName)
     {
-        if (Input.GetKey(KeyCode.LeftControl) && Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.R)) SceneManager.LoadScene("Developer Room");
+        fadeTransitionUI.SetActive(true);
+        fadeTransitionUI.GetComponent<LBFadeScreen>().FadeImage(true);
+
+        AsyncOperation async = SceneManager.LoadSceneAsync(sceneName);
+
+        while (!async.isDone)
+        {
+            yield return null;
+            fadeTransitionUI.GetComponent<LBFadeScreen>().FadeImage(false);
+            fadeTransitionUI.SetActive(false);
+        }
     }
 }

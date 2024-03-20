@@ -24,6 +24,7 @@ public class LBCollisionHandler : MonoBehaviour
         {
             animator.Play("Death");
             isPlayerDead = true;
+            StartCoroutine(RespawnPlayer());
         }
     }
     public IEnumerator RespawnPlayer()
@@ -31,6 +32,9 @@ public class LBCollisionHandler : MonoBehaviour
         yield return new WaitForSeconds(5f);
         // temporarily respawn from the original spawn point
         transform.position = originalSpawnPoint.transform.position;
+
+        Debug.Log($"Setting current position {transform.position} to last checkpoint {originalSpawnPoint.transform.position}");
+
         isPlayerDead = false;
         animator.SetTrigger("IsAlive");
     }

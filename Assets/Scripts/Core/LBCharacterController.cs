@@ -37,17 +37,15 @@ namespace LB.Character
 
         [SerializeField] private Transform cameraTransform;
 
-        private Transform spawnPoint;
-
 
         public override void OnNetworkSpawn()
         {
-            if(IsOwner) 
+            if (IsOwner)
             {
                 listener.enabled = true;
                 camera.Priority = 1;
             }
-            else 
+            else
             {
                 camera.Priority = 0;
             }
@@ -74,8 +72,8 @@ namespace LB.Character
 
         private void HandleMovement()
         {
-            if (collision.IsPlayerDead){
-                StartCoroutine(collision.RespawnPlayer());
+            if (collision.IsPlayerDead)
+            {
                 return;
             }
             Vector2 movement = movementInput.action.ReadValue<Vector2>();
