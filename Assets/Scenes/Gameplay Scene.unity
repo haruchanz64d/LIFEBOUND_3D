@@ -232,7 +232,6 @@ Transform:
   - {fileID: 1485287940}
   - {fileID: 529847710}
   - {fileID: 1012391779}
-  - {fileID: 1777789213}
   - {fileID: 817860361}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -751,7 +750,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1777789217}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: LBCharacterSelectionButton, Assembly-CSharp
         m_MethodName: OnLunaSelected
         m_Mode: 1
@@ -861,8 +860,7 @@ MonoBehaviour:
   NetworkConfig:
     ProtocolVersion: 0
     NetworkTransport: {fileID: 394988450}
-    PlayerPrefab: {fileID: 5317159116119652056, guid: 77bbca0a88c122b43a56c6637c45b1e4,
-      type: 3}
+    PlayerPrefab: {fileID: 0}
     Prefabs:
       NetworkPrefabsLists:
       - {fileID: 11400000, guid: e3df5b8f122b85947af234d0959c2487, type: 2}
@@ -1930,7 +1928,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 120688909}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &817860362
 MonoBehaviour:
@@ -2144,7 +2142,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1777789217}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: LBCharacterSelectionButton, Assembly-CSharp
         m_MethodName: OnSolSelected
         m_Mode: 1
@@ -3837,90 +3835,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1772893143}
   m_CullTransparentMesh: 1
---- !u!1 &1777789212
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1777789213}
-  - component: {fileID: 1777789216}
-  - component: {fileID: 1777789215}
-  - component: {fileID: 1777789217}
-  m_Layer: 0
-  m_Name: CharacterSelector
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1777789213
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1777789212}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 120688909}
-  m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1777789215
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1777789212}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 297a55028a0342b4986118acf8ae66cb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  solPrefab: {fileID: 4496700192871495327, guid: d2fb6da9adc0b314e8ac3cebe3c9a0f5,
-    type: 3}
-  lunaPrefab: {fileID: 4496700192871495327, guid: 7e7dbd273731f224f8e93dadbbbb3701,
-    type: 3}
-  characterSelectionCanvas: {fileID: 120688908}
---- !u!114 &1777789216
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1777789212}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 1231966994
-  AlwaysReplicateAsRoot: 0
-  SynchronizeTransform: 1
-  ActiveSceneSynchronization: 0
-  SceneMigrationSynchronization: 1
-  SpawnWithObservers: 1
-  DontDestroyWithOwner: 0
-  AutoObjectParentSync: 1
---- !u!114 &1777789217
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1777789212}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 46e8d97312e476346be6f7c38189b4d0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  characterSelector: {fileID: 1777789215}
 --- !u!1 &1934790348
 GameObject:
   m_ObjectHideFlags: 0

@@ -23,6 +23,7 @@ namespace LB.Character
         private bool isJumping;
         private float jumpHorizontalSpeed = 1f;
         private float rotationSpeed = 5f;
+        [SerializeField] private bool isLocalPlayer;
         [Space(10)]
         [Header("Components")]
         private CharacterController controller;
@@ -65,8 +66,9 @@ namespace LB.Character
 
         private void Update()
         {
+            isLocalPlayer = IsLocalPlayer;
             if (canvas.GetGameplayPaused) return;
-            if (!IsOwner) return;
+            if (!IsLocalPlayer) return;
             HandleMovement();
         }
 
