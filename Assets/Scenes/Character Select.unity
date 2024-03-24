@@ -356,12 +356,6 @@ MonoBehaviour:
   m_ShadowLayerMask: 1
   m_LightCookieSize: {x: 1, y: 1}
   m_LightCookieOffset: {x: 0, y: 0}
---- !u!4 &1792856715 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 1792856715, guid: 1db7cdd0c4733dc4abc82561aabb3257,
-    type: 3}
-  m_PrefabInstance: {fileID: 8103310837893804394}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2019795629
 GameObject:
   m_ObjectHideFlags: 0
@@ -507,19 +501,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 123542127, guid: 1db7cdd0c4733dc4abc82561aabb3257, type: 3}
-      propertyPath: lockinButton
-      value: 
-      objectReference: {fileID: 8103310837893804396}
-    - target: {fileID: 123542127, guid: 1db7cdd0c4733dc4abc82561aabb3257, type: 3}
-      propertyPath: introSpawpoint
-      value: 
-      objectReference: {fileID: 1792856715}
-    - target: {fileID: 1324641155873536988, guid: 1db7cdd0c4733dc4abc82561aabb3257,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 306
-      objectReference: {fileID: 0}
     - target: {fileID: 7558648331255568848, guid: 1db7cdd0c4733dc4abc82561aabb3257,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -635,64 +616,5 @@ PrefabInstance:
       propertyPath: GlobalObjectIdHash
       value: 1950209966
       objectReference: {fileID: 0}
-    - target: {fileID: 8171371487396033253, guid: 1db7cdd0c4733dc4abc82561aabb3257,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8171371487396033253, guid: 1db7cdd0c4733dc4abc82561aabb3257,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8171371487396033253, guid: 1db7cdd0c4733dc4abc82561aabb3257,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 8103310837893804395}
-    - target: {fileID: 8171371487396033253, guid: 1db7cdd0c4733dc4abc82561aabb3257,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 8171371487396033253, guid: 1db7cdd0c4733dc4abc82561aabb3257,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: LockedIn
-      objectReference: {fileID: 0}
-    - target: {fileID: 8171371487396033253, guid: 1db7cdd0c4733dc4abc82561aabb3257,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: LBCharacterSelectDisplay, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 8171371487396033253, guid: 1db7cdd0c4733dc4abc82561aabb3257,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1db7cdd0c4733dc4abc82561aabb3257, type: 3}
---- !u!114 &8103310837893804395 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 123542127, guid: 1db7cdd0c4733dc4abc82561aabb3257,
-    type: 3}
-  m_PrefabInstance: {fileID: 8103310837893804394}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7dac7bf73c0d8e84fafaf98a9ef9365d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &8103310837893804396 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8171371487396033253, guid: 1db7cdd0c4733dc4abc82561aabb3257,
-    type: 3}
-  m_PrefabInstance: {fileID: 8103310837893804394}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
