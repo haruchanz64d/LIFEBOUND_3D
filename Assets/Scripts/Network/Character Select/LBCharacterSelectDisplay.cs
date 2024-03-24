@@ -1,6 +1,8 @@
 using TMPro;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.UI;
+using System.Collections.Generic;
 
 public class LBCharacterSelectDisplay : NetworkBehaviour
 {
@@ -10,12 +12,19 @@ public class LBCharacterSelectDisplay : NetworkBehaviour
     [SerializeField] private LBPlayerCard[] playerCards;
     [SerializeField] private GameObject characterInfoPanel;
     [SerializeField] private TMP_Text characterName;
+    [SerializeField] private Transform introSpawpoint;
+    [SerializeField] private Button lockinButton;
+
+
+    private GameObject introInstance;
+
+    private List<LBCharacterSelectButton> characterButtons = new List<LBCharacterSelectButton>();
 
     private NetworkList<LBCharacterSelectState> players;
 
     private void Awake()
     {
-        players = new NetworkList<LBCharacterSelectState>();    
+        players = new NetworkList<LBCharacterSelectState>();
     }
 
     public override void OnNetworkSpawn()
@@ -28,6 +37,7 @@ public class LBCharacterSelectDisplay : NetworkBehaviour
             {
                 var selectButtonInstance = Instantiate(selectButton, characterHold);
                 selectButtonInstance.SetCharacter(this, character);
+                characterButtons.Add(selectButtonInstance);
             }
 
             players.OnListChanged += HandlePlayersStateChanged;
@@ -66,7 +76,7 @@ public class LBCharacterSelectDisplay : NetworkBehaviour
 
     private void HandleClientDisconnected(ulong clientId)
     {
-       for (int i = 0; i < players.Count; i++)
+        for (int i = 0; i < players.Count; i++)
         {
             if (players[i].ClientId == clientId)
             {
@@ -78,8 +88,27 @@ public class LBCharacterSelectDisplay : NetworkBehaviour
 
     public void Select(LBCharacter character)
     {
+        for (int i = 0; i < players.Count; i++)
+        {
+            if (players[i].ClientId != NetworkManager.Singleton.LocalClientId) continue;
+
+            if (players[i].IsLockedIn) return;
+
+            if (players[i].CharacterId == character.Id) return;
+
+            if (IsCharacterTaken(character.Id, false)) return;
+        }
+
         characterName.SetText(character.DisplayName);
         characterInfoPanel.SetActive(true);
+
+        if (introInstance != null)
+        {
+            Destroy(introInstance);
+        }
+
+        introInstance = Instantiate(character.IntroCharacter, introSpawpoint);
+
         SelectServerRpc(character.Id);
     }
 
@@ -88,13 +117,35 @@ public class LBCharacterSelectDisplay : NetworkBehaviour
     {
         for (int i = 0; i < players.Count; i++)
         {
-            if (players[i].ClientId == serverRpcParams.Receive.SenderClientId)
-            {
-                players[i] = new LBCharacterSelectState(
-                    players[i].ClientId,
-                    characterId
-                    );
-            }
+            if (players[i].ClientId == serverRpcParams.Receive.SenderClientId) continue;
+            if (!characterDatabase.IsValidCharacterId(characterId)) return;
+            if (IsCharacterTaken(characterId, true)) return;
+            players[i] = new LBCharacterSelectState(
+                players[i].ClientId,
+                characterId,
+                players[i].IsLockedIn
+                );
+        }
+    }
+
+    public void LockedIn()
+    {
+        LockInServerRpc();
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void LockInServerRpc(ServerRpcParams serverRpcParams = default)
+    {
+        for (int i = 0; i < players.Count; i++)
+        {
+            if (players[i].ClientId == serverRpcParams.Receive.SenderClientId) continue;
+            if (!characterDatabase.IsValidCharacterId(players[i].CharacterId)) return;
+            if (IsCharacterTaken(players[i].CharacterId, true)) return;
+            players[i] = new LBCharacterSelectState(
+                players[i].ClientId,
+                players[i].CharacterId,
+                true
+                );
         }
     }
 
@@ -111,5 +162,45 @@ public class LBCharacterSelectDisplay : NetworkBehaviour
                 playerCards[i].DisableDisplay();
             }
         }
+
+        foreach (var button in characterButtons)
+        {
+            if (button.IsDisabled) continue;
+            if (IsCharacterTaken(button.Character.Id, false))
+            {
+                button.SetDisabled();
+            }
+        }
+
+        foreach (var player in players)
+        {
+            if (player.ClientId != NetworkManager.Singleton.LocalClientId) continue;
+            if (player.IsLockedIn)
+            {
+                lockinButton.interactable = false;
+                break;
+            }
+
+            if (IsCharacterTaken(player.CharacterId, false))
+            {
+                lockinButton.interactable = false;
+                break;
+            }
+            lockinButton.interactable = true;
+            break;
+        }
+    }
+
+    private bool IsCharacterTaken(int characterId, bool checkAll)
+    {
+        for (int i = 0; i < players.Count; i++)
+        {
+            if (!checkAll)
+            {
+                if (players[i].ClientId == NetworkManager.Singleton.LocalClientId) continue;
+            }
+            if (players[i].IsLockedIn && players[i].CharacterId == characterId) return true;
+        }
+        return false;
     }
 }

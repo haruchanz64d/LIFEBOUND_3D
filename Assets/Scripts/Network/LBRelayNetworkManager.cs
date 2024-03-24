@@ -146,4 +146,17 @@ public class LBRelayNetworkManager : MonoBehaviour
             yield return null;
         }
     }
+
+    //THIS FUNCTIONS BELOW HERE ARE DEVELOPMENT PURPOSES ONLY
+    public void StartHost()
+    {
+        NetworkManager.Singleton.StartHost();
+        NetworkManager.Singleton.SceneManager.LoadScene("Character Select", LoadSceneMode.Additive);
+    }
+
+    public void StartClient()
+    {
+        NetworkManager.Singleton.StartClient();
+        NetworkManager.Singleton.SceneManager.LoadScene("Character Select", LoadSceneMode.Additive);
+    }
 }

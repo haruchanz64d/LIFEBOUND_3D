@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 
 [CreateAssetMenu(fileName ="New Character Database", menuName = "Character/New Character Database")]
@@ -17,5 +18,10 @@ public class LBCharacterDatabase : ScriptableObject
             }
         }
         return null;
+    }
+
+    public bool IsValidCharacterId(int id)
+    {
+        return characters.Any(x => x.Id == id);
     }
 }
