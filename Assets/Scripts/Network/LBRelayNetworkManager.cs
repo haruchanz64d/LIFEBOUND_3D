@@ -5,6 +5,7 @@
 using Unity.Netcode;
 using System.Collections;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using UnityEngine;
 using Unity.Services.Core;
 using Unity.Services.Authentication;
@@ -24,11 +25,13 @@ public class LBRelayNetworkManager : MonoBehaviour
     [Header("Queue (Client)")]
     [SerializeField] private GameObject waitingCanvasAsClient;
     [SerializeField] private TMP_InputField inputField;
-    [Header("Character Selection")]
-    [SerializeField] private GameObject characterSelection;
+    //[Header("Character Selection")]
+    //[SerializeField] private GameObject characterSelection;
     [Header("Loading Screen")]
     [SerializeField] private GameObject loadingScreenCanvas;
-    [SerializeField] private Image loadingBarFill;
+    [SerializeField] private GameObject loadingProgressBar;
+    [SerializeField] private Image loadingProgressBarFill;
+    [SerializeField] private TMP_Text loadingScreenTips;
     private int maxPlayers = 2;
 
     /// <summary>
@@ -38,7 +41,6 @@ public class LBRelayNetworkManager : MonoBehaviour
     {
         preJoinLobbyCanvas.SetActive(true);
         loadingScreenCanvas.SetActive(false);
-        characterSelection.SetActive(false);
     }
 
     /// <summary>
@@ -99,7 +101,7 @@ public class LBRelayNetworkManager : MonoBehaviour
 
             NetworkManager.Singleton.StartClient();
             preJoinLobbyCanvas.SetActive(false);
-            characterSelection.SetActive(true);
+            StartCoroutine(LoadingScreen());
         }
         catch (RelayServiceException ex) { Debug.Log(ex); }
     }
@@ -117,7 +119,31 @@ public class LBRelayNetworkManager : MonoBehaviour
                 yield return null;
             }
             waitingCanvasAsHost.SetActive(false);
-            characterSelection.SetActive(true);
+            StartCoroutine(LoadingScreen());
+        }
+    }
+
+    private IEnumerator LoadingScreen()
+    {
+        yield return null;
+        AsyncOperation async = SceneManager.LoadSceneAsync("Character Select");
+        async.allowSceneActivation = false;
+
+        while (!async.isDone)
+        {
+            loadingProgressBarFill.fillAmount += async.progress * 100;
+
+            if (async.progress >= 0.9f)
+            {
+                loadingProgressBar.SetActive(false);
+
+                loadingScreenTips.SetText("Press any key to continue...");
+                if (Input.anyKeyDown)
+                {
+                    async.allowSceneActivation = true;
+                }
+            }
+            yield return null;
         }
     }
 }
