@@ -1,18 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class ClientData : MonoBehaviour
+using System;
+[Serializable]
+public class ClientData
 {
-    // Start is called before the first frame update
-    void Start()
+    public ulong clientId;
+    public int characterId = -1;
+    public ClientData(ulong clientId)
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        this.clientId = clientId;
     }
 }

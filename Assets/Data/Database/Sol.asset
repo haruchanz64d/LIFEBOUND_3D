@@ -14,6 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 1
   displayName: Sol
-  icon: {fileID: 1843471407, guid: 4073d9b2e96b6324b9eaf1da6c9f1559, type: 3}
+  icon: {fileID: 21300000, guid: b99f18fa0d3702e4ca9b82aa950b3a18, type: 3}
   introCharacter: {fileID: 6546214254646979243, guid: 247cf3d79ecb1314fa7be6e8188483c9,
+    type: 3}
+  gameplayPrefab: {fileID: 4496700192871495327, guid: 6738b9b60e0f61c42b52746c32d28b18,
     type: 3}

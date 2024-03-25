@@ -14,6 +14,7 @@ public class LBCharacterSelectDisplay : NetworkBehaviour
     [SerializeField] private TMP_Text characterName;
     [SerializeField] private Transform introSpawpoint;
     [SerializeField] private Button lockinButton;
+    [SerializeField] private TMP_Text joinCodeText;
 
 
     private GameObject introInstance;
@@ -41,6 +42,7 @@ public class LBCharacterSelectDisplay : NetworkBehaviour
             }
 
             players.OnListChanged += HandlePlayersStateChanged;
+            joinCodeText.SetText("");
         }
 
         if (IsServer)
@@ -52,6 +54,10 @@ public class LBCharacterSelectDisplay : NetworkBehaviour
             {
                 HandleClientConnected(client.ClientId);
             }
+        }
+        if (IsHost)
+        {
+            joinCodeText.SetText(HostManager.Instance.joinCode);
         }
     }
 
@@ -147,6 +153,18 @@ public class LBCharacterSelectDisplay : NetworkBehaviour
                 true
                 );
         }
+
+        foreach (var player in players)
+        {
+            if (!player.IsLockedIn) return;
+        }
+
+        foreach (var player in players)
+        {
+            HostManager.Instance.SetCharacter(player.ClientId, player.CharacterId);
+        }
+
+        HostManager.Instance.StartGame();
     }
 
     private void HandlePlayersStateChanged(NetworkListEvent<LBCharacterSelectState> changeEvent)
