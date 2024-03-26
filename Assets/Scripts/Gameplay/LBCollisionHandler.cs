@@ -18,6 +18,11 @@ public class LBCollisionHandler : MonoBehaviour
         animator = GetComponent<Animator>();
     }
 
+    private void Update()
+    {
+        if (isPlayerDead) StartCoroutine(RespawnPlayer());
+    }
+
     private void OnTriggerStay(Collider hit)
     {
         if (hit.gameObject.CompareTag("Lava"))
