@@ -18,6 +18,9 @@ public class MainMenu : MonoBehaviour
 
     [SerializeField] private GameObject fadeTransitionUI;
 
+    [SerializeField] private AudioClip hoverButton;
+    [SerializeField] private AudioClip pressedButton;
+
     private void Awake(){
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
@@ -121,5 +124,16 @@ public class MainMenu : MonoBehaviour
             fadeTransitionUI.GetComponent<LBFadeScreen>().FadeImage(false);
             fadeTransitionUI.SetActive(false);
         }
+    }
+
+    // BUTTON SOUNDS
+    public void Hovered()
+    {
+        SfxManager.instance.PlayAudioClip(hoverButton, transform, 1f);
+    }
+
+    public void Pressed()
+    {
+        SfxManager.instance.PlayAudioClip(pressedButton, transform, 1f);
     }
 }
