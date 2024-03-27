@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+
 public class LBCollisionHandler : MonoBehaviour
 {
     private bool isPlayerDead = false;
@@ -8,8 +9,6 @@ public class LBCollisionHandler : MonoBehaviour
     private Animator animator;
     [SerializeField] private Image lBFadeScreen;
     private Transform originalSpawnPoint;
-    private Transform checkpointSpawnPoint;
-
     private Vector3 lastCheckpointInteracted;
 
     private void Awake()
@@ -23,6 +22,16 @@ public class LBCollisionHandler : MonoBehaviour
         if (isPlayerDead) StartCoroutine(RespawnPlayer());
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Checkpoint"))
+        {
+            Debug.Log($"Checkpoint located at X: {other.transform.position.x}, Y: {other.transform.position.y}, Z: {other.transform.position.z}");
+            lastCheckpointInteracted = other.gameObject.transform.position;
+            other.GetComponent<LBCheckpoint>().OnCheckpointActivated();
+        }
+    }
+
     private void OnTriggerStay(Collider hit)
     {
         if (hit.gameObject.CompareTag("Lava"))
@@ -32,13 +41,24 @@ public class LBCollisionHandler : MonoBehaviour
             StartCoroutine(RespawnPlayer());
         }
     }
+
     public IEnumerator RespawnPlayer()
     {
         yield return new WaitForSeconds(5f);
-        // temporarily respawn from the original spawn point
-        transform.position = originalSpawnPoint.transform.position;
 
-        Debug.Log($"Setting current position {transform.position} to last checkpoint {originalSpawnPoint.transform.position}");
+        Vector3 respawnPosition = lastCheckpointInteracted != Vector3.zero ? lastCheckpointInteracted : originalSpawnPoint.position;
+        transform.position = respawnPosition;
+
+        if (lastCheckpointInteracted != Vector3.zero)
+        {
+            Debug.Log($"Respawned player at checkpoint: {lastCheckpointInteracted}");
+        }
+        else
+        {
+            Debug.Log("Respawned player at original spawn point.");
+        }
+
+        Debug.Log($"Respawned player at checkpoint: {lastCheckpointInteracted}");
 
         isPlayerDead = false;
         animator.SetTrigger("IsAlive");

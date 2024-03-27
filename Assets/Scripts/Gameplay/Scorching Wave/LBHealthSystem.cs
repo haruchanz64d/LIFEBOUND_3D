@@ -27,7 +27,7 @@ public class LBHealthSystem : MonoBehaviour
     private float playerMaxHP = 100f;
     private float currentHealth;
     private bool isInsideAquaTotem;
-
+    private LBCollisionHandler collisionHandler;
     private void Start()
     {
         currentHealth = playerMaxHP;
@@ -36,10 +36,12 @@ public class LBHealthSystem : MonoBehaviour
         isPlayerBurning = false;
         heatBarGauge.SetActive(false);
         burningVignetteEffectImage.SetActive(false);
+        collisionHandler = GetComponent<LBCollisionHandler>();
     }
 
     private void Update()
     {
+        if (collisionHandler.IsPlayerDead) return;
         if (!isHeatGaugeActive)
         {
             heatTimer -= Time.deltaTime;
