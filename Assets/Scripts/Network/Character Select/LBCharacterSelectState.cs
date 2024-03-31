@@ -13,15 +13,15 @@ public struct LBCharacterSelectState : INetworkSerializable, IEquatable<LBCharac
         IsLockedIn = isLockedIn;
     }
 
-    public bool Equals(LBCharacterSelectState other)
-    {
-        return ClientId == other.ClientId && CharacterId == other.CharacterId && IsLockedIn == other.IsLockedIn;
-    }
-
     public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
     {
         serializer.SerializeValue(ref ClientId);
         serializer.SerializeValue(ref CharacterId);
         serializer.SerializeValue(ref IsLockedIn);
+    }
+
+    public bool Equals(LBCharacterSelectState other)
+    {
+        return ClientId == other.ClientId && CharacterId == other.CharacterId && IsLockedIn == other.IsLockedIn;
     }
 }

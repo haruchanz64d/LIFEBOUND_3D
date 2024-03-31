@@ -2766,7 +2766,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5112741192120550044}
-  m_LocalRotation: {x: -0.02488849, y: 0.9610981, z: -0.25913355, w: -0.09230869}
+  m_LocalRotation: {x: -0.024888502, y: 0.9610981, z: -0.25913355, w: -0.09230874}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -5240,7 +5240,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8771117243404054003}
-  m_LocalRotation: {x: -0.025302337, y: 0.95992595, z: -0.2634425, w: -0.0921961}
+  m_LocalRotation: {x: -0.025302356, y: 0.95992595, z: -0.2634425, w: -0.09219617}
   m_LocalPosition: {x: 2.9121861, y: 10.703594, z: 15.020669}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -5591,7 +5591,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2fc5cd1c83e125b47ade9f50e204e22f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  heatTimer: 10
+  heatTimer: 120
   heatGaugeFillRate: 0.01
   burningDamagePerTick: 0.01
   hpRegenerationPerTick: 0.01

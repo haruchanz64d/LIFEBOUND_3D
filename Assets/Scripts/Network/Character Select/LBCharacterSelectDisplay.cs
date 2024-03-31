@@ -42,7 +42,6 @@ public class LBCharacterSelectDisplay : NetworkBehaviour
             }
 
             players.OnListChanged += HandlePlayersStateChanged;
-            joinCodeText.SetText("");
         }
 
         if (IsServer)
@@ -84,11 +83,10 @@ public class LBCharacterSelectDisplay : NetworkBehaviour
     {
         for (int i = 0; i < players.Count; i++)
         {
-            if (players[i].ClientId == clientId)
-            {
-                players.RemoveAt(i);
-                break;
-            }
+            if (players[i].ClientId != clientId) { continue; }
+
+            players.RemoveAt(i);
+            break;
         }
     }
 
@@ -96,13 +94,13 @@ public class LBCharacterSelectDisplay : NetworkBehaviour
     {
         for (int i = 0; i < players.Count; i++)
         {
-            if (players[i].ClientId != NetworkManager.Singleton.LocalClientId) continue;
+            if (players[i].ClientId != NetworkManager.Singleton.LocalClientId) { continue; }
 
-            if (players[i].IsLockedIn) return;
+            if (players[i].IsLockedIn) { return; }
 
-            if (players[i].CharacterId == character.Id) return;
+            if (players[i].CharacterId == character.Id) { return; }
 
-            if (IsCharacterTaken(character.Id, false)) return;
+            if (IsCharacterTaken(character.Id, false)) { return; }
         }
 
         characterName.SetText(character.DisplayName);
@@ -123,9 +121,9 @@ public class LBCharacterSelectDisplay : NetworkBehaviour
     {
         for (int i = 0; i < players.Count; i++)
         {
-            if (players[i].ClientId == serverRpcParams.Receive.SenderClientId) continue;
-            if (!characterDatabase.IsValidCharacterId(characterId)) return;
-            if (IsCharacterTaken(characterId, true)) return;
+            if (players[i].ClientId != serverRpcParams.Receive.SenderClientId) { continue; }
+            if (!characterDatabase.IsValidCharacterId(characterId)) { return; }
+            if (IsCharacterTaken(characterId, true)) { return; }
             players[i] = new LBCharacterSelectState(
                 players[i].ClientId,
                 characterId,
@@ -144,9 +142,9 @@ public class LBCharacterSelectDisplay : NetworkBehaviour
     {
         for (int i = 0; i < players.Count; i++)
         {
-            if (players[i].ClientId == serverRpcParams.Receive.SenderClientId) continue;
-            if (!characterDatabase.IsValidCharacterId(players[i].CharacterId)) return;
-            if (IsCharacterTaken(players[i].CharacterId, true)) return;
+            if (players[i].ClientId != serverRpcParams.Receive.SenderClientId) { continue; }
+            if (!characterDatabase.IsValidCharacterId(players[i].CharacterId)) { return; }
+            if (IsCharacterTaken(players[i].CharacterId, true)) { return; }
             players[i] = new LBCharacterSelectState(
                 players[i].ClientId,
                 players[i].CharacterId,
@@ -156,7 +154,7 @@ public class LBCharacterSelectDisplay : NetworkBehaviour
 
         foreach (var player in players)
         {
-            if (!player.IsLockedIn) return;
+            if (!player.IsLockedIn) { return; }
         }
 
         foreach (var player in players)
@@ -183,7 +181,7 @@ public class LBCharacterSelectDisplay : NetworkBehaviour
 
         foreach (var button in characterButtons)
         {
-            if (button.IsDisabled) continue;
+            if (button.IsDisabled) { continue; }
             if (IsCharacterTaken(button.Character.Id, false))
             {
                 button.SetDisabled();
@@ -215,9 +213,9 @@ public class LBCharacterSelectDisplay : NetworkBehaviour
         {
             if (!checkAll)
             {
-                if (players[i].ClientId == NetworkManager.Singleton.LocalClientId) continue;
+                if (players[i].ClientId == NetworkManager.Singleton.LocalClientId) { continue; }
             }
-            if (players[i].IsLockedIn && players[i].CharacterId == characterId) return true;
+            if (players[i].IsLockedIn && players[i].CharacterId == characterId) { return true; }
         }
         return false;
     }
