@@ -28,6 +28,16 @@ public class LBHealthSystem : MonoBehaviour
     private float currentHealth;
     private bool isInsideAquaTotem;
     private LBCollisionHandler collisionHandler;
+
+    private void Awake()
+    {
+        #if UNITY_EDITOR
+            heatTimer = 10f;
+        #else
+            heatTimer = 120f;
+        #endif
+    }
+
     private void Start()
     {
         currentHealth = playerMaxHP;
