@@ -93,6 +93,7 @@ public class LBHealthSystem : MonoBehaviour
         if (isInsideAquaTotem && currentHeatLevel <= 0f)
         {
             heatBarGauge.SetActive(false);
+            burningVignetteEffectImage.SetActive(false);
         }
     }
 
