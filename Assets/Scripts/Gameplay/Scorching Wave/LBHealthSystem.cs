@@ -72,7 +72,6 @@ public class LBHealthSystem : MonoBehaviour
             {
                 currentHeatLevel += heatGaugeFillRate * Time.deltaTime;
                 heatBarGaugeFill.fillAmount = currentHeatLevel;
-                Debug.Log($"Current Heat Level: {currentHeatLevel}");
             }
             else
             {

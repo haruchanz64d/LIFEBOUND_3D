@@ -39,7 +39,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.36510742, g: 0.021643301, b: 0.026122365, a: 1}
+  m_IndirectSpecularColor: {r: 0.36507285, g: 0.021680998, b: 0.026153572, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -134,7 +134,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: dc48b422efefcc24aaca8df4d0db3ac8,
         type: 3}
       propertyPath: m_RootOrder
-      value: 36
+      value: 35
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: dc48b422efefcc24aaca8df4d0db3ac8,
         type: 3}
@@ -205,6 +205,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Tree with Rocks.007
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: dc48b422efefcc24aaca8df4d0db3ac8,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dc48b422efefcc24aaca8df4d0db3ac8, type: 3}
@@ -296,6 +301,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Stone with Skulls.002 (7)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 8c4aa9ad8a2602842ab2eb60cbeb85a6,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8c4aa9ad8a2602842ab2eb60cbeb85a6, type: 3}
 --- !u!4 &54635939 stripped
@@ -385,6 +395,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Stone with Skulls.002 (11)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 8c4aa9ad8a2602842ab2eb60cbeb85a6,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8c4aa9ad8a2602842ab2eb60cbeb85a6, type: 3}
@@ -476,6 +491,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Stone with Skulls.001
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: f09e03a5aff2b764281fec29249c38ce,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f09e03a5aff2b764281fec29249c38ce, type: 3}
 --- !u!4 &137621838 stripped
@@ -565,6 +585,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: object 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: e268864217580ac4299029113f709376,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e268864217580ac4299029113f709376, type: 3}
@@ -656,6 +681,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: object 29 (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 06b0b72573e8a0b43b52476feb17e006,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 06b0b72573e8a0b43b52476feb17e006, type: 3}
 --- !u!4 &202089783 stripped
@@ -680,7 +710,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &244049416
 Transform:
@@ -728,7 +758,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: e8c2449e1de5c6e48a2d6909c92789ae,
         type: 3}
       propertyPath: m_RootOrder
-      value: 51
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e8c2449e1de5c6e48a2d6909c92789ae,
         type: 3}
@@ -799,6 +829,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Stone with Rock and Skulls
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: e8c2449e1de5c6e48a2d6909c92789ae,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e8c2449e1de5c6e48a2d6909c92789ae, type: 3}
@@ -889,6 +924,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Stone with Rock and Skulls.001
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 32e8b0f226bd4684591c96aec17cbad2,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 32e8b0f226bd4684591c96aec17cbad2, type: 3}
@@ -1047,6 +1087,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Stones.001
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: cf91eddf837eec148b25b3b1be005663,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cf91eddf837eec148b25b3b1be005663, type: 3}
 --- !u!4 &485264465 stripped
@@ -1065,7 +1110,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 8e6dc9d0c4b40cc4a9e843d21c66a5f5,
         type: 3}
       propertyPath: m_RootOrder
-      value: 69
+      value: 68
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 8e6dc9d0c4b40cc4a9e843d21c66a5f5,
         type: 3}
@@ -1137,6 +1182,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Tree with Skulls
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 8e6dc9d0c4b40cc4a9e843d21c66a5f5,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8e6dc9d0c4b40cc4a9e843d21c66a5f5, type: 3}
 --- !u!4 &585504749 stripped
@@ -1155,7 +1205,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 718e31761734e7d44ac845af01468063,
         type: 3}
       propertyPath: m_RootOrder
-      value: 40
+      value: 39
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 718e31761734e7d44ac845af01468063,
         type: 3}
@@ -1227,6 +1277,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Tree with Rocks.011
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 718e31761734e7d44ac845af01468063,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 718e31761734e7d44ac845af01468063, type: 3}
 --- !u!4 &586060625 stripped
@@ -1251,7 +1306,7 @@ GameObject:
   m_TagString: Lava
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &602382787
 Transform:
@@ -1371,6 +1426,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: object 8
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 908e66725a75836439c8e35b21e01191,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 908e66725a75836439c8e35b21e01191, type: 3}
 --- !u!4 &613307013 stripped
@@ -1461,6 +1521,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Stone with Skulls.002 (9)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 8c4aa9ad8a2602842ab2eb60cbeb85a6,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8c4aa9ad8a2602842ab2eb60cbeb85a6, type: 3}
 --- !u!4 &623673834 stripped
@@ -1479,7 +1544,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 8c4aa9ad8a2602842ab2eb60cbeb85a6,
         type: 3}
       propertyPath: m_RootOrder
-      value: 66
+      value: 65
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 8c4aa9ad8a2602842ab2eb60cbeb85a6,
         type: 3}
@@ -1550,6 +1615,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Stone with Skulls.002 (27)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 8c4aa9ad8a2602842ab2eb60cbeb85a6,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8c4aa9ad8a2602842ab2eb60cbeb85a6, type: 3}
@@ -1684,7 +1754,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 60255697815d8624e86b630e472926b3,
         type: 3}
       propertyPath: m_RootOrder
-      value: 43
+      value: 42
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 60255697815d8624e86b630e472926b3,
         type: 3}
@@ -1755,6 +1825,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: object 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 60255697815d8624e86b630e472926b3,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 60255697815d8624e86b630e472926b3, type: 3}
@@ -1846,6 +1921,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: object 29
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 06b0b72573e8a0b43b52476feb17e006,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 06b0b72573e8a0b43b52476feb17e006, type: 3}
 --- !u!4 &678948459 stripped
@@ -1935,6 +2015,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: object 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 8492da2f839e81b4e8eab34f7e51f69a,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8492da2f839e81b4e8eab34f7e51f69a, type: 3}
@@ -2026,6 +2111,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Stone with Skulls.002 (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 8c4aa9ad8a2602842ab2eb60cbeb85a6,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8c4aa9ad8a2602842ab2eb60cbeb85a6, type: 3}
 --- !u!4 &707255942 stripped
@@ -2044,7 +2134,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: b30871f64faf7224288c801f7b9d1e89,
         type: 3}
       propertyPath: m_RootOrder
-      value: 71
+      value: 70
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b30871f64faf7224288c801f7b9d1e89,
         type: 3}
@@ -2116,6 +2206,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Tree with Rocks
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: b30871f64faf7224288c801f7b9d1e89,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b30871f64faf7224288c801f7b9d1e89, type: 3}
 --- !u!4 &727253957 stripped
@@ -2124,96 +2219,37 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 727253956}
   m_PrefabAsset: {fileID: 0}
---- !u!1001 &737733467
-PrefabInstance:
+--- !u!1 &734853775
+GameObject:
   m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 543450653707786494}
-    m_Modifications:
-    - target: {fileID: -8679921383154817045, guid: 320927147a1e3534f96ab0fba035286b,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 29
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 320927147a1e3534f96ab0fba035286b,
-        type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.05
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 320927147a1e3534f96ab0fba035286b,
-        type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.05
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 320927147a1e3534f96ab0fba035286b,
-        type: 3}
-      propertyPath: m_LocalScale.z
-      value: 0.05
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 320927147a1e3534f96ab0fba035286b,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 52.266457
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 320927147a1e3534f96ab0fba035286b,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 76.65
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 320927147a1e3534f96ab0fba035286b,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 554.10077
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 320927147a1e3534f96ab0fba035286b,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.93891954
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 320927147a1e3534f96ab0fba035286b,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 320927147a1e3534f96ab0fba035286b,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0.34413671
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 320927147a1e3534f96ab0fba035286b,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 320927147a1e3534f96ab0fba035286b,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 320927147a1e3534f96ab0fba035286b,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: -40.258
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 320927147a1e3534f96ab0fba035286b,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 919132149155446097, guid: 320927147a1e3534f96ab0fba035286b,
-        type: 3}
-      propertyPath: m_Name
-      value: Stones
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 320927147a1e3534f96ab0fba035286b, type: 3}
---- !u!4 &737733468 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 320927147a1e3534f96ab0fba035286b,
-    type: 3}
-  m_PrefabInstance: {fileID: 737733467}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 734853776}
+  m_Layer: 0
+  m_Name: Objects
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &734853776
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 734853775}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &764251807 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 60255697815d8624e86b630e472926b3,
@@ -2301,6 +2337,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Stone with Skulls.002
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 8c4aa9ad8a2602842ab2eb60cbeb85a6,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8c4aa9ad8a2602842ab2eb60cbeb85a6, type: 3}
@@ -2392,6 +2433,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: object 23
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 24171f64368d09a479d8201a949b1aaf,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 24171f64368d09a479d8201a949b1aaf, type: 3}
 --- !u!4 &775645681 stripped
@@ -2482,6 +2528,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Stone with Rock and Skulls
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: e8c2449e1de5c6e48a2d6909c92789ae,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e8c2449e1de5c6e48a2d6909c92789ae, type: 3}
 --- !u!4 &777657775 stripped
@@ -2530,7 +2581,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 718e31761734e7d44ac845af01468063,
         type: 3}
       propertyPath: m_RootOrder
-      value: 70
+      value: 69
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 718e31761734e7d44ac845af01468063,
         type: 3}
@@ -2601,6 +2652,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Tree with Rocks.011
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 718e31761734e7d44ac845af01468063,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 718e31761734e7d44ac845af01468063, type: 3}
@@ -2692,6 +2748,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Stone with Skulls.002 (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 8c4aa9ad8a2602842ab2eb60cbeb85a6,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8c4aa9ad8a2602842ab2eb60cbeb85a6, type: 3}
 --- !u!4 &872862727 stripped
@@ -2710,7 +2771,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 06b0b72573e8a0b43b52476feb17e006,
         type: 3}
       propertyPath: m_RootOrder
-      value: 49
+      value: 48
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 06b0b72573e8a0b43b52476feb17e006,
         type: 3}
@@ -2782,6 +2843,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: object 29
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 06b0b72573e8a0b43b52476feb17e006,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 06b0b72573e8a0b43b52476feb17e006, type: 3}
 --- !u!4 &874174787 stripped
@@ -2800,7 +2866,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 8e6dc9d0c4b40cc4a9e843d21c66a5f5,
         type: 3}
       propertyPath: m_RootOrder
-      value: 42
+      value: 41
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 8e6dc9d0c4b40cc4a9e843d21c66a5f5,
         type: 3}
@@ -2872,6 +2938,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Tree with Skulls
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 8e6dc9d0c4b40cc4a9e843d21c66a5f5,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8e6dc9d0c4b40cc4a9e843d21c66a5f5, type: 3}
 --- !u!4 &896592382 stripped
@@ -2890,7 +2961,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 8c4aa9ad8a2602842ab2eb60cbeb85a6,
         type: 3}
       propertyPath: m_RootOrder
-      value: 56
+      value: 55
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 8c4aa9ad8a2602842ab2eb60cbeb85a6,
         type: 3}
@@ -2962,6 +3033,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Stone with Skulls.002 (17)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 8c4aa9ad8a2602842ab2eb60cbeb85a6,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8c4aa9ad8a2602842ab2eb60cbeb85a6, type: 3}
 --- !u!4 &983853532 stripped
@@ -2980,7 +3056,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 8492da2f839e81b4e8eab34f7e51f69a,
         type: 3}
       propertyPath: m_RootOrder
-      value: 46
+      value: 45
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 8492da2f839e81b4e8eab34f7e51f69a,
         type: 3}
@@ -3051,6 +3127,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: object 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 8492da2f839e81b4e8eab34f7e51f69a,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8492da2f839e81b4e8eab34f7e51f69a, type: 3}
@@ -3172,6 +3253,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Stone with Skulls.002 (6)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 8c4aa9ad8a2602842ab2eb60cbeb85a6,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8c4aa9ad8a2602842ab2eb60cbeb85a6, type: 3}
 --- !u!4 &1058993589 stripped
@@ -3196,7 +3282,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 127
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!23 &1122327632
 MeshRenderer:
@@ -3275,7 +3361,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 09ff7995713247547b0705f84a2dd699,
         type: 3}
       propertyPath: m_RootOrder
-      value: 32
+      value: 31
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 09ff7995713247547b0705f84a2dd699,
         type: 3}
@@ -3347,6 +3433,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Tree with Rocks.003
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 09ff7995713247547b0705f84a2dd699,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 09ff7995713247547b0705f84a2dd699, type: 3}
 --- !u!4 &1156475318 stripped
@@ -3365,7 +3456,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 8c4aa9ad8a2602842ab2eb60cbeb85a6,
         type: 3}
       propertyPath: m_RootOrder
-      value: 61
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 8c4aa9ad8a2602842ab2eb60cbeb85a6,
         type: 3}
@@ -3437,6 +3528,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Stone with Skulls.002 (22)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 8c4aa9ad8a2602842ab2eb60cbeb85a6,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8c4aa9ad8a2602842ab2eb60cbeb85a6, type: 3}
 --- !u!4 &1176255435 stripped
@@ -3455,7 +3551,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 8c4aa9ad8a2602842ab2eb60cbeb85a6,
         type: 3}
       propertyPath: m_RootOrder
-      value: 63
+      value: 62
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 8c4aa9ad8a2602842ab2eb60cbeb85a6,
         type: 3}
@@ -3527,6 +3623,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Stone with Skulls.002 (24)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 8c4aa9ad8a2602842ab2eb60cbeb85a6,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8c4aa9ad8a2602842ab2eb60cbeb85a6, type: 3}
 --- !u!4 &1180572444 stripped
@@ -3545,7 +3646,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 908e66725a75836439c8e35b21e01191,
         type: 3}
       propertyPath: m_RootOrder
-      value: 44
+      value: 43
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 908e66725a75836439c8e35b21e01191,
         type: 3}
@@ -3617,6 +3718,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: object 8
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 908e66725a75836439c8e35b21e01191,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 908e66725a75836439c8e35b21e01191, type: 3}
 --- !u!4 &1264698762 stripped
@@ -3635,7 +3741,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 8c4aa9ad8a2602842ab2eb60cbeb85a6,
         type: 3}
       propertyPath: m_RootOrder
-      value: 60
+      value: 59
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 8c4aa9ad8a2602842ab2eb60cbeb85a6,
         type: 3}
@@ -3707,6 +3813,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Stone with Skulls.002 (21)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 8c4aa9ad8a2602842ab2eb60cbeb85a6,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8c4aa9ad8a2602842ab2eb60cbeb85a6, type: 3}
 --- !u!4 &1290125660 stripped
@@ -3725,7 +3836,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 53d478e7bc973a24db2433e0d2b9edef,
         type: 3}
       propertyPath: m_RootOrder
-      value: 37
+      value: 36
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 53d478e7bc973a24db2433e0d2b9edef,
         type: 3}
@@ -3797,6 +3908,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Tree with Rocks.008
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 53d478e7bc973a24db2433e0d2b9edef,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 53d478e7bc973a24db2433e0d2b9edef, type: 3}
 --- !u!4 &1297336466 stripped
@@ -3815,7 +3931,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 4f2d5809dd58bbf4a828e744bfad962d,
         type: 3}
       propertyPath: m_RootOrder
-      value: 38
+      value: 37
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 4f2d5809dd58bbf4a828e744bfad962d,
         type: 3}
@@ -3887,6 +4003,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Tree with Rocks.009
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 4f2d5809dd58bbf4a828e744bfad962d,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4f2d5809dd58bbf4a828e744bfad962d, type: 3}
 --- !u!4 &1313637381 stripped
@@ -3909,7 +4030,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &1414533068
 Transform:
@@ -3940,7 +4061,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 8c4aa9ad8a2602842ab2eb60cbeb85a6,
         type: 3}
       propertyPath: m_RootOrder
-      value: 65
+      value: 64
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 8c4aa9ad8a2602842ab2eb60cbeb85a6,
         type: 3}
@@ -4011,6 +4132,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Stone with Skulls.002 (26)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 8c4aa9ad8a2602842ab2eb60cbeb85a6,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8c4aa9ad8a2602842ab2eb60cbeb85a6, type: 3}
@@ -4085,7 +4211,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 8c4aa9ad8a2602842ab2eb60cbeb85a6,
         type: 3}
       propertyPath: m_RootOrder
-      value: 57
+      value: 56
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 8c4aa9ad8a2602842ab2eb60cbeb85a6,
         type: 3}
@@ -4157,6 +4283,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Stone with Skulls.002 (18)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 8c4aa9ad8a2602842ab2eb60cbeb85a6,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8c4aa9ad8a2602842ab2eb60cbeb85a6, type: 3}
 --- !u!4 &1479115933 stripped
@@ -4175,7 +4306,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 6a58f30669387bd4cb0a1befaeab5709,
         type: 3}
       propertyPath: m_RootOrder
-      value: 34
+      value: 33
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6a58f30669387bd4cb0a1befaeab5709,
         type: 3}
@@ -4246,6 +4377,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Tree with Rocks.005
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 6a58f30669387bd4cb0a1befaeab5709,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6a58f30669387bd4cb0a1befaeab5709, type: 3}
@@ -4337,6 +4473,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: object 29 (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 06b0b72573e8a0b43b52476feb17e006,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 06b0b72573e8a0b43b52476feb17e006, type: 3}
 --- !u!4 &1596763590 stripped
@@ -4355,7 +4496,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: ce7a2d68930182442acdd8c65fdfbc52,
         type: 3}
       propertyPath: m_RootOrder
-      value: 39
+      value: 38
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ce7a2d68930182442acdd8c65fdfbc52,
         type: 3}
@@ -4427,6 +4568,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Tree with Rocks.010
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: ce7a2d68930182442acdd8c65fdfbc52,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ce7a2d68930182442acdd8c65fdfbc52, type: 3}
 --- !u!4 &1627524182 stripped
@@ -4445,7 +4591,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 8ea0bbe87079efd4a9493e6f3ab5b99f,
         type: 3}
       propertyPath: m_RootOrder
-      value: 68
+      value: 67
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 8ea0bbe87079efd4a9493e6f3ab5b99f,
         type: 3}
@@ -4516,6 +4662,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Stone with Skulls
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 8ea0bbe87079efd4a9493e6f3ab5b99f,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8ea0bbe87079efd4a9493e6f3ab5b99f, type: 3}
@@ -4607,6 +4758,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Stone
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 5a84fe2bb67073540a14d7bc53da2b5f,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5a84fe2bb67073540a14d7bc53da2b5f, type: 3}
 --- !u!4 &1649107215 stripped
@@ -4656,7 +4812,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 32e8b0f226bd4684591c96aec17cbad2,
         type: 3}
       propertyPath: m_RootOrder
-      value: 50
+      value: 49
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 32e8b0f226bd4684591c96aec17cbad2,
         type: 3}
@@ -4727,6 +4883,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Stone with Rock and Skulls.001
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 32e8b0f226bd4684591c96aec17cbad2,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 32e8b0f226bd4684591c96aec17cbad2, type: 3}
@@ -4818,6 +4979,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Stone with Skulls.002 (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 8c4aa9ad8a2602842ab2eb60cbeb85a6,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8c4aa9ad8a2602842ab2eb60cbeb85a6, type: 3}
 --- !u!4 &1658598464 stripped
@@ -4836,7 +5002,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 24171f64368d09a479d8201a949b1aaf,
         type: 3}
       propertyPath: m_RootOrder
-      value: 48
+      value: 47
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 24171f64368d09a479d8201a949b1aaf,
         type: 3}
@@ -4907,6 +5073,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: object 23
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 24171f64368d09a479d8201a949b1aaf,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 24171f64368d09a479d8201a949b1aaf, type: 3}
@@ -4998,6 +5169,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Stone with Skulls
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 8ea0bbe87079efd4a9493e6f3ab5b99f,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8ea0bbe87079efd4a9493e6f3ab5b99f, type: 3}
 --- !u!4 &1685941419 stripped
@@ -5016,7 +5192,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 8c4aa9ad8a2602842ab2eb60cbeb85a6,
         type: 3}
       propertyPath: m_RootOrder
-      value: 53
+      value: 52
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 8c4aa9ad8a2602842ab2eb60cbeb85a6,
         type: 3}
@@ -5088,6 +5264,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Stone with Skulls.002 (14)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 8c4aa9ad8a2602842ab2eb60cbeb85a6,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8c4aa9ad8a2602842ab2eb60cbeb85a6, type: 3}
 --- !u!4 &1712456724 stripped
@@ -5106,7 +5287,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 8c4aa9ad8a2602842ab2eb60cbeb85a6,
         type: 3}
       propertyPath: m_RootOrder
-      value: 64
+      value: 63
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 8c4aa9ad8a2602842ab2eb60cbeb85a6,
         type: 3}
@@ -5177,6 +5358,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Stone with Skulls.002 (25)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 8c4aa9ad8a2602842ab2eb60cbeb85a6,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8c4aa9ad8a2602842ab2eb60cbeb85a6, type: 3}
@@ -5268,6 +5454,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: object 29 (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 06b0b72573e8a0b43b52476feb17e006,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 06b0b72573e8a0b43b52476feb17e006, type: 3}
 --- !u!4 &1728854221 stripped
@@ -5286,7 +5477,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: b30871f64faf7224288c801f7b9d1e89,
         type: 3}
       propertyPath: m_RootOrder
-      value: 41
+      value: 40
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b30871f64faf7224288c801f7b9d1e89,
         type: 3}
@@ -5358,6 +5549,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Tree with Rocks
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: b30871f64faf7224288c801f7b9d1e89,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b30871f64faf7224288c801f7b9d1e89, type: 3}
 --- !u!4 &1743151017 stripped
@@ -5376,7 +5572,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 4321a8b68b7e6114fbcdb9ae190ceacb,
         type: 3}
       propertyPath: m_RootOrder
-      value: 72
+      value: 71
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 4321a8b68b7e6114fbcdb9ae190ceacb,
         type: 3}
@@ -5448,6 +5644,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: object 17
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 4321a8b68b7e6114fbcdb9ae190ceacb,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4321a8b68b7e6114fbcdb9ae190ceacb, type: 3}
 --- !u!4 &1745127862 stripped
@@ -5466,7 +5667,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: e3f8cd1ea2576c44ebc7f42ae7bc06f0,
         type: 3}
       propertyPath: m_RootOrder
-      value: 31
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3f8cd1ea2576c44ebc7f42ae7bc06f0,
         type: 3}
@@ -5538,6 +5739,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Tree with Rocks.002
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: e3f8cd1ea2576c44ebc7f42ae7bc06f0,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e3f8cd1ea2576c44ebc7f42ae7bc06f0, type: 3}
 --- !u!4 &1784842085 stripped
@@ -5556,7 +5762,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 8c4aa9ad8a2602842ab2eb60cbeb85a6,
         type: 3}
       propertyPath: m_RootOrder
-      value: 67
+      value: 66
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 8c4aa9ad8a2602842ab2eb60cbeb85a6,
         type: 3}
@@ -5628,6 +5834,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Stone with Skulls.002 (28)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 8c4aa9ad8a2602842ab2eb60cbeb85a6,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8c4aa9ad8a2602842ab2eb60cbeb85a6, type: 3}
 --- !u!4 &1789480259 stripped
@@ -5646,7 +5857,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 8c4aa9ad8a2602842ab2eb60cbeb85a6,
         type: 3}
       propertyPath: m_RootOrder
-      value: 55
+      value: 54
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 8c4aa9ad8a2602842ab2eb60cbeb85a6,
         type: 3}
@@ -5717,6 +5928,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Stone with Skulls.002 (16)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 8c4aa9ad8a2602842ab2eb60cbeb85a6,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8c4aa9ad8a2602842ab2eb60cbeb85a6, type: 3}
@@ -5808,6 +6024,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Stone with Skulls.002 (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 8c4aa9ad8a2602842ab2eb60cbeb85a6,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8c4aa9ad8a2602842ab2eb60cbeb85a6, type: 3}
 --- !u!4 &1820244144 stripped
@@ -5826,7 +6047,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 8c4aa9ad8a2602842ab2eb60cbeb85a6,
         type: 3}
       propertyPath: m_RootOrder
-      value: 62
+      value: 61
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 8c4aa9ad8a2602842ab2eb60cbeb85a6,
         type: 3}
@@ -5898,6 +6119,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Stone with Skulls.002 (23)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 8c4aa9ad8a2602842ab2eb60cbeb85a6,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8c4aa9ad8a2602842ab2eb60cbeb85a6, type: 3}
 --- !u!4 &1866286142 stripped
@@ -5916,7 +6142,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 56462520350a1554289e9db18f8c02a2,
         type: 3}
       propertyPath: m_RootOrder
-      value: 35
+      value: 34
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 56462520350a1554289e9db18f8c02a2,
         type: 3}
@@ -5987,6 +6213,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Tree with Rocks.006
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 56462520350a1554289e9db18f8c02a2,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 56462520350a1554289e9db18f8c02a2, type: 3}
@@ -6078,6 +6309,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Stone with Skulls.002 (10)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 8c4aa9ad8a2602842ab2eb60cbeb85a6,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8c4aa9ad8a2602842ab2eb60cbeb85a6, type: 3}
 --- !u!4 &1887011670 stripped
@@ -6096,7 +6332,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: b21748e9c963e3444b568f3f854ce8c0,
         type: 3}
       propertyPath: m_RootOrder
-      value: 30
+      value: 29
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b21748e9c963e3444b568f3f854ce8c0,
         type: 3}
@@ -6168,6 +6404,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Tree with Rocks.001
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: b21748e9c963e3444b568f3f854ce8c0,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b21748e9c963e3444b568f3f854ce8c0, type: 3}
 --- !u!4 &1891553757 stripped
@@ -6186,7 +6427,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 8c4aa9ad8a2602842ab2eb60cbeb85a6,
         type: 3}
       propertyPath: m_RootOrder
-      value: 54
+      value: 53
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 8c4aa9ad8a2602842ab2eb60cbeb85a6,
         type: 3}
@@ -6258,6 +6499,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Stone with Skulls.002 (15)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 8c4aa9ad8a2602842ab2eb60cbeb85a6,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8c4aa9ad8a2602842ab2eb60cbeb85a6, type: 3}
 --- !u!4 &1921741755 stripped
@@ -6276,7 +6522,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: e268864217580ac4299029113f709376,
         type: 3}
       propertyPath: m_RootOrder
-      value: 45
+      value: 44
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e268864217580ac4299029113f709376,
         type: 3}
@@ -6347,6 +6593,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: object 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: e268864217580ac4299029113f709376,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e268864217580ac4299029113f709376, type: 3}
@@ -6438,6 +6689,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Stone with Skulls.002 (12)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 8c4aa9ad8a2602842ab2eb60cbeb85a6,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8c4aa9ad8a2602842ab2eb60cbeb85a6, type: 3}
 --- !u!4 &1925536648 stripped
@@ -6456,7 +6712,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 8c4aa9ad8a2602842ab2eb60cbeb85a6,
         type: 3}
       propertyPath: m_RootOrder
-      value: 59
+      value: 58
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 8c4aa9ad8a2602842ab2eb60cbeb85a6,
         type: 3}
@@ -6527,6 +6783,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Stone with Skulls.002 (20)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 8c4aa9ad8a2602842ab2eb60cbeb85a6,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8c4aa9ad8a2602842ab2eb60cbeb85a6, type: 3}
@@ -6618,6 +6879,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: object 4
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 60255697815d8624e86b630e472926b3,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 60255697815d8624e86b630e472926b3, type: 3}
 --- !u!1001 &2081747241
@@ -6630,7 +6896,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: c22b16901b4489b4cac171aa2f010bbf,
         type: 3}
       propertyPath: m_RootOrder
-      value: 33
+      value: 32
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c22b16901b4489b4cac171aa2f010bbf,
         type: 3}
@@ -6701,6 +6967,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Tree with Rocks.004
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: c22b16901b4489b4cac171aa2f010bbf,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c22b16901b4489b4cac171aa2f010bbf, type: 3}
@@ -6792,6 +7063,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Stone with Skulls.002 (8)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 8c4aa9ad8a2602842ab2eb60cbeb85a6,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8c4aa9ad8a2602842ab2eb60cbeb85a6, type: 3}
 --- !u!4 &2104356777 stripped
@@ -6810,7 +7086,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 4321a8b68b7e6114fbcdb9ae190ceacb,
         type: 3}
       propertyPath: m_RootOrder
-      value: 47
+      value: 46
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 4321a8b68b7e6114fbcdb9ae190ceacb,
         type: 3}
@@ -6881,6 +7157,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: object 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 4321a8b68b7e6114fbcdb9ae190ceacb,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4321a8b68b7e6114fbcdb9ae190ceacb, type: 3}
@@ -6972,6 +7253,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Stone with Skulls.002 (5)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 8c4aa9ad8a2602842ab2eb60cbeb85a6,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8c4aa9ad8a2602842ab2eb60cbeb85a6, type: 3}
 --- !u!4 &2130446456 stripped
@@ -7062,6 +7348,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: object 17
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 4321a8b68b7e6114fbcdb9ae190ceacb,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4321a8b68b7e6114fbcdb9ae190ceacb, type: 3}
 --- !u!4 &2135448341 stripped
@@ -7080,7 +7371,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 8c4aa9ad8a2602842ab2eb60cbeb85a6,
         type: 3}
       propertyPath: m_RootOrder
-      value: 52
+      value: 51
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 8c4aa9ad8a2602842ab2eb60cbeb85a6,
         type: 3}
@@ -7152,6 +7443,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Stone with Skulls.002 (13)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 8c4aa9ad8a2602842ab2eb60cbeb85a6,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8c4aa9ad8a2602842ab2eb60cbeb85a6, type: 3}
 --- !u!4 &2137084860 stripped
@@ -7170,7 +7466,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 8c4aa9ad8a2602842ab2eb60cbeb85a6,
         type: 3}
       propertyPath: m_RootOrder
-      value: 58
+      value: 57
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 8c4aa9ad8a2602842ab2eb60cbeb85a6,
         type: 3}
@@ -7241,6 +7537,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Stone with Skulls.002 (19)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 8c4aa9ad8a2602842ab2eb60cbeb85a6,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8c4aa9ad8a2602842ab2eb60cbeb85a6, type: 3}
@@ -7666,7 +7967,6 @@ Transform:
   - {fileID: 1685941419}
   - {fileID: 1649107215}
   - {fileID: 485264465}
-  - {fileID: 737733468}
   - {fileID: 1891553757}
   - {fileID: 1784842085}
   - {fileID: 1156475318}
