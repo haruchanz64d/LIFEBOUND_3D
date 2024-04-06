@@ -22,6 +22,7 @@ namespace LB.Character
 
         private void Update()
         {
+            return;
             if (skillInput.action.WasPressedThisFrame())
             {
                 if (isThirdEyeCooldown) return;

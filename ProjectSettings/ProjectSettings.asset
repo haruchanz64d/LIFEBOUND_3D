@@ -12,7 +12,7 @@ PlayerSettings:
   targetDevice: 2
   useOnDemandResources: 0
   accelerometerFrequency: 60
-  companyName: DefaultCompany
+  companyName: EMC 3A
   productName: Lifebound
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
@@ -100,7 +100,7 @@ PlayerSettings:
   xboxEnableFitness: 0
   visibleInBackground: 1
   allowFullscreenSwitch: 0
-  fullscreenMode: 3
+  fullscreenMode: 1
   xboxSpeechDB: 0
   xboxEnableHeadOrientation: 0
   xboxEnableGuest: 0
@@ -277,7 +277,7 @@ PlayerSettings:
   - m_BuildTarget: 
     m_Icons:
     - serializedVersion: 2
-      m_Icon: {fileID: 2800000, guid: c1d3ad4ad24b2214ca23475be45caca2, type: 3}
+      m_Icon: {fileID: 2800000, guid: d567cb47f33b6374d8ff62b2e4994a8d, type: 3}
       m_Width: 128
       m_Height: 128
       m_Kind: 0
