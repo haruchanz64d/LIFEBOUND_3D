@@ -511,7 +511,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 459784728074286363}
-  m_LocalRotation: {x: 0.28978413, y: 0.000000016468091, z: -0.0000000049861364, w: 0.95709205}
+  m_LocalRotation: {x: 0.28978413, y: -0.000000016468091, z: 0.0000000049861364, w: 0.95709205}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -5939,6 +5939,7 @@ GameObject:
   - component: {fileID: 2875989378026660509}
   - component: {fileID: 7741970699465045664}
   - component: {fileID: 708204392653045894}
+  - component: {fileID: 875272409154985773}
   m_Layer: 0
   m_Name: LUNA
   m_TagString: Player
@@ -6149,6 +6150,19 @@ MonoBehaviour:
   healthBarGaugeFill: {fileID: 6883125948234260736}
   countdownTextTimer: {fileID: 5422511307773527300}
   burningVignetteEffectImage: {fileID: 4170015831884891538}
+--- !u!114 &875272409154985773
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8771117243489437324}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9402cc378efdf9943b2b9c42ddbd0c66, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  characterName: 1
 --- !u!1 &8779115724474748540
 GameObject:
   m_ObjectHideFlags: 0
