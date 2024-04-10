@@ -74,8 +74,8 @@ GameObject:
   - component: {fileID: 8357413501180847719}
   - component: {fileID: 8357413501180847717}
   - component: {fileID: 8357413501180847718}
-  - component: {fileID: 8357413501180847716}
   - component: {fileID: 8357413501180847723}
+  - component: {fileID: 6682227681614197113}
   m_Layer: 0
   m_Name: Checkpoint - Activated
   m_TagString: Untagged
@@ -148,19 +148,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &8357413501180847716
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8357413501180847712}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 2.408743, y: 3.6432347, z: 4.448439}
-  m_Center: {x: 0, y: 1.029258, z: 0.89602566}
 --- !u!114 &8357413501180847723
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -178,6 +165,19 @@ MonoBehaviour:
   blendDistance: 0
   weight: 1
   sharedProfile: {fileID: 11400000, guid: c202e3a8573fb084b9e03b78ba0d9fda, type: 2}
+--- !u!65 &6682227681614197113
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8357413501180847712}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 2.408743, y: 3.6432347, z: 4.448439}
+  m_Center: {x: 0, y: 1.029258, z: 0.89602566}
 --- !u!1 &9167664856773944998
 GameObject:
   m_ObjectHideFlags: 0
@@ -189,7 +189,7 @@ GameObject:
   - component: {fileID: 8390705498775075868}
   - component: {fileID: 4890378838726980537}
   - component: {fileID: 7222343257436997491}
-  - component: {fileID: 4890378838726980536}
+  - component: {fileID: 7559874127403459944}
   m_Layer: 0
   m_Name: Checkpoint - Unactivated
   m_TagString: Untagged
@@ -262,7 +262,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &4890378838726980536
+--- !u!65 &7559874127403459944
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
