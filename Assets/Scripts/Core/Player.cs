@@ -56,18 +56,17 @@ namespace LB.Character
         [Header("Skills")]
         [SerializeField] private Image soulSwapImage;
         [SerializeField] private float soulSwapCooldown = 10f;
-        private bool isSoulSwapReady = true;
+        private bool isCooldown = false;
         private bool isSoulSwapping = false;
-        private bool isSoulSwapped = false;
         private bool isSoulSwapActive = false;
         [SerializeField] private Transform otherPlayerPosition;
-        private Transform currentPosition;
-        public Transform GetCurrentPosition(Vector3 position)
+        private Vector3 currentPosition;
+        public Vector3 GetCurrentPosition(Vector3 position)
         {
             return currentPosition;
         }
 
-        public void SetCurrentPosition(Transform position)
+        public void SetCurrentPosition(Vector3 position)
         {
             currentPosition = position;
         }
@@ -213,9 +212,7 @@ namespace LB.Character
 
                 if(health <= 0f)
                 {
-                    isPlayerDead = true;
-                    animator.SetTrigger("IsDead");
-                    StartCoroutine(RespawnPlayer());
+                    Die();
                 }
             }
             if (hit.gameObject.CompareTag("Aqua Totem"))
@@ -285,43 +282,42 @@ namespace LB.Character
                 }
             }
 
-            RespawnPlayer();
+            StartCoroutine(RespawnPlayer());
         }
 
         private void HandleSoulSwap()
         {
-            if (isSoulSwapReady)
+            isCooldown = true;
+            if(isCooldown)
             {
-                soulSwapImage.fillAmount = 1f;
-            }
-            else
-            {
-                soulSwapImage.fillAmount = 0f;
+                soulSwapImage.fillAmount -= 1 / soulSwapCooldown * Time.deltaTime;
+
+                if(soulSwapImage.fillAmount <= 0)
+                {
+                    isCooldown = false;
+                    soulSwapImage.fillAmount = 1;
+                }
             }
 
             if (isSoulSwapActive)
             {
                 if (isSoulSwapping)
                 {
-                    Vector3 currentPosition = transform.position;
-                    Vector3 targetPosition = otherPlayerPosition.position;
-                    float swapSpeed = 0.1f;
-                    float distance = Vector3.Distance(currentPosition, targetPosition);
-
-                    if (distance > 0.1f)
+                    // Swap positions with the other player
+                    if (otherPlayerPosition != null)
                     {
-                        Vector3 newPosition = Vector3.Lerp(currentPosition, targetPosition, swapSpeed);
-                        transform.position = newPosition;
+                        Player otherPlayer = otherPlayerPosition.GetComponent<Player>();
+                        if (otherPlayer != null)
+                        {
+                            Vector3 tempPosition = transform.position;
+                            transform.position = otherPlayer.GetCurrentPosition(transform.position);
+                            otherPlayer.SetCurrentPosition(tempPosition);
+                        }
                     }
                     else
                     {
-                        isSoulSwapping = false;
-                        isSoulSwapped = true;
+                        Debug.Log("No other player found to swap positions with.");
                     }
-                }
-                else if (isSoulSwapped)
-                {
-                    transform.position = otherPlayerPosition.position;
                 }
             }
         }

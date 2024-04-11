@@ -106,11 +106,11 @@ public class DiscordRPCHandler : MonoBehaviour
             {
                 if (result == Result.Ok)
                 {
-                    Debug.Log("Discord RPC updated successfully.");
+                    //Debug.Log("Discord RPC updated successfully.");
                 }
                 else
                 {
-                    Debug.LogError("Discord RPC failed to update.");
+                    //Debug.LogError("Discord RPC failed to update.");
                 }
             });
         }

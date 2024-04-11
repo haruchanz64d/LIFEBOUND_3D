@@ -34,6 +34,8 @@ public class LBGameManager : NetworkBehaviour
         foreach (var player in NetworkManager.Singleton.ConnectedClientsList)
         {
             player.PlayerObject.GetComponent<Player>().GetCurrentPosition(position);
+
+            //Debug.Log("Broadcasting players position to all clients: " + position);
         }
     }
 }
