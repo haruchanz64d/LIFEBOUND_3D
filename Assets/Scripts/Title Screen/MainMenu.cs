@@ -16,8 +16,6 @@ public class MainMenu : MonoBehaviour
     [SerializeField] private GameObject ps4Visual;
     [SerializeField] private GameObject controllers;
 
-    [SerializeField] private GameObject fadeTransitionUI;
-
     [SerializeField] private AudioClip hoverButton;
     [SerializeField] private AudioClip pressedButton;
 
@@ -31,8 +29,6 @@ public class MainMenu : MonoBehaviour
         titleMenu.SetActive(true);
         optionMenu.SetActive(false);
         gameSelectionCanvas.SetActive(false);
-
-        fadeTransitionUI.SetActive(false);
     }
 
     private void LateUpdate()
@@ -113,16 +109,12 @@ public class MainMenu : MonoBehaviour
 
     private IEnumerator LoadingScreenBeforeSceneLoad(string sceneName)
     {
-        fadeTransitionUI.SetActive(true);
-        fadeTransitionUI.GetComponent<LBFadeScreen>().FadeImage(true);
 
         AsyncOperation async = SceneManager.LoadSceneAsync(sceneName);
 
         while (!async.isDone)
         {
             yield return null;
-            fadeTransitionUI.GetComponent<LBFadeScreen>().FadeImage(false);
-            fadeTransitionUI.SetActive(false);
         }
     }
 

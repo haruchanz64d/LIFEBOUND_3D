@@ -1,6 +1,4 @@
-using UnityEngine.UI;
 using UnityEngine;
-using Cinemachine;
 
 public class LBCanvasManager : MonoBehaviour
 {
@@ -22,6 +20,8 @@ public class LBCanvasManager : MonoBehaviour
 
     public void OnGameplayPause()
     {
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
         isGameplayPaused = true;
         mainCanvas.enabled = false;
         pauseCanvas.enabled = true;
@@ -29,6 +29,8 @@ public class LBCanvasManager : MonoBehaviour
 
     public void OnGameplayResume()
     {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
         isGameplayPaused = false;
         mainCanvas.enabled = true;
         pauseCanvas.enabled = false;

@@ -277,7 +277,7 @@ GameObject:
   - component: {fileID: 2301600420684033504}
   - component: {fileID: 2909104315162288709}
   - component: {fileID: 1133712760750544527}
-  - component: {fileID: 7802993219918208680}
+  - component: {fileID: 8265600170657227999}
   m_Layer: 0
   m_Name: Sol Gate - Unactivated
   m_TagString: Untagged
@@ -355,8 +355,8 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &7802993219918208680
-BoxCollider:
+--- !u!64 &8265600170657227999
+MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -365,9 +365,10 @@ BoxCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 3.1711435, y: 14.116152, z: 17.571684}
-  m_Center: {x: -0.11248535, y: -0.5482042, z: 0.21267605}
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 2138802504376939840, guid: 0f5749a9f1a404a4f93eb01da080146d, type: 3}
 --- !u!1 &2997830746801211099
 GameObject:
   m_ObjectHideFlags: 0
@@ -379,7 +380,7 @@ GameObject:
   - component: {fileID: 2508997035934669921}
   - component: {fileID: 1548785374148154308}
   - component: {fileID: 3646388881881507598}
-  - component: {fileID: 5978863851929634531}
+  - component: {fileID: 1373283940556714360}
   m_Layer: 0
   m_Name: Sol Gate - Activated
   m_TagString: Untagged
@@ -455,8 +456,8 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &5978863851929634531
-BoxCollider:
+--- !u!64 &1373283940556714360
+MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -465,9 +466,10 @@ BoxCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 3.1711426, y: 14.075259, z: 17.571684}
-  m_Center: {x: -0.18763548, y: -1.7960744, z: 0.31924534}
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 2786423150934632552, guid: 31f2d6ab3d37a4047ac375b10f6b918b, type: 3}
 --- !u!1 &8501662551098530321
 GameObject:
   m_ObjectHideFlags: 0

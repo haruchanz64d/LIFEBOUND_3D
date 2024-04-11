@@ -14,6 +14,7 @@ public class SfxManager : MonoBehaviour
         {
             instance = this;
         }
+        DontDestroyOnLoad(this);
     }
 
     public void PlayAudioClip(AudioClip audioClip, Transform spawnTransform, float volume)

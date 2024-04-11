@@ -6,7 +6,5 @@ public class LBSoulSwap : MonoBehaviour
 {
     [SerializeField] private InputActionReference ultimateInput;
     [SerializeField] private Image soulSwapIcon;
-    private Animator animator;
-    [SerializeField] private GameObject[] playerModels;
-    private LBGameManager instance;
+    
 }

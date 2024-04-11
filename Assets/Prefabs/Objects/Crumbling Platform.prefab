@@ -179,7 +179,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fallingPlatformPrefab: {fileID: 5480265709809620555}
-  fallSpeed: 2.5
+  fallSpeed: 0.75
   initialPosition: {fileID: 624833412444370938}
 --- !u!65 &7854947385722790839
 BoxCollider:

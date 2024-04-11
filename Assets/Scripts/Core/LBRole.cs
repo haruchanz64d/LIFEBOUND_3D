@@ -8,6 +8,7 @@ namespace Assets.Scripts.Core
         Sol,
         Luna
     }
+
     public class LBRole : MonoBehaviour
     {
         [SerializeField] private CharacterName characterName;
