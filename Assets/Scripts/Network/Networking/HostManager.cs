@@ -7,12 +7,13 @@ using Unity.Services.Relay.Models;
 using System;
 using Unity.Networking.Transport.Relay;
 using Unity.Netcode.Transports.UTP;
-
+using UnityEditor;
 public class HostManager : NetworkBehaviour
 {
     [Header("Scene Names")]
     [SerializeField] private string characterSelectName = "Character Select";
     [SerializeField] private string gameplaySceneName = "Gameplay Scene";
+    [SerializeField] private string developmentSceneName = "Developer Room";
     [SerializeField] private int maxConnectionCount = 2;
     public static HostManager Instance { get; private set; }
     private bool hasGameStarted;
@@ -104,6 +105,6 @@ public class HostManager : NetworkBehaviour
     public void StartGame()
     {
         hasGameStarted = true;
-        NetworkManager.Singleton.SceneManager.LoadScene("Gameplay Scene", LoadSceneMode.Single);
+        NetworkManager.Singleton.SceneManager.LoadScene(developmentSceneName, LoadSceneMode.Single);
     }
 }

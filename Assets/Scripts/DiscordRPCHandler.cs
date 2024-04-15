@@ -7,11 +7,11 @@ public class DiscordRPCHandler : MonoBehaviour
 {
     [SerializeField] private long applicationID = 1226496604035350538;
     [Space]
-    [SerializeField] private string details;
-    [SerializeField] private string state;
+    private string details;
+    private string state;
     [Space]
-    [SerializeField] private string largeImageKey;
-    [SerializeField] private string largeImageText;
+    private string largeImageKey;
+    private string largeImageText;
 
     [Space]
     private long time;
@@ -83,7 +83,21 @@ public class DiscordRPCHandler : MonoBehaviour
         else if (SceneManager.GetActiveScene().name == "Gameplay Scene")
         {
             details = "Playing";
-            state = "In game...";
+            state = "Exploring the depths of the hell...";
+            largeImageKey = "game_logo";
+            largeImageText = "Lifebound";
+        }
+        else if (SceneManager.GetActiveScene().name == "Developer Room")
+        {
+            details = "Debugging";
+            state = "In developer room...";
+            largeImageKey = "game_logo";
+            largeImageText = "Lifebound";
+        }
+        else
+        {
+            details = "Unknown";
+            state = "Unknown scene...";
             largeImageKey = "game_logo";
             largeImageText = "Lifebound";
         }

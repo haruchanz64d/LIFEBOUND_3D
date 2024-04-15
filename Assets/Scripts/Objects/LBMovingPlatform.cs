@@ -1,3 +1,4 @@
+using Unity.Netcode;
 using UnityEngine;
 
 namespace LB.Environment.Objects
@@ -33,26 +34,30 @@ namespace LB.Environment.Objects
             }
         }
 
+        private void SwitchBackToStartingPosition()
+        {
+            transform.position = waypoints[0].position;
+            currentWaypointIndex = 1;
+        }
+
         private bool isPlatformReachedEnd()
         {
             return currentWaypointIndex == 0;
-        }
-
-        private void SwitchBackToStartingPosition()
-        {
-            transform.position = Vector3.MoveTowards(transform.position, waypoints[0].position, movementSpeed * Time.deltaTime);
-            if (Vector3.Distance(transform.position, waypoints[0].position) < 0.1f)
-            {
-                currentWaypointIndex = 0;
-            }
         }
 
         private void OnTriggerEnter(Collider other)
         {
             if (other.CompareTag("Player"))
             {
-                other.transform.SetParent(transform);
-                UpdatePlayerPosition();
+                NetworkObject networkObject = other.GetComponent<NetworkObject>();
+                if (networkObject != null)
+                {
+                    other.transform.SetParent(transform);
+                    if (networkObject.IsOwner)
+                    {
+                        UpdatePlayerPosition(other.gameObject);
+                    }
+                }
             }
         }
 
@@ -60,16 +65,20 @@ namespace LB.Environment.Objects
         {
             if (other.CompareTag("Player"))
             {
-                other.gameObject.transform.SetParent(null);
+                NetworkObject networkObject = other.GetComponent<NetworkObject>();
+                if (networkObject != null)
+                {
+                    other.gameObject.transform.SetParent(null);
+                }
             }
         }
 
-        private void UpdatePlayerPosition()
+        private void UpdatePlayerPosition(GameObject player)
         {
             Vector3 platformDelta = transform.position - lastPlatformPosition;
             if (platformDelta != Vector3.zero)
             {
-                CharacterController playerController = GetComponent<CharacterController>();
+                CharacterController playerController = player.GetComponent<CharacterController>();
                 if (playerController != null)
                 {
                     playerController.Move(platformDelta);

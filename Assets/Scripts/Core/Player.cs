@@ -7,6 +7,9 @@ using TMPro;
 using UnityEngine.UI;
 namespace LB.Character
 {
+    /// <summary>
+    /// Represents the player character in the game.
+    /// </summary>
     public class Player : NetworkBehaviour
     {
         [Header("Input Action References")]
@@ -30,6 +33,7 @@ namespace LB.Character
         private CharacterController controller;
         private Animator animator;
         private LBCanvasManager canvas;
+        private LBGameManager gameManager;
         [Space]
         [Header("Camera")]
         [SerializeField] private new CinemachineFreeLook camera;
@@ -38,17 +42,12 @@ namespace LB.Character
         [SerializeField] private Transform cameraTransform;
         [Space]
         [Header("Spawn")]
-        private Transform originalSpawnPoint;
-        private bool isPlayerDead = false;
+        public bool isDead = false;
         private Vector3 lastCheckpointInteracted;
         [Space]
-        [Header("Heatwave - Mechanic")]
-        private float heatwaveDamage = 2f;
-        private float heatwaveInterval = 10f;
-        private float heatwaveTimer = 0f;
-        [Space]
-        [Header("Health - Mechanic")]
+        [Header("Health")]
         private float health = 100f;
+        public float GetCurrentHP => health;
         [Space]
         [Header("UI")]
         [SerializeField] private TextMeshProUGUI healthText;
@@ -57,8 +56,8 @@ namespace LB.Character
         [SerializeField] private Image soulSwapImage;
         [SerializeField] private float soulSwapCooldown = 10f;
         private bool isCooldown = false;
-        private bool isSoulSwapping = false;
-        private bool isSoulSwapActive = false;
+        private bool isSoulSwapSkillActivated;
+        public bool IsSoulSwapSkillActivated => isSoulSwapSkillActivated;
         [SerializeField] private Transform otherPlayerPosition;
         private Vector3 currentPosition;
         public Vector3 GetCurrentPosition(Vector3 position)
@@ -71,6 +70,9 @@ namespace LB.Character
             currentPosition = position;
         }
 
+        /// <summary>
+        /// Called when the player is spawned in the network.
+        /// </summary>
         public override void OnNetworkSpawn()
         {
             if (IsOwner)
@@ -85,8 +87,9 @@ namespace LB.Character
                 minimapCamera.depth = 0;
             }
         }
-
-
+        /// <summary>
+        /// Awake is called when the script instance is being loaded.
+        /// </summary>
         private void Awake()
         {
             canvas = FindObjectOfType<LBCanvasManager>();
@@ -95,30 +98,38 @@ namespace LB.Character
             animator = GetComponent<Animator>();
         }
 
+        /// <summary>
+        /// Start is called before the first frame update.
+        /// </summary>
         private void Update()
         {
             if (canvas.GetGameplayPaused) return;
             if (!IsLocalPlayer) return;
-            if (isPlayerDead) StartCoroutine(RespawnPlayer());
-            HandleBlazingHeat();
-            LBGameManager.Instance.BroadcastPlayerPositionServerRpc(transform.position);
+            if (isDead) return;
         }
+
+        /// <summary>
+        /// LateUpdate is called every frame, if the Behaviour is enabled.
+        /// </summary>
 
         private void LateUpdate()
         {
             if (canvas.GetGameplayPaused) return;
             if (!IsLocalPlayer) return;
-            if (isPlayerDead) return;
-            if(soulSwapInput.action.WasPressedThisFrame())
+            if (isDead) return;
+            if (soulSwapInput.action.WasPressedThisFrame())
             {
                 HandleSoulSwap();
             }
             HandleMovement();
         }
 
+        /// <summary>
+        /// Handles the player's movement.
+        /// </summary>
         private void HandleMovement()
         {
-            if (isPlayerDead) return;
+            if (isDead) return;
             Vector2 movement = movementInput.action.ReadValue<Vector2>();
             Vector3 direction = new Vector3(movement.x, 0f, movement.y);
             float magnitude = Mathf.Clamp01(direction.magnitude) * movementSpeed;
@@ -184,6 +195,9 @@ namespace LB.Character
             }
         }
 
+        /// <summary>
+        /// OnAnimatorMove is called after the animator has updated the character's position and rotation.
+        /// </summary>
         private void OnAnimatorMove()
         {
             if (isGrounded)
@@ -194,6 +208,12 @@ namespace LB.Character
                 controller.Move(velocity);
             }
         }
+
+        /// <summary>
+        /// Called when the Collider other enters the trigger.
+        /// </summary>
+        /// <param name="other"></param>
+        /// 
         private void OnTriggerEnter(Collider other)
         {
             if (other.gameObject.CompareTag("Checkpoint"))
@@ -201,16 +221,27 @@ namespace LB.Character
                 Debug.Log($"Checkpoint located at X: {other.transform.position.x}, Y: {other.transform.position.y}, Z: {other.transform.position.z}");
                 lastCheckpointInteracted = other.gameObject.transform.position;
                 other.GetComponent<LBCheckpoint>().OnCheckpointActivated();
+                SetCheckpointClientRpc(lastCheckpointInteracted);
             }
         }
 
+        [ClientRpc]
+        public void SetCheckpointClientRpc(Vector3 checkpointPosition)
+        {
+            LBGameManager.Instance.SetLastCheckpointServerRpc(checkpointPosition);
+        }
+
+        /// <summary>
+        /// OnTriggerStay is called once per frame for every Collider other that is touching the trigger.
+        /// </summary>
+        /// <param name="hit"></param>
         private void OnTriggerStay(Collider hit)
         {
             if (hit.gameObject.CompareTag("Lava"))
             {
                 TakeDamage(2f);
 
-                if(health <= 0f)
+                if (Mathf.Clamp(health, 0, 100) <= 0f)
                 {
                     Die();
                 }
@@ -221,103 +252,61 @@ namespace LB.Character
             }
         }
 
-        public IEnumerator RespawnPlayer()
-        {
-            yield return new WaitForSeconds(5f);
-
-            Vector3 respawnPosition = lastCheckpointInteracted != Vector3.zero ? lastCheckpointInteracted : originalSpawnPoint.position;
-            transform.position = respawnPosition;
-
-            if (lastCheckpointInteracted != Vector3.zero)
-            {
-                Debug.Log($"Respawned player at checkpoint: {lastCheckpointInteracted}");
-            }
-            else
-            {
-                Debug.Log("Respawned player at original spawn point.");
-            }
-
-            Debug.Log($"Respawned player at checkpoint: {lastCheckpointInteracted}");
-
-            isPlayerDead = false;
-            animator.SetTrigger("IsAlive");
-        }
-
-        private void HandleBlazingHeat()
-        {
-            heatwaveTimer += Time.deltaTime;
-            if (heatwaveTimer >= heatwaveInterval)
-            {
-                TakeDamage(heatwaveDamage);
-                heatwaveTimer = 0f;
-            }
-        }
-
-        private void TakeDamage(float damage)
+        /// <summary>
+        /// Takes damage from the player character.
+        /// </summary>
+        /// <param name="damage"></param>
+        public void TakeDamage(float damage)
         {
             health -= Mathf.Clamp(damage, 0f, 100f);
 
             healthText.SetText($"Health: {health}");
         }
 
+        /// <summary>
+        /// Regains health for the player character.
+        /// </summary>
+        /// <param name="regainHealth"></param>
         private void RegainHealth(float regainHealth)
         {
             health = Mathf.Clamp(health + regainHealth, 0f, 100f);
             healthText.SetText($"Health: {health}");
         }
 
+        /// <summary>
+        /// Kills the player character.
+        /// </summary>
         public void Die()
         {
-            isPlayerDead = true;
-            animator.Play("Dead", 0, 0);
-            
-            LBGameManager.Instance.BroadcastPlayerDeathServerRpc(NetworkObjectId);
-
-            if (otherPlayerPosition != null)
-            {
-                Player otherPlayer = otherPlayerPosition.GetComponent<Player>();
-                if (otherPlayer != null)
-                {
-                    otherPlayer.Die();
-                }
-            }
-
-            StartCoroutine(RespawnPlayer());
+            DieClientRpc();
         }
 
+        /// <summary>
+        /// Handles the player's death via a client RPC.
+        /// </summary>
+        [ClientRpc]
+        private void DieClientRpc()
+        {
+            animator.SetTrigger("IsDead");
+            isDead = true;
+        }
+
+        /// <summary>
+        /// Handles the soul swap skill.
+        /// </summary>
         private void HandleSoulSwap()
         {
+            isSoulSwapSkillActivated = true;
             isCooldown = true;
-            if(isCooldown)
+            if (isCooldown)
             {
                 soulSwapImage.fillAmount -= 1 / soulSwapCooldown * Time.deltaTime;
 
-                if(soulSwapImage.fillAmount <= 0)
+                if (soulSwapImage.fillAmount <= 0)
                 {
                     isCooldown = false;
                     soulSwapImage.fillAmount = 1;
-                }
-            }
-
-            if (isSoulSwapActive)
-            {
-                if (isSoulSwapping)
-                {
-                    // Swap positions with the other player
-                    if (otherPlayerPosition != null)
-                    {
-                        Player otherPlayer = otherPlayerPosition.GetComponent<Player>();
-                        if (otherPlayer != null)
-                        {
-                            Vector3 tempPosition = transform.position;
-                            transform.position = otherPlayer.GetCurrentPosition(transform.position);
-                            otherPlayer.SetCurrentPosition(tempPosition);
-                        }
-                    }
-                    else
-                    {
-                        Debug.Log("No other player found to swap positions with.");
-                    }
+                    isSoulSwapSkillActivated = false;
                 }
             }
         }

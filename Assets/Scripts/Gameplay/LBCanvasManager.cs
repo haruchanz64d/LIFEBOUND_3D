@@ -1,9 +1,12 @@
+using Unity.Netcode;
 using UnityEngine;
-
+using UnityEngine.SceneManagement;
 public class LBCanvasManager : MonoBehaviour
 {
     [SerializeField] private Canvas mainCanvas;
     [SerializeField] private Canvas pauseCanvas;
+
+    private LBServerManager serverManager;
 
     private bool isGameplayPaused = false;
     public bool GetGameplayPaused { 
@@ -16,6 +19,11 @@ public class LBCanvasManager : MonoBehaviour
     private void Awake()
     {
         OnGameplayResume();
+    }
+
+    private void Start()
+    {
+        serverManager = FindObjectOfType<LBServerManager>();
     }
 
     public void OnGameplayPause()
@@ -34,5 +42,10 @@ public class LBCanvasManager : MonoBehaviour
         isGameplayPaused = false;
         mainCanvas.enabled = true;
         pauseCanvas.enabled = false;
+    }
+
+    public void OnGameplayQuit()
+    {
+        
     }
 }

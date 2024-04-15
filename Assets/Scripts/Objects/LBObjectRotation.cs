@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LBAquaTotem : MonoBehaviour
+public class LBObjectRotation : MonoBehaviour
 {
     [SerializeField] private float rotationSpeed = 100f;
 
