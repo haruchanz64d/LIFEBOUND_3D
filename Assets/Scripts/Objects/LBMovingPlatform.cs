@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace LB.Environment.Objects
 {
-    public class LBMovingPlatform : MonoBehaviour
+    public class LBMovingPlatform : NetworkBehaviour
     {
         [SerializeField] private Transform[] waypoints;
         [SerializeField] private float movementSpeed = 6.9f;

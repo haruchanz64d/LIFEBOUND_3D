@@ -3,7 +3,6 @@ using Unity.Netcode;
 using TMPro;
 using LB.Character;
 using System.Collections.Generic;
-using UnityEditor.PackageManager;
 public class LBGameManager : NetworkBehaviour
 {
     public static LBGameManager Instance { get; private set; }
