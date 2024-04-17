@@ -1,3 +1,4 @@
+using Assets.Scripts.Managers;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,6 +8,7 @@ public class LBCheckpoint : MonoBehaviour
     [SerializeField] private GameObject unactivatedCheckpoint;
     [SerializeField] private GameObject activatedCheckpoint;
     [SerializeField] private Transform checkpointPosition;
+    [SerializeField] private AudioClip checkpointActivated;
     public Transform GetCheckpointPosition() { return checkpointPosition; }
 
     private void Awake()
@@ -18,6 +20,7 @@ public class LBCheckpoint : MonoBehaviour
     {
         unactivatedCheckpoint.SetActive(false);
         activatedCheckpoint.SetActive(true);
+        LBAudioManager.Instance.PlaySound(checkpointActivated);
     }
 
     public void OnCheckpointDeactivated()

@@ -1,4 +1,5 @@
 using Assets.Scripts.Core;
+using Assets.Scripts.Managers;
 using UnityEngine;
 
 public enum GateVariants
@@ -21,7 +22,7 @@ public class LBGateSystem : MonoBehaviour
     [SerializeField] private GateVariants gateType;
 
     [Header("Audio")]
-    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip gateActivatedClip;
 
     private bool isActivated = false;
 
@@ -70,7 +71,7 @@ public class LBGateSystem : MonoBehaviour
     {
         if (!isActivated)
         {
-            audioSource.Play();
+            LBAudioManager.Instance.PlaySound(gateActivatedClip);
             unactivatedGate.SetActive(false);
             activatedGate.SetActive(true);
             unactivatedPlate.SetActive(false);

@@ -8,7 +8,7 @@ public class LBGameManager : NetworkBehaviour
     public static LBGameManager Instance { get; private set; }
 
     [Header("Checkpoint System")]
-    [SerializeField] private List<Player> players;
+    [SerializeField] private List<NetworkObject> players;
     [SerializeField] private Vector3 originalSpawnpoint;
     [SerializeField] private Vector3 lastCheckpointInteracted;
     public Vector3 SetLastCheckpointInteracted { set => lastCheckpointInteracted = value; }
@@ -17,19 +17,17 @@ public class LBGameManager : NetworkBehaviour
     private float heatwaveDamage = 2f;
     private float heatwaveInterval = 10f;
     private float heatwaveTimer = 0f;
-    [Space]
-    [Header("Soul Swap Skill System")]
-    private Dictionary<ulong, Transform> connectedClientsTransform = new Dictionary<ulong, Transform>();
     public override void OnNetworkSpawn()
     {
         Instance = this;
+    }
 
-        players = new List<Player>();
-        players.Add(players.Find(p => p.IsLocalPlayer));
-
-        foreach (var client in NetworkManager.ConnectedClientsList)
+    private void Awake()
+    {
+        players = new List<NetworkObject>();
+        foreach (NetworkClient client in NetworkManager.Singleton.ConnectedClients.Values)
         {
-            connectedClientsTransform.Add(client.ClientId, client.PlayerObject.transform);
+            players.Add(client.PlayerObject);
         }
     }
 
@@ -41,31 +39,31 @@ public class LBGameManager : NetworkBehaviour
         Debug.Log($"Checkpoint activated at X: {checkpointPosition.x}, Y: {checkpointPosition.y}, Z: {checkpointPosition.z}");
     }
 
-    [ServerRpc]
+    [ServerRpc(RequireOwnership = false)]
     public void PlayerDiedServerRpc(ulong clientId)
     {
-        Player player = players.Find(p => p.OwnerClientId == clientId);
+        NetworkObject player = players.Find(player => player.OwnerClientId == clientId);
         if (player)
         {
-            player.isDead = true;
+            player.GetComponent<Player>().isDead = true;
 
-            Vector3 spawnPoint = player.isDead ? lastCheckpointInteracted : originalSpawnpoint;
+            Vector3 spawnPoint = player.GetComponent<Player>().isDead ? lastCheckpointInteracted : originalSpawnpoint;
             if (lastCheckpointInteracted != spawnPoint)
             {
                 lastCheckpointInteracted = spawnPoint;
             }
-            PlayerDeathClientRpc(player.OwnerClientId, spawnPoint);
+            RespawnPlayerServerRpc(player.OwnerClientId, spawnPoint);
         }
     }
 
-    [ClientRpc]
-    private void PlayerDeathClientRpc(ulong clientId, Vector3 spawnPoint)
+    [ServerRpc(RequireOwnership = false)]
+    private void RespawnPlayerServerRpc(ulong clientId, Vector3 spawnPoint)
     {
-        Player player = players.Find(p => p.OwnerClientId == clientId);
+        NetworkObject player = players.Find(player => player.OwnerClientId == clientId);
         if (player)
         {
             player.transform.position = spawnPoint;
-            player.isDead = false;
+            player.GetComponent<Player>().isDead = false;
         }
     }
     #endregion
@@ -79,27 +77,31 @@ public class LBGameManager : NetworkBehaviour
             if (heatwaveTimer >= heatwaveInterval)
             {
                 heatwaveTimer = 0f;
-                ApplyHeatwaveDamage();
+                ApplyHeatwaveDamageServerRpc();
+                Debug.Log(Equals(heatwaveTimer, 0f) ? "Heatwave damage applied." : "Heatwave damage not applied.");
             }
 
-            foreach (Player player in players)
+            foreach(NetworkObject player in players)
             {
-                if (player && player.GetCurrentHP <= 0)
+                if (player)
                 {
-                    PlayerDiedServerRpc(player.OwnerClientId);
+                    if (player.transform.position.y < -10f)
+                    {
+                        RespawnPlayerServerRpc(player.OwnerClientId, originalSpawnpoint);
+                    }
                 }
             }
         }
     }
 
-
-    private void ApplyHeatwaveDamage()
+    [ServerRpc(RequireOwnership = false)]
+    private void ApplyHeatwaveDamageServerRpc()
     {
-        foreach (Player player in players)
+        foreach (NetworkObject player in players)
         {
             if (player)
             {
-                player.TakeDamage(heatwaveDamage);
+                player.GetComponent<Player>().TakeDamage(heatwaveDamage);
             }
         }
     }

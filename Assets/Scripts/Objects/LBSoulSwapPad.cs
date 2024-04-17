@@ -13,7 +13,6 @@ public class LBSoulSwapPad : NetworkBehaviour
         {
             isPlayerStandingOnPad = true;
             playerObject = other.gameObject.GetComponent<NetworkObject>();
-            CheckSoulSwap();
         }
     }
 
@@ -23,18 +22,6 @@ public class LBSoulSwapPad : NetworkBehaviour
         {
             playerObject = null;
             isPlayerStandingOnPad = false;
-            CheckSoulSwap();
-        }
-    }
-
-    private void CheckSoulSwap()
-    {
-        if (isPlayerStandingOnPad && pairedSoulSwapPad.GetComponent<LBSoulSwapPad>().isPlayerStandingOnPad)
-        {
-            if (playerObject.GetComponent<Player>().IsSoulSwapSkillActivated)
-            {
-                SoulSwapClientRpc(playerObject.NetworkObjectId);
-            }
         }
     }
 

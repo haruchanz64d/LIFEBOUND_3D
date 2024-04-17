@@ -5,6 +5,7 @@ using System.Collections;
 using Cinemachine;
 using TMPro;
 using UnityEngine.UI;
+using Assets.Scripts.Managers;
 namespace LB.Character
 {
     /// <summary>
@@ -33,7 +34,6 @@ namespace LB.Character
         private CharacterController controller;
         private Animator animator;
         private LBCanvasManager canvas;
-        private LBGameManager gameManager;
         [Space]
         [Header("Camera")]
         [SerializeField] private new CinemachineFreeLook camera;
@@ -52,24 +52,9 @@ namespace LB.Character
         [Header("UI")]
         [SerializeField] private TextMeshProUGUI healthText;
         [Space]
-        [Header("Skills")]
-        [SerializeField] private Image soulSwapImage;
-        [SerializeField] private float soulSwapCooldown = 10f;
-        private bool isCooldown = false;
-        private bool isSoulSwapSkillActivated;
-        public bool IsSoulSwapSkillActivated => isSoulSwapSkillActivated;
-        [SerializeField] private Transform otherPlayerPosition;
-        private Vector3 currentPosition;
-        public Vector3 GetCurrentPosition(Vector3 position)
-        {
-            return currentPosition;
-        }
-
-        public void SetCurrentPosition(Vector3 position)
-        {
-            currentPosition = position;
-        }
-
+        [Header("Audio")]
+        [SerializeField] private AudioClip soulSwapSound;
+        [SerializeField] private AudioClip hurtSound;
         /// <summary>
         /// Called when the player is spawned in the network.
         /// </summary>
@@ -104,7 +89,6 @@ namespace LB.Character
         private void Update()
         {
             if (canvas.GetGameplayPaused) return;
-            if (!IsLocalPlayer) return;
             if (isDead) return;
         }
 
@@ -115,12 +99,6 @@ namespace LB.Character
         private void LateUpdate()
         {
             if (canvas.GetGameplayPaused) return;
-            if (!IsLocalPlayer) return;
-            if (isDead) return;
-            if (soulSwapInput.action.WasPressedThisFrame())
-            {
-                HandleSoulSwap();
-            }
             HandleMovement();
         }
 
@@ -130,6 +108,7 @@ namespace LB.Character
         private void HandleMovement()
         {
             if (isDead) return;
+            if (!IsLocalPlayer) return;
             Vector2 movement = movementInput.action.ReadValue<Vector2>();
             Vector3 direction = new Vector3(movement.x, 0f, movement.y);
             float magnitude = Mathf.Clamp01(direction.magnitude) * movementSpeed;
@@ -221,12 +200,11 @@ namespace LB.Character
                 Debug.Log($"Checkpoint located at X: {other.transform.position.x}, Y: {other.transform.position.y}, Z: {other.transform.position.z}");
                 lastCheckpointInteracted = other.gameObject.transform.position;
                 other.GetComponent<LBCheckpoint>().OnCheckpointActivated();
-                SetCheckpointClientRpc(lastCheckpointInteracted);
+                SetCheckpoint(lastCheckpointInteracted);
             }
         }
 
-        [ClientRpc]
-        public void SetCheckpointClientRpc(Vector3 checkpointPosition)
+        public void SetCheckpoint(Vector3 checkpointPosition)
         {
             LBGameManager.Instance.SetLastCheckpointServerRpc(checkpointPosition);
         }
@@ -239,16 +217,11 @@ namespace LB.Character
         {
             if (hit.gameObject.CompareTag("Lava"))
             {
-                TakeDamage(2f);
-
-                if (Mathf.Clamp(health, 0, 100) <= 0f)
-                {
-                    Die();
-                }
+                TakeDamage(damage: 5f);
             }
             if (hit.gameObject.CompareTag("Aqua Totem"))
             {
-                RegainHealth(1f);
+                StartCoroutine(HealOverTime());
             }
         }
 
@@ -258,56 +231,31 @@ namespace LB.Character
         /// <param name="damage"></param>
         public void TakeDamage(float damage)
         {
-            health -= Mathf.Clamp(damage, 0f, 100f);
-
+            LBAudioManager.Instance.PlaySound(hurtSound);
+            health -= damage;
             healthText.SetText($"Health: {health}");
+            if (Mathf.Clamp(health, 0, 100) <= 0f)
+            {
+                LBGameManager.Instance.PlayerDiedServerRpc(OwnerClientId);
+            }
         }
 
         /// <summary>
         /// Regains health for the player character.
         /// </summary>
-        /// <param name="regainHealth"></param>
-        private void RegainHealth(float regainHealth)
+        /// <param name="health"></param>
+        public void Heal(float health)
         {
-            health = Mathf.Clamp(health + regainHealth, 0f, 100f);
-            healthText.SetText($"Health: {health}");
+            this.health = Mathf.Clamp(this.health + health, 0f, 100f);
+            healthText.SetText($"Health: {this.health}");
         }
 
-        /// <summary>
-        /// Kills the player character.
-        /// </summary>
-        public void Die()
+        private IEnumerator HealOverTime()
         {
-            DieClientRpc();
-        }
-
-        /// <summary>
-        /// Handles the player's death via a client RPC.
-        /// </summary>
-        [ClientRpc]
-        private void DieClientRpc()
-        {
-            animator.SetTrigger("IsDead");
-            isDead = true;
-        }
-
-        /// <summary>
-        /// Handles the soul swap skill.
-        /// </summary>
-        private void HandleSoulSwap()
-        {
-            isSoulSwapSkillActivated = true;
-            isCooldown = true;
-            if (isCooldown)
+            while (true)
             {
-                soulSwapImage.fillAmount -= 1 / soulSwapCooldown * Time.deltaTime;
-
-                if (soulSwapImage.fillAmount <= 0)
-                {
-                    isCooldown = false;
-                    soulSwapImage.fillAmount = 1;
-                    isSoulSwapSkillActivated = false;
-                }
+                yield return new WaitForSeconds(1f);
+                Heal(1f);
             }
         }
     }

@@ -17,10 +17,11 @@ namespace LB.Environment.Objects
 
         private void FixedUpdate()
         {
-            MoveTowardsWaypoint();
+            MoveTowardsWaypointServerRpc();
         }
 
-        private void MoveTowardsWaypoint()
+        [ServerRpc(RequireOwnership = false)]
+        private void MoveTowardsWaypointServerRpc()
         {
             transform.position = Vector3.MoveTowards(transform.position, waypoints[currentWaypointIndex].position, movementSpeed * Time.deltaTime);
             if (Vector3.Distance(transform.position, waypoints[currentWaypointIndex].position) < 0.1f)
@@ -52,11 +53,7 @@ namespace LB.Environment.Objects
                 NetworkObject networkObject = other.GetComponent<NetworkObject>();
                 if (networkObject != null)
                 {
-                    other.transform.SetParent(transform);
-                    if (networkObject.IsOwner)
-                    {
-                        UpdatePlayerPosition(other.gameObject);
-                    }
+                    SetPlayerParentToMovingPlatformServerRpc(networkObject.NetworkObjectId);
                 }
             }
         }
@@ -68,23 +65,23 @@ namespace LB.Environment.Objects
                 NetworkObject networkObject = other.GetComponent<NetworkObject>();
                 if (networkObject != null)
                 {
-                    other.gameObject.transform.SetParent(null);
+                    RemovePlayerParentFromMovingPlatformServerRpc(networkObject.NetworkObjectId);
                 }
             }
         }
 
-        private void UpdatePlayerPosition(GameObject player)
+        [ServerRpc(RequireOwnership = false)]
+        private void SetPlayerParentToMovingPlatformServerRpc(ulong playerNetworkObjectId)
         {
-            Vector3 platformDelta = transform.position - lastPlatformPosition;
-            if (platformDelta != Vector3.zero)
-            {
-                CharacterController playerController = player.GetComponent<CharacterController>();
-                if (playerController != null)
-                {
-                    playerController.Move(platformDelta);
-                }
-            }
-            lastPlatformPosition = transform.position;
+            NetworkObject player = NetworkManager.Singleton.SpawnManager.SpawnedObjects[playerNetworkObjectId];
+            player.transform.SetParent(transform);
+        }
+
+        [ServerRpc(RequireOwnership = false)]
+        private void RemovePlayerParentFromMovingPlatformServerRpc(ulong playerNetworkObjectId)
+        {
+            NetworkObject player = NetworkManager.Singleton.SpawnManager.SpawnedObjects[playerNetworkObjectId];
+            player.transform.SetParent(null);
         }
     }
 }

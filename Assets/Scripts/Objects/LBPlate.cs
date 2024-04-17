@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.Core;
+using Assets.Scripts.Managers;
 using System.Collections;
 using UnityEngine;
 
@@ -18,6 +19,7 @@ namespace Assets.Scripts.Gameplay
 
         [SerializeField] private PlateVariants plateType;
         private bool isActivated = false;
+        [SerializeField] private AudioClip plateActivated;
 
         private void Start()
         {
@@ -52,6 +54,7 @@ namespace Assets.Scripts.Gameplay
         {
             if (!isActivated)
             {
+                LBAudioManager.Instance.PlaySound(plateActivated);
                 unactivatedPlate.SetActive(false);
                 activatedPlate.SetActive(true);
                 isActivated = true;
