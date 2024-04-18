@@ -42,12 +42,13 @@ namespace LB.Character
         [SerializeField] private Transform cameraTransform;
         [Space]
         [Header("Spawn")]
-        public bool isDead = false;
+        private bool isDead = false;
+        public bool GetPlayerDeathState { get; set; }
         private Vector3 lastCheckpointInteracted;
         [Space]
         [Header("Health")]
         private float health = 100f;
-        public float GetCurrentHP => health;
+        public float GetCurrentHP { get; set; }
         [Space]
         [Header("UI")]
         [SerializeField] private TextMeshProUGUI healthText;
@@ -90,6 +91,12 @@ namespace LB.Character
         {
             if (canvas.GetGameplayPaused) return;
             if (isDead) return;
+            healthText.SetText($"Health: {health}");
+            if (health <= 0)
+            {
+                isDead = true;
+                LBGameManager.Instance.RespawnPlayerClientRpc();
+            }
         }
 
         /// <summary>
@@ -188,75 +195,29 @@ namespace LB.Character
             }
         }
 
-        /// <summary>
-        /// Called when the Collider other enters the trigger.
-        /// </summary>
-        /// <param name="other"></param>
-        /// 
         private void OnTriggerEnter(Collider other)
         {
-            if (other.gameObject.CompareTag("Checkpoint"))
+            if(other.gameObject.CompareTag("Checkpoint"))
             {
-                Debug.Log($"Checkpoint located at X: {other.transform.position.x}, Y: {other.transform.position.y}, Z: {other.transform.position.z}");
-                lastCheckpointInteracted = other.gameObject.transform.position;
-                other.GetComponent<LBCheckpoint>().OnCheckpointActivated();
-                SetCheckpoint(lastCheckpointInteracted);
+                lastCheckpointInteracted = other.transform.position;
             }
         }
 
-        public void SetCheckpoint(Vector3 checkpointPosition)
-        {
-            LBGameManager.Instance.SetLastCheckpointServerRpc(checkpointPosition);
-        }
-
-        /// <summary>
-        /// OnTriggerStay is called once per frame for every Collider other that is touching the trigger.
-        /// </summary>
-        /// <param name="hit"></param>
         private void OnTriggerStay(Collider hit)
         {
             if (hit.gameObject.CompareTag("Lava"))
             {
-                TakeDamage(damage: 5f);
-            }
-            if (hit.gameObject.CompareTag("Aqua Totem"))
-            {
-                StartCoroutine(HealOverTime());
+                health -= 3f;
+                healthText.SetText($"Health: {health}");
             }
         }
 
-        /// <summary>
-        /// Takes damage from the player character.
-        /// </summary>
-        /// <param name="damage"></param>
-        public void TakeDamage(float damage)
+        public void Respawn()
         {
-            LBAudioManager.Instance.PlaySound(hurtSound);
-            health -= damage;
-            healthText.SetText($"Health: {health}");
-            if (Mathf.Clamp(health, 0, 100) <= 0f)
-            {
-                LBGameManager.Instance.PlayerDiedServerRpc(OwnerClientId);
-            }
-        }
-
-        /// <summary>
-        /// Regains health for the player character.
-        /// </summary>
-        /// <param name="health"></param>
-        public void Heal(float health)
-        {
-            this.health = Mathf.Clamp(this.health + health, 0f, 100f);
-            healthText.SetText($"Health: {this.health}");
-        }
-
-        private IEnumerator HealOverTime()
-        {
-            while (true)
-            {
-                yield return new WaitForSeconds(1f);
-                Heal(1f);
-            }
+            isDead = false;
+            health = 100f;
+            transform.position = lastCheckpointInteracted;
+            healthText.text = health.ToString();
         }
     }
 }

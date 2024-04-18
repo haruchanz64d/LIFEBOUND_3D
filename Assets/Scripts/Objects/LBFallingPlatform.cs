@@ -7,7 +7,7 @@ namespace LB.Environment.Objects
     {
         [SerializeField] private GameObject fallingPlatformPrefab;
         private bool isFalling = false;
-        [SerializeField] private float fallSpeed = 2.5f; 
+        [SerializeField] private float fallSpeed = 0.5f; 
         [SerializeField] private Transform initialPosition;
         private float fallStartTime;
 
