@@ -18,7 +18,7 @@ namespace LB.Character
         [SerializeField] private InputActionReference jumpInput;
         [SerializeField] private InputActionReference soulSwapInput;
         [Space]
-        [Header("Properties")]
+        [Header("Movement Properties")]
         private float movementSpeed = 12f;
         private float jumpHeight = 8f;
         private float jumpButtonGracePeriod;
@@ -30,28 +30,21 @@ namespace LB.Character
         private bool isJumping;
         private float jumpHorizontalSpeed = 1f;
         [Space]
+        [Header("Health Properties")]
+        [SerializeField] private int maxHealth = 100;
+        [SerializeField] private int currentHealth;
+        private bool isDead;
+        public bool IsDead => isDead;
+        [Space]
         [Header("Components")]
         private CharacterController controller;
         private Animator animator;
-        private LBCanvasManager canvas;
         [Space]
         [Header("Camera")]
         [SerializeField] private new CinemachineFreeLook camera;
         [SerializeField] private Camera minimapCamera;
         [SerializeField] private AudioListener listener;
         [SerializeField] private Transform cameraTransform;
-        [Space]
-        [Header("Spawn")]
-        private bool isDead = false;
-        public bool GetPlayerDeathState { get; set; }
-        private Vector3 lastCheckpointInteracted;
-        [Space]
-        [Header("Health")]
-        private float health = 100f;
-        public float GetCurrentHP { get; set; }
-        [Space]
-        [Header("UI")]
-        [SerializeField] private TextMeshProUGUI healthText;
         [Space]
         [Header("Audio")]
         [SerializeField] private AudioClip soulSwapSound;
@@ -78,43 +71,36 @@ namespace LB.Character
         /// </summary>
         private void Awake()
         {
-            canvas = FindObjectOfType<LBCanvasManager>();
             controller = GetComponent<CharacterController>();
             originalStepOffset = controller.stepOffset;
             animator = GetComponent<Animator>();
         }
 
-        /// <summary>
-        /// Start is called before the first frame update.
-        /// </summary>
-        private void Update()
+        private void Start()
         {
-            if (canvas.GetGameplayPaused) return;
-            if (isDead) return;
-            healthText.SetText($"Health: {health}");
-            if (health <= 0)
-            {
-                isDead = true;
-                LBGameManager.Instance.RespawnPlayerClientRpc();
-            }
+            currentHealth = maxHealth;
+            isDead = false;
         }
 
+        private void Update()
+        {
+            if (!IsDead) return;
+        }
         /// <summary>
         /// LateUpdate is called every frame, if the Behaviour is enabled.
         /// </summary>
 
         private void LateUpdate()
         {
-            if (canvas.GetGameplayPaused) return;
             HandleMovement();
         }
 
+        #region Movement
         /// <summary>
         /// Handles the player's movement.
         /// </summary>
         private void HandleMovement()
         {
-            if (isDead) return;
             if (!IsLocalPlayer) return;
             Vector2 movement = movementInput.action.ReadValue<Vector2>();
             Vector3 direction = new Vector3(movement.x, 0f, movement.y);
@@ -194,30 +180,42 @@ namespace LB.Character
                 controller.Move(velocity);
             }
         }
+        #endregion
 
         private void OnTriggerEnter(Collider other)
         {
-            if(other.gameObject.CompareTag("Checkpoint"))
+            if (other.CompareTag("Checkpoint"))
             {
-                lastCheckpointInteracted = other.transform.position;
+                GameManagerRPC.Instance.SetCheckpoint = other.transform;
+                other.GetComponent<LBCheckpoint>().OnCheckpointActivated();
             }
         }
 
-        private void OnTriggerStay(Collider hit)
+        private void OnTriggerStay(Collider other)
         {
-            if (hit.gameObject.CompareTag("Lava"))
+            if (other.CompareTag("Lava"))
             {
-                health -= 3f;
-                healthText.SetText($"Health: {health}");
+                HurtPlayer();
             }
         }
 
-        public void Respawn()
+        private void HurtPlayer()
+        {   
+            currentHealth -= 2;
+
+            if (currentHealth <= 0)
+            {
+                currentHealth = 0;
+                isDead = true;
+                RespawnPlayer();
+            }
+        }
+
+        public void RespawnPlayer()
         {
+            transform.position = GameManagerRPC.Instance.SetCheckpoint.position;
+            currentHealth = maxHealth;
             isDead = false;
-            health = 100f;
-            transform.position = lastCheckpointInteracted;
-            healthText.text = health.ToString();
         }
     }
 }

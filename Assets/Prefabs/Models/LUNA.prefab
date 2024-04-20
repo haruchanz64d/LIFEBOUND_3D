@@ -267,7 +267,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 459784728074286363}
-  m_LocalRotation: {x: 0.28978413, y: 0.000000016468091, z: -0.0000000049861364, w: 0.95709205}
+  m_LocalRotation: {x: 0.28978413, y: -0.000000016468091, z: 0.0000000049861364, w: 0.95709205}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -2299,14 +2299,14 @@ MonoBehaviour:
     type: 3}
   soulSwapInput: {fileID: 425648691986174645, guid: 577e95fc37a387d408b1137d106ecda7,
     type: 3}
+  maxHealth: 100
+  currentHealth: 0
   camera: {fileID: 7174004991162099984}
   minimapCamera: {fileID: 8771117242785685886}
   listener: {fileID: 1027725364173753884}
   cameraTransform: {fileID: 8771117243404054006}
-  isDead: 0
-  healthText: {fileID: 7187453640330411315}
   soulSwapSound: {fileID: 0}
-  hurtSound: {fileID: 0}
+  hurtSound: {fileID: 8300000, guid: 989cd123e727edd4aafb388be8d946e8, type: 3}
 --- !u!1 &8882178398949862394
 GameObject:
   m_ObjectHideFlags: 3
@@ -2693,18 +2693,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 54321e4ece9b783479c6107516891489, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &7187453640330411315 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5100941991542133149, guid: 813b90342604ee5428e900ad27e84cac,
-    type: 3}
-  m_PrefabInstance: {fileID: 2699020354755849390}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &6968351884720061036
