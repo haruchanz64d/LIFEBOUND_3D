@@ -30,16 +30,16 @@ public class GameManagerRPC : NetworkBehaviour
 
     private void Update()
     {
-        /*if (!IsServer) { return; }
-        if(players.GetEnumerator().MoveNext())
+        
+    }
+
+    [Rpc(SendTo.Everyone)]
+    public void RespawnPlayerServerRpc(ulong clientId)
+    {
+        var player = players.FirstOrDefault(x => x.GetComponent<NetworkObject>().OwnerClientId == clientId);
+        if (player != null)
         {
-            foreach (var player in players)
-            {
-                if (player.GetComponent<Player>().IsDead)
-                {
-                    player.GetComponent<Player>().RespawnPlayer();
-                }
-            }
-        }*/
+            player.transform.position = SetCheckpoint.position;
+        }
     }
 }

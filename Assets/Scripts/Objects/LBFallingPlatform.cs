@@ -35,10 +35,6 @@ namespace LB.Environment.Objects
         {
             yield return new WaitForSeconds(5f);
             Destroy(gameObject);
-
-            yield return new WaitForSeconds(0.1f);
-
-            Instantiate(fallingPlatformPrefab, initialPosition.transform.position, Quaternion.identity);
         }
     }
 }
