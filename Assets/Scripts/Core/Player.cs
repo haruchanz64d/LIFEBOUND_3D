@@ -6,6 +6,7 @@ using Cinemachine;
 using TMPro;
 using UnityEngine.UI;
 using Assets.Scripts.Managers;
+using Assets.Scripts.Core;
 namespace LB.Character
 {
     /// <summary>
@@ -33,12 +34,14 @@ namespace LB.Character
         [Header("Health Properties")]
         [SerializeField] private int maxHealth = 100;
         [SerializeField] private int currentHealth;
+        [SerializeField] private TMP_Text healthText;
         private bool isDead;
         public bool IsDead => isDead;
         [Space]
         [Header("Components")]
         private CharacterController controller;
-        private Animator animator;
+        [SerializeField] LBRole role;
+        [SerializeField] private Animator animator;
         [Space]
         [Header("Camera")]
         [SerializeField] private new CinemachineFreeLook camera;
@@ -49,6 +52,15 @@ namespace LB.Character
         [Header("Audio")]
         [SerializeField] private AudioClip soulSwapSound;
         [SerializeField] private AudioClip hurtSound;
+        [Space]
+        [Header("Soul Swap Skill")]
+        private float soulSwapCooldown = 30f;
+        private float soulSwapTimer;
+        private float soulSwapDuration = 10f;
+        [SerializeField] private Image soulSwapCooldownImage;
+        private bool isSoulSwapping;
+        public bool IsSoulSwapping { get => isSoulSwapping; set => isSoulSwapping = value; }
+
         /// <summary>
         /// Called when the player is spawned in the network.
         /// </summary>
@@ -65,6 +77,7 @@ namespace LB.Character
                 camera.Priority = 0;
                 minimapCamera.depth = 0;
             }
+            currentHealth = maxHealth;
         }
         /// <summary>
         /// Awake is called when the script instance is being loaded.
@@ -78,23 +91,100 @@ namespace LB.Character
 
         private void Start()
         {
-            currentHealth = maxHealth;
             isDead = false;
         }
 
         private void Update()
         {
-            if (!IsDead) return;
+            if (IsDead) return;
+            if (isSoulSwapping)
+            {
+                HandleSoulSwap();
+            }
+            UpdateHealthUI();
+            CheckForHealth();
         }
-        /// <summary>
-        /// LateUpdate is called every frame, if the Behaviour is enabled.
-        /// </summary>
 
         private void LateUpdate()
         {
+            if (IsDead) return;
             HandleMovement();
+            if (GameManagerRPC.Instance != null && GameManagerRPC.Instance.IsSoulSwapEnabled)
+            {
+                if (IsLocalPlayer)
+                {
+                    GameManagerRPC.Instance.IsSoulSwapEnabledRpc(true, OwnerClientId);
+                }
+            }
         }
 
+        #region Health System
+        private void UpdateHealthUI()
+        {
+            healthText.SetText($"HP: {currentHealth}");
+        }
+
+        private void CheckForHealth()
+        {
+            if (currentHealth <= 0)
+            {
+                currentHealth = 0;
+                isDead = true;
+                StartCoroutine(AnimateBeforeRespawn());
+            }
+        }
+        #endregion
+
+        #region Soul Swap
+        /// <summary>
+        /// Handles the player's soul swapping.
+        /// </summary>
+        private void HandleSoulSwap()
+        {
+            if (!IsLocalPlayer) return;
+            if (isSoulSwapping) return;
+            if (soulSwapInput.action.WasPerformedThisFrame() && !isSoulSwapping && soulSwapTimer <= 0)
+            {
+                LBAudioManager.Instance.PlaySound(soulSwapSound);
+                StartCoroutine(HandleSoulSwapCoroutine());
+            }
+        }
+
+        private IEnumerator HandleSoulSwapCoroutine()
+        {
+            animator.SetBool("IsSoulSwapEnabled", true);
+            isSoulSwapping = true;
+            yield return new WaitForSeconds(1f);
+            animator.SetBool("IsSoulSwapEnabled", false);
+            yield return new WaitForSeconds(1f);
+
+            role.SwapCharacterModelRpc();
+            GameManagerRPC.Instance.SoulSwapTimerRpc();
+
+            yield return new WaitForSeconds(soulSwapDuration);
+            StartCoroutine(SoulSwapCooldown());
+            role.ResetCharacterModelRpc();
+            isSoulSwapping = false;
+        }
+
+        public void SoulSwapTimer()
+        {
+            isSoulSwapping = true;
+        }
+        private IEnumerator SoulSwapCooldown()
+        {
+            soulSwapCooldownImage.fillAmount = 1;
+            soulSwapTimer = soulSwapCooldown;
+            while (soulSwapTimer > 0)
+            {
+                soulSwapTimer -= Time.deltaTime;
+                soulSwapCooldownImage.fillAmount = soulSwapTimer / soulSwapCooldown;
+                yield return null;
+            }
+            isSoulSwapping = false;
+        }
+
+        #endregion
         #region Movement
         /// <summary>
         /// Handles the player's movement.
@@ -195,27 +285,21 @@ namespace LB.Character
         {
             if (other.CompareTag("Lava"))
             {
-                HurtPlayer();
+                TakeDamage(1f);
             }
         }
 
-        private void HurtPlayer()
-        {   
-            currentHealth -= 2;
-
-            if (currentHealth <= 0)
-            {
-                currentHealth = 0;
-                isDead = true;
-                RespawnPlayer();
-            }
-        }
-
-        public void RespawnPlayer()
+        public void TakeDamage(float damage)
         {
-            transform.position = GameManagerRPC.Instance.SetCheckpoint.position;
-            currentHealth = maxHealth;
+            currentHealth -= (int)damage;
+        }
+        private IEnumerator AnimateBeforeRespawn()
+        {
+            animator.SetBool("IsDead", true);
+            yield return new WaitForSeconds(1f);
+            GameManagerRPC.Instance.RespawnPlayerServerRpc(OwnerClientId);
             isDead = false;
+            currentHealth = maxHealth;
         }
     }
 }

@@ -17,11 +17,10 @@ namespace LB.Environment.Objects
 
         private void FixedUpdate()
         {
-            MoveTowardsWaypointServerRpc();
+            MoveTowardsWaypoint();
         }
 
-        [ServerRpc(RequireOwnership = false)]
-        private void MoveTowardsWaypointServerRpc()
+        private void MoveTowardsWaypoint()
         {
             transform.position = Vector3.MoveTowards(transform.position, waypoints[currentWaypointIndex].position, movementSpeed * Time.deltaTime);
             if (Vector3.Distance(transform.position, waypoints[currentWaypointIndex].position) < 0.1f)
@@ -53,7 +52,7 @@ namespace LB.Environment.Objects
                 NetworkObject networkObject = other.GetComponent<NetworkObject>();
                 if (networkObject != null)
                 {
-                    SetPlayerParentToMovingPlatformServerRpc(networkObject.NetworkObjectId);
+                    SetPlayerParentToMovingPlatformRpc(networkObject.NetworkObjectId);
                 }
             }
         }
@@ -65,23 +64,23 @@ namespace LB.Environment.Objects
                 NetworkObject networkObject = other.GetComponent<NetworkObject>();
                 if (networkObject != null)
                 {
-                    RemovePlayerParentFromMovingPlatformServerRpc(networkObject.NetworkObjectId);
+                    RemovePlayerParentFromMovingPlatformRpc(networkObject.NetworkObjectId);
                 }
             }
         }
 
-        [ServerRpc(RequireOwnership = false)]
-        private void SetPlayerParentToMovingPlatformServerRpc(ulong playerNetworkObjectId)
+        [Rpc(SendTo.ClientsAndHost, RequireOwnership = false)]
+        private void SetPlayerParentToMovingPlatformRpc(ulong playerNetworkObjectId)
         {
             NetworkObject player = NetworkManager.Singleton.SpawnManager.SpawnedObjects[playerNetworkObjectId];
-            player.transform.SetParent(transform);
+            player.TrySetParent(transform);
         }
 
-        [ServerRpc(RequireOwnership = false)]
-        private void RemovePlayerParentFromMovingPlatformServerRpc(ulong playerNetworkObjectId)
+        [Rpc(SendTo.ClientsAndHost, RequireOwnership = false)]
+        private void RemovePlayerParentFromMovingPlatformRpc(ulong playerNetworkObjectId)
         {
             NetworkObject player = NetworkManager.Singleton.SpawnManager.SpawnedObjects[playerNetworkObjectId];
-            player.transform.SetParent(null);
+            player.transform.parent = null;
         }
     }
 }
