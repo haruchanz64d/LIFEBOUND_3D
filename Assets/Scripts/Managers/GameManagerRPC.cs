@@ -73,14 +73,12 @@ public class GameManagerRPC : NetworkBehaviour
         // Handle the heat wave event
         HandleHeatWaveRpc();
 
-        // Check if either of the player dies
-        foreach (var player in players)
+        // Handle soul swap cooldown
+        if (Time.time > soulSwapTimer + soulSwapCooldown)
         {
-            // Get the player component and check if the player is dead
-            if (player.GetComponent<Player>().IsDead)
+            foreach (var player in players)
             {
-                // Call RespawnPlayerServerRpc to respawn the player
-                RespawnPlayerServerRpc(player.GetComponent<NetworkObject>().OwnerClientId);
+                player.GetComponent<Player>().IsSoulSwapping = true;
             }
         }
     }
@@ -93,9 +91,9 @@ public class GameManagerRPC : NetworkBehaviour
     {
         if (Time.time > timeBetweenDamage)
         {
-            foreach (var player in players)
+            foreach (var client in NetworkManager.Singleton.ConnectedClientsList)
             {
-                TakeDamageFromHeatWaveRpc(player.GetComponent<NetworkObject>().OwnerClientId);
+                TakeDamageFromHeatWaveRpc(client.ClientId);
             }
             timeBetweenDamage = Time.time + 8f;
         }
@@ -116,6 +114,7 @@ public class GameManagerRPC : NetworkBehaviour
     }
     #endregion
 
+
     #region Respawn Mechanic
     /// <summary>
     /// Respawns the player at the original spawn point or the checkpoint.
@@ -127,7 +126,7 @@ public class GameManagerRPC : NetworkBehaviour
         var player = players.FirstOrDefault(x => x.GetComponent<NetworkObject>().OwnerClientId == clientId);
         if (player != null)
         {
-            if (SetCheckpoint.position == null)
+            if (SetCheckpoint == null)
             {
                 player.transform.position = originalSpawnPoint.position;
             }
@@ -135,8 +134,43 @@ public class GameManagerRPC : NetworkBehaviour
             {
                 player.transform.position = SetCheckpoint.position;
             }
+            player.GetComponent<Player>().TakeDamage(100f); // Set HP to zero
+            player.GetComponent<Player>().IsDead = true;
+            StartCoroutine(player.GetComponent<Player>().AnimateBeforeRespawn()); // Play death animation and respawn
+                                                                                  // Respawn the other player
+            foreach (var p in players)
+            {
+                if (p != player)
+                {
+                    p.transform.position = player.transform.position; // Respawn to the same position
+                    p.GetComponent<Player>().TakeDamage(100f); // Set HP to zero
+                    p.GetComponent<Player>().IsDead = true;
+                    StartCoroutine(p.GetComponent<Player>().AnimateBeforeRespawn()); // Play death animation and respawn
+                }
+            }
         }
     }
+
+    /// <summary>
+    /// Respawns the player and the other player to the last checkpoint.
+    /// </summary>
+    [Rpc(SendTo.Everyone, RequireOwnership = false)]
+    public void RespawnBothPlayersRpc(ulong clientId)
+    {
+        foreach (var player in players)
+        {
+            if (player.GetComponent<NetworkObject>().OwnerClientId == clientId)
+            {
+                RespawnPlayerServerRpc(clientId);
+            }
+            else
+            {
+                RespawnPlayerServerRpc(player.GetComponent<NetworkObject>().OwnerClientId);
+            }
+        }
+    }
+
+
     #endregion
 
     #region Soul Swap Mechanic
@@ -155,6 +189,16 @@ public class GameManagerRPC : NetworkBehaviour
         }
     }
 
+    [Rpc(SendTo.Everyone, RequireOwnership = false)]
+    public void StartSoulSwapCooldownRpc()
+    {
+        soulSwapTimer = Time.time;
+        foreach (var player in players)
+        {
+            player.GetComponent<Player>().IsSoulSwapping = true;
+        }
+    }
+
     /// <summary>
     /// Sets the soul swap timer.
     /// </summary>
@@ -164,6 +208,17 @@ public class GameManagerRPC : NetworkBehaviour
         foreach (var player in players)
         {
             player.GetComponent<Player>().SoulSwapTimer();
+        }
+    }
+    #endregion
+
+    #region Lava Damage
+    public void ShareLavaDamageRpc(ulong clientId)
+    {
+        var player = players.FirstOrDefault(x => x.GetComponent<NetworkObject>().OwnerClientId == clientId);
+        if (player != null)
+        {
+            player.GetComponent<Player>().TakeDamage(1f);
         }
     }
     #endregion

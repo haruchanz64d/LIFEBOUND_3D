@@ -36,7 +36,7 @@ namespace LB.Character
         [SerializeField] private int currentHealth;
         [SerializeField] private TMP_Text healthText;
         private bool isDead;
-        public bool IsDead => isDead;
+        public bool IsDead { get; set; }
         [Space]
         [Header("Components")]
         private CharacterController controller;
@@ -109,19 +109,12 @@ namespace LB.Character
         {
             if (IsDead) return;
             HandleMovement();
-            if (GameManagerRPC.Instance != null && GameManagerRPC.Instance.IsSoulSwapEnabled)
-            {
-                if (IsLocalPlayer)
-                {
-                    GameManagerRPC.Instance.IsSoulSwapEnabledRpc(true, OwnerClientId);
-                }
-            }
         }
 
         #region Health System
         private void UpdateHealthUI()
         {
-            if(!IsLocalPlayer) return;
+            if (!IsLocalPlayer) return;
             healthText.SetText($"HP: {currentHealth}");
         }
 
@@ -131,9 +124,11 @@ namespace LB.Character
             {
                 currentHealth = 0;
                 isDead = true;
+                GameManagerRPC.Instance.RespawnBothPlayersRpc(OwnerClientId);
                 StartCoroutine(AnimateBeforeRespawn());
             }
         }
+
         #endregion
 
         #region Soul Swap
@@ -148,8 +143,10 @@ namespace LB.Character
             {
                 LBAudioManager.Instance.PlaySound(soulSwapSound);
                 StartCoroutine(HandleSoulSwapCoroutine());
+                GameManagerRPC.Instance.StartSoulSwapCooldownRpc();
             }
         }
+
 
         private IEnumerator HandleSoulSwapCoroutine()
         {
@@ -160,7 +157,6 @@ namespace LB.Character
             yield return new WaitForSeconds(1f);
 
             role.SwapCharacterModelRpc();
-            GameManagerRPC.Instance.SoulSwapTimerRpc();
 
             yield return new WaitForSeconds(soulSwapDuration);
             StartCoroutine(SoulSwapCooldown());
@@ -284,20 +280,36 @@ namespace LB.Character
 
         private void OnTriggerStay(Collider other)
         {
+            if (!IsLocalPlayer) return; // Only apply damage if this is the local player
+
             if (other.CompareTag("Lava"))
             {
-                TakeDamage(1f);
+                GameManagerRPC.Instance.ShareLavaDamageRpc(OwnerClientId);
             }
+            if (other.CompareTag("Aqua Totem"))
+            {
+                RegainHealth(1f);
+            }
+        }
+
+
+        public void RegainHealth(float health)
+        {
+            currentHealth += (int)health;
+            if (currentHealth > maxHealth)
+            {
+                currentHealth = maxHealth;
+            }
+            UpdateHealthUI();
         }
 
         public void TakeDamage(float damage)
         {
             currentHealth -= (int)damage;
             UpdateHealthUI();
-            CheckForHealth();
         }
 
-        private IEnumerator AnimateBeforeRespawn()
+        public IEnumerator AnimateBeforeRespawn()
         {
             animator.SetTrigger("IsDead");
             yield return new WaitForSeconds(1f);
@@ -306,5 +318,6 @@ namespace LB.Character
             currentHealth = maxHealth;
             animator.SetTrigger("IsAlive");
         }
+
     }
 }

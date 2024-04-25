@@ -1,3 +1,4 @@
+using LB.Character;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -10,11 +11,29 @@ namespace LB.Environment.Objects
         private int currentWaypointIndex = 0;
         private Vector3 lastPlatformPosition;
 
-        private void Start()
+        public override void OnNetworkSpawn()
         {
-            lastPlatformPosition = transform.position;
-        }
+            base.OnNetworkSpawn();
 
+            lastPlatformPosition = transform.position;
+
+            if (IsServer)
+            {
+                // Call RPCs only on server
+                foreach (var player in NetworkManager.Singleton.ConnectedClientsList)
+                {
+                    Collider[] colliders = Physics.OverlapSphere(transform.position, 1f);
+                    foreach (var collider in colliders)
+                    {
+                        if (collider.CompareTag("Player") && collider.GetComponent<NetworkObject>() != null)
+                        {
+                            SetPlayerParentToMovingPlatformRpc(collider.GetComponent<NetworkObject>().NetworkObjectId);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
         private void FixedUpdate()
         {
             MoveTowardsWaypoint();
@@ -45,42 +64,55 @@ namespace LB.Environment.Objects
             return currentWaypointIndex == 0;
         }
 
-        private void OnTriggerEnter(Collider other)
+        /// <summary>
+        /// OnTriggerEnter is called when the Collider other enters the trigger.
+        /// </summary>
+        /// <param name="other">The other Collider involved in this collision.</param>
+        void OnTriggerEnter(Collider other)
         {
             if (other.CompareTag("Player"))
             {
-                NetworkObject networkObject = other.GetComponent<NetworkObject>();
-                if (networkObject != null)
-                {
-                    SetPlayerParentToMovingPlatformRpc(networkObject.NetworkObjectId);
-                }
+                SetPlayerParentToMovingPlatformRpc(other.GetComponent<NetworkObject>().NetworkObjectId);
             }
         }
 
-        private void OnTriggerExit(Collider other)
+        /// <summary>
+        /// OnTriggerExit is called when the Collider other has stopped touching the trigger.
+        /// </summary>
+        /// <param name="other">The other Collider involved in this collision.</param>
+        void OnTriggerExit(Collider other)
         {
             if (other.CompareTag("Player"))
             {
-                NetworkObject networkObject = other.GetComponent<NetworkObject>();
-                if (networkObject != null)
-                {
-                    RemovePlayerParentFromMovingPlatformRpc(networkObject.NetworkObjectId);
-                }
+                RemovePlayerParentFromMovingPlatformRpc(other.GetComponent<NetworkObject>().NetworkObjectId);
             }
         }
 
         [Rpc(SendTo.Everyone, RequireOwnership = false)]
         private void SetPlayerParentToMovingPlatformRpc(ulong playerNetworkObjectId)
         {
-            NetworkObject player = NetworkManager.Singleton.SpawnManager.SpawnedObjects[playerNetworkObjectId];
-            player.TrySetParent(transform);
+            if (IsServer)
+            {
+                NetworkObject player = NetworkManager.Singleton.SpawnManager.SpawnedObjects[playerNetworkObjectId];
+                player.TryGetComponent<Player>(out Player playerScript);
+                if (playerScript != null)
+                {
+                    playerScript.transform.SetParent(transform, true); // Set parent with world position and rotation
+                }
+            }
         }
+
 
         [Rpc(SendTo.Everyone, RequireOwnership = false)]
         private void RemovePlayerParentFromMovingPlatformRpc(ulong playerNetworkObjectId)
         {
             NetworkObject player = NetworkManager.Singleton.SpawnManager.SpawnedObjects[playerNetworkObjectId];
-            player.transform.parent = null;
+            player.TryGetComponent<Player>(out Player playerScript);
+            if (playerScript != null)
+            {
+                playerScript.transform.SetParent(null); // Remove parent
+            }
         }
+
     }
 }
