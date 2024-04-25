@@ -51,7 +51,7 @@ namespace Assets.Scripts.Core
             }
         }
 
-        [Rpc(SendTo.Everyone, RequireOwnership = false)]
+        [Rpc(SendTo.ClientsAndHost, RequireOwnership = false)]
         public void SwapCharacterModelRpc()
         {
             switch (characterName)
@@ -69,7 +69,7 @@ namespace Assets.Scripts.Core
             }
         }
 
-        [Rpc(SendTo.Everyone, RequireOwnership = false)]
+        [Rpc(SendTo.ClientsAndHost, RequireOwnership = false)]
         public void ResetCharacterModelRpc()
         {
             SetCharacterModel(originalCharacterName);

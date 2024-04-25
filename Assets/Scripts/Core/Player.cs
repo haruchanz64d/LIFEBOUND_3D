@@ -114,7 +114,6 @@ namespace LB.Character
         #region Health System
         private void UpdateHealthUI()
         {
-            if (!IsLocalPlayer) return;
             healthText.SetText($"HP: {currentHealth}");
         }
 

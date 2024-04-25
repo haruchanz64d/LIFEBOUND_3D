@@ -88,7 +88,7 @@ namespace LB.Environment.Objects
             }
         }
 
-        [Rpc(SendTo.Everyone, RequireOwnership = false)]
+        [Rpc(SendTo.ClientsAndHost, RequireOwnership = false)]
         private void SetPlayerParentToMovingPlatformRpc(ulong playerNetworkObjectId)
         {
             if (IsServer)
@@ -103,7 +103,7 @@ namespace LB.Environment.Objects
         }
 
 
-        [Rpc(SendTo.Everyone, RequireOwnership = false)]
+        [Rpc(SendTo.ClientsAndHost, RequireOwnership = false)]
         private void RemovePlayerParentFromMovingPlatformRpc(ulong playerNetworkObjectId)
         {
             NetworkObject player = NetworkManager.Singleton.SpawnManager.SpawnedObjects[playerNetworkObjectId];
