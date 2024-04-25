@@ -69,14 +69,14 @@ namespace LB.Environment.Objects
             }
         }
 
-        [Rpc(SendTo.ClientsAndHost, RequireOwnership = false)]
+        [Rpc(SendTo.Everyone, RequireOwnership = false)]
         private void SetPlayerParentToMovingPlatformRpc(ulong playerNetworkObjectId)
         {
             NetworkObject player = NetworkManager.Singleton.SpawnManager.SpawnedObjects[playerNetworkObjectId];
             player.TrySetParent(transform);
         }
 
-        [Rpc(SendTo.ClientsAndHost, RequireOwnership = false)]
+        [Rpc(SendTo.Everyone, RequireOwnership = false)]
         private void RemovePlayerParentFromMovingPlatformRpc(ulong playerNetworkObjectId)
         {
             NetworkObject player = NetworkManager.Singleton.SpawnManager.SpawnedObjects[playerNetworkObjectId];

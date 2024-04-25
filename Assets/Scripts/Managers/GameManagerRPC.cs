@@ -61,6 +61,8 @@ public class GameManagerRPC : NetworkBehaviour
         SetCheckpoint = originalSpawnPoint;
 
         players = GameObject.FindGameObjectsWithTag("Player");
+
+        Debug.Log($"Player count: {NetworkManager.Singleton.ConnectedClientsList.Count}");
     }
 
     /// <summary>
@@ -86,7 +88,7 @@ public class GameManagerRPC : NetworkBehaviour
     /// <summary>
     /// Handles the heat wave event, causing damage to all players within a certain time interval.
     /// </summary>
-    [Rpc(SendTo.ClientsAndHost, RequireOwnership = false)]
+    [Rpc(SendTo.Everyone, RequireOwnership = false)]
     private void HandleHeatWaveRpc()
     {
         if (Time.time > timeBetweenDamage)
@@ -103,7 +105,7 @@ public class GameManagerRPC : NetworkBehaviour
     /// Takes damage from the heat wave event.
     /// </summary>
     /// <param name="clientId"></param>
-    [Rpc(SendTo.ClientsAndHost, RequireOwnership = false)]
+    [Rpc(SendTo.Everyone, RequireOwnership = false)]
     public void TakeDamageFromHeatWaveRpc(ulong clientId)
     {
         var player = players.FirstOrDefault(x => x.GetComponent<NetworkObject>().OwnerClientId == clientId);
@@ -119,7 +121,7 @@ public class GameManagerRPC : NetworkBehaviour
     /// Respawns the player at the original spawn point or the checkpoint.
     /// </summary>
     /// <param name="clientId"></param>
-    [Rpc(SendTo.ClientsAndHost, RequireOwnership = false)]
+    [Rpc(SendTo.Everyone, RequireOwnership = false)]
     public void RespawnPlayerServerRpc(ulong clientId)
     {
         var player = players.FirstOrDefault(x => x.GetComponent<NetworkObject>().OwnerClientId == clientId);
@@ -143,7 +145,7 @@ public class GameManagerRPC : NetworkBehaviour
     /// </summary>
     /// <param name="isSoulSwapping"></param>
     /// <param name="clientId"></param>
-    [Rpc(SendTo.ClientsAndHost, RequireOwnership = false)]
+    [Rpc(SendTo.Everyone, RequireOwnership = false)]
     public void IsSoulSwapEnabledRpc(bool isSoulSwapping, ulong clientId)
     {
         var player = players.FirstOrDefault(x => x.GetComponent<NetworkObject>().OwnerClientId == clientId);
@@ -156,7 +158,7 @@ public class GameManagerRPC : NetworkBehaviour
     /// <summary>
     /// Sets the soul swap timer.
     /// </summary>
-    [Rpc(SendTo.ClientsAndHost, RequireOwnership = false)]
+    [Rpc(SendTo.Everyone, RequireOwnership = false)]
     public void SoulSwapTimerRpc()
     {
         foreach (var player in players)

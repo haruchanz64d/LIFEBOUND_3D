@@ -121,6 +121,7 @@ namespace LB.Character
         #region Health System
         private void UpdateHealthUI()
         {
+            if(!IsLocalPlayer) return;
             healthText.SetText($"HP: {currentHealth}");
         }
 
@@ -292,14 +293,18 @@ namespace LB.Character
         public void TakeDamage(float damage)
         {
             currentHealth -= (int)damage;
+            UpdateHealthUI();
+            CheckForHealth();
         }
+
         private IEnumerator AnimateBeforeRespawn()
         {
-            animator.SetBool("IsDead", true);
+            animator.SetTrigger("IsDead");
             yield return new WaitForSeconds(1f);
             GameManagerRPC.Instance.RespawnPlayerServerRpc(OwnerClientId);
             isDead = false;
             currentHealth = maxHealth;
+            animator.SetTrigger("IsAlive");
         }
     }
 }
