@@ -11,28 +11,13 @@ namespace LB.Environment.Objects
         private int currentWaypointIndex = 0;
         private Vector3 lastPlatformPosition;
 
+        public NetworkVariable<bool> hasPlayer = new NetworkVariable<bool>(false);
+
         public override void OnNetworkSpawn()
         {
             base.OnNetworkSpawn();
 
             lastPlatformPosition = transform.position;
-
-            if (IsServer)
-            {
-                // Call RPCs only on server
-                foreach (var player in NetworkManager.Singleton.ConnectedClientsList)
-                {
-                    Collider[] colliders = Physics.OverlapSphere(transform.position, 1f);
-                    foreach (var collider in colliders)
-                    {
-                        if (collider.CompareTag("Player") && collider.GetComponent<NetworkObject>() != null)
-                        {
-                            SetPlayerParentToMovingPlatformRpc(collider.GetComponent<NetworkObject>().NetworkObjectId);
-                            break;
-                        }
-                    }
-                }
-            }
         }
         private void FixedUpdate()
         {
@@ -72,7 +57,12 @@ namespace LB.Environment.Objects
         {
             if (other.CompareTag("Player"))
             {
-                SetPlayerParentToMovingPlatformRpc(other.GetComponent<NetworkObject>().NetworkObjectId);
+                Player player = other.GetComponent<Player>();
+                if (player != null)
+                {
+                    SetPlayerParentToMovingPlatformServerRpc(player.NetworkObjectId);
+                    player.SetMovingPlatform(this);
+                }
             }
         }
 
@@ -84,35 +74,26 @@ namespace LB.Environment.Objects
         {
             if (other.CompareTag("Player"))
             {
-                RemovePlayerParentFromMovingPlatformRpc(other.GetComponent<NetworkObject>().NetworkObjectId);
-            }
-        }
-
-        [Rpc(SendTo.ClientsAndHost, RequireOwnership = false)]
-        private void SetPlayerParentToMovingPlatformRpc(ulong playerNetworkObjectId)
-        {
-            if (IsServer)
-            {
-                NetworkObject player = NetworkManager.Singleton.SpawnManager.SpawnedObjects[playerNetworkObjectId];
-                player.TryGetComponent<Player>(out Player playerScript);
-                if (playerScript != null)
+                Player player = other.GetComponent<Player>();
+                if (player != null)
                 {
-                    playerScript.transform.SetParent(transform, true); // Set parent with world position and rotation
+                    player.SetMovingPlatform(null);
+                    SetPlayerParentToMovingPlatformServerRpc(default);
                 }
             }
         }
 
-
-        [Rpc(SendTo.ClientsAndHost, RequireOwnership = false)]
-        private void RemovePlayerParentFromMovingPlatformRpc(ulong playerNetworkObjectId)
+        [ServerRpc(RequireOwnership = false)]
+        public void SetPlayerParentToMovingPlatformServerRpc(ulong playerid)
         {
-            NetworkObject player = NetworkManager.Singleton.SpawnManager.SpawnedObjects[playerNetworkObjectId];
-            player.TryGetComponent<Player>(out Player playerScript);
-            if (playerScript != null)
+            if(playerid == default)
             {
-                playerScript.transform.SetParent(null); // Remove parent
+                hasPlayer.Value = false;
+            }
+            else 
+            {
+                hasPlayer.Value = true;
             }
         }
-
     }
 }

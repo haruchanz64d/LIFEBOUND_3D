@@ -7,6 +7,7 @@ using TMPro;
 using UnityEngine.UI;
 using Assets.Scripts.Managers;
 using Assets.Scripts.Core;
+using LB.Environment.Objects;
 namespace LB.Character
 {
     /// <summary>
@@ -32,12 +33,14 @@ namespace LB.Character
         private float jumpHorizontalSpeed = 1f;
         [Space]
         [Header("Health Properties")]
-        [SerializeField] private int maxHealth = 100;
-        [SerializeField] private int currentHealth;
-        [SerializeField] private TMP_Text healthText;
-        private bool isDead;
-        public bool IsDead { get; set; }
+        [SerializeField] private NetworkVariable<int> currentHealth = new NetworkVariable<int>(100);
+        [SerializeField] private TextMeshProUGUI healthText;
         [Space]
+        [Header("Death Properties")]
+        [SerializeField] private NetworkVariable<bool> isDead = new NetworkVariable<bool>(false);
+        [Space]
+        [Header("Soul Swap Properties")]
+        [SerializeField] private NetworkVariable<float> soulSwapCooldown = new NetworkVariable<float>(0f);
         [Header("Components")]
         private CharacterController controller;
         [SerializeField] LBRole role;
@@ -52,14 +55,6 @@ namespace LB.Character
         [Header("Audio")]
         [SerializeField] private AudioClip soulSwapSound;
         [SerializeField] private AudioClip hurtSound;
-        [Space]
-        [Header("Soul Swap Skill")]
-        private float soulSwapCooldown = 30f;
-        private float soulSwapTimer;
-        private float soulSwapDuration = 10f;
-        [SerializeField] private Image soulSwapCooldownImage;
-        private bool isSoulSwapping;
-        public bool IsSoulSwapping { get => isSoulSwapping; set => isSoulSwapping = value; }
 
         /// <summary>
         /// Called when the player is spawned in the network.
@@ -77,7 +72,6 @@ namespace LB.Character
                 camera.Priority = 0;
                 minimapCamera.depth = 0;
             }
-            currentHealth = maxHealth;
         }
         /// <summary>
         /// Awake is called when the script instance is being loaded.
@@ -89,98 +83,11 @@ namespace LB.Character
             animator = GetComponent<Animator>();
         }
 
-        private void Start()
-        {
-            isDead = false;
-        }
-
-        private void Update()
-        {
-            if (IsDead) return;
-            if (isSoulSwapping)
-            {
-                HandleSoulSwap();
-            }
-            UpdateHealthUI();
-            CheckForHealth();
-        }
-
         private void LateUpdate()
         {
-            if (IsDead) return;
             HandleMovement();
         }
 
-        #region Health System
-        private void UpdateHealthUI()
-        {
-            healthText.SetText($"HP: {currentHealth}");
-        }
-
-        private void CheckForHealth()
-        {
-            if (currentHealth <= 0)
-            {
-                currentHealth = 0;
-                isDead = true;
-                GameManagerRPC.Instance.RespawnBothPlayersRpc(OwnerClientId);
-                StartCoroutine(AnimateBeforeRespawn());
-            }
-        }
-
-        #endregion
-
-        #region Soul Swap
-        /// <summary>
-        /// Handles the player's soul swapping.
-        /// </summary>
-        private void HandleSoulSwap()
-        {
-            if (!IsLocalPlayer) return;
-            if (isSoulSwapping) return;
-            if (soulSwapInput.action.WasPerformedThisFrame() && !isSoulSwapping && soulSwapTimer <= 0)
-            {
-                LBAudioManager.Instance.PlaySound(soulSwapSound);
-                StartCoroutine(HandleSoulSwapCoroutine());
-                GameManagerRPC.Instance.StartSoulSwapCooldownRpc();
-            }
-        }
-
-
-        private IEnumerator HandleSoulSwapCoroutine()
-        {
-            animator.SetBool("IsSoulSwapEnabled", true);
-            isSoulSwapping = true;
-            yield return new WaitForSeconds(1f);
-            animator.SetBool("IsSoulSwapEnabled", false);
-            yield return new WaitForSeconds(1f);
-
-            role.SwapCharacterModelRpc();
-
-            yield return new WaitForSeconds(soulSwapDuration);
-            StartCoroutine(SoulSwapCooldown());
-            role.ResetCharacterModelRpc();
-            isSoulSwapping = false;
-        }
-
-        public void SoulSwapTimer()
-        {
-            isSoulSwapping = true;
-        }
-        private IEnumerator SoulSwapCooldown()
-        {
-            soulSwapCooldownImage.fillAmount = 1;
-            soulSwapTimer = soulSwapCooldown;
-            while (soulSwapTimer > 0)
-            {
-                soulSwapTimer -= Time.deltaTime;
-                soulSwapCooldownImage.fillAmount = soulSwapTimer / soulSwapCooldown;
-                yield return null;
-            }
-            isSoulSwapping = false;
-        }
-
-        #endregion
         #region Movement
         /// <summary>
         /// Handles the player's movement.
@@ -272,51 +179,241 @@ namespace LB.Character
         {
             if (other.CompareTag("Checkpoint"))
             {
-                GameManagerRPC.Instance.SetCheckpoint = other.transform;
                 other.GetComponent<LBCheckpoint>().OnCheckpointActivated();
             }
         }
 
         private void OnTriggerStay(Collider other)
         {
-            if (!IsLocalPlayer) return; // Only apply damage if this is the local player
-
             if (other.CompareTag("Lava"))
             {
-                GameManagerRPC.Instance.ShareLavaDamageRpc(OwnerClientId);
+
             }
             if (other.CompareTag("Aqua Totem"))
             {
-                RegainHealth(1f);
+
             }
         }
 
-
-        public void RegainHealth(float health)
+        #region Health System
+        public void Heal(int amount)
         {
-            currentHealth += (int)health;
-            if (currentHealth > maxHealth)
+            if (!IsOwner)
             {
-                currentHealth = maxHealth;
+                // Server-side validation
+                int currentHealthValue = currentHealth.Value;
+                if (currentHealthValue + amount > 100)
+                {
+                    currentHealth.Value = 100;
+                }
+                else
+                {
+                    currentHealth.Value += amount;
+                }
+
+                // Notify clients of the health change
+                UpdateHealthServerRpc(currentHealth.Value);
             }
-            UpdateHealthUI();
+            else
+            {
+                // Client-side prediction
+                int currentHealthValue = currentHealth.Value;
+                if (currentHealthValue + amount > 100)
+                {
+                    currentHealth.Value = 100;
+                }
+                else
+                {
+                    currentHealth.Value += amount;
+                }
+
+                // Notify server
+                UpdateHealthServerRpc(currentHealth.Value);
+            }
         }
 
-        public void TakeDamage(float damage)
+        public void TakeDamage(int damage)
         {
-            currentHealth -= (int)damage;
-            UpdateHealthUI();
+            if (!IsOwner)
+            {
+                // Server-side validation
+                int currentHealthValue = currentHealth.Value;
+                if (currentHealthValue - damage < 0)
+                {
+                    currentHealth.Value = 0;
+                }
+                else
+                {
+                    currentHealth.Value -= damage;
+                }
+
+                // Notify clients of the health change
+                UpdateHealthServerRpc(currentHealth.Value);
+            }
+            else
+            {
+                // Client-side prediction
+                int currentHealthValue = currentHealth.Value;
+                if (currentHealthValue - damage < 0)
+                {
+                    currentHealth.Value = 0;
+                }
+                else
+                {
+                    currentHealth.Value -= damage;
+                }
+
+                // Notify server
+                UpdateHealthServerRpc(currentHealth.Value);
+            }
         }
 
-        public IEnumerator AnimateBeforeRespawn()
+        [ServerRpc(RequireOwnership = false)]
+        public void UpdateHealthServerRpc(int health)
+        {
+            currentHealth.Value = health;
+            healthText.SetText($"Health: {health}");
+        }
+        #endregion
+
+        #region Burning DOT
+        [ServerRpc(RequireOwnership = false)]
+        public void ApplyBurningServerRpc(int damage, float interval)
+        {
+            if (currentHealth.Value > 0)
+            {
+                StartCoroutine(ApplyBurningCoroutine(damage, interval));
+            }
+        }
+
+        IEnumerator ApplyBurningCoroutine(int damage, float interval)
+        {
+            while (currentHealth.Value > 0)
+            {
+                TakeDamage(damage);
+                yield return new WaitForSeconds(interval);
+            }
+        }
+        #endregion
+
+        #region Death System
+        public void Die()
+        {
+            if (!IsOwner)
+            {
+                isDead.Value = true;
+
+                SetPlayerDieServeRpc(isDead.Value);
+            }
+            else
+            {
+                isDead.Value = true;
+
+                SetPlayerDieServeRpc(isDead.Value);
+            }
+
+            StartCoroutine(RespawnCoroutine());
+        }
+
+        [ServerRpc(RequireOwnership = false)]
+        public void SetPlayerDieServeRpc(bool isDead)
+        {
+            this.isDead.Value = isDead;
+        }
+
+        IEnumerator RespawnCoroutine()
         {
             animator.SetTrigger("IsDead");
-            yield return new WaitForSeconds(1f);
-            GameManagerRPC.Instance.RespawnPlayerServerRpc(OwnerClientId);
-            isDead = false;
-            currentHealth = maxHealth;
+            yield return new WaitForSeconds(5f);
+
+            // Respawn
+            if (IsOwner)
+            {
+                transform.position = GameManagerRPC.Instance.GetRespawnPosition();
+                currentHealth.Value = 100;
+            }
+            else
+            {
+                transform.position = GameManagerRPC.Instance.GetRespawnPosition();
+                SetPlayerHealth(100);
+            }
             animator.SetTrigger("IsAlive");
+            isDead.Value = false;
+
+            SetPlayerDieServeRpc(isDead.Value);
         }
 
+        public void SetPlayerHealth(int health)
+        {
+            currentHealth.Value = health;
+        }
+        #endregion
+
+        #region Soul Swap
+        public void SwapSouls()
+        {
+            if (!IsOwner)
+            {
+                if (soulSwapCooldown.Value <= 0f)
+                {
+                    SwapSoulsServerRpc();
+                    soulSwapCooldown.Value = 30f;
+
+                    SetSoulSwapCooldownServerRpc(soulSwapCooldown.Value);
+                }
+            }
+            else
+            {
+                if (soulSwapCooldown.Value <= 0f)
+                {
+                    SwapSoulsServerRpc();
+                    soulSwapCooldown.Value = 30f;
+
+                    SetSoulSwapCooldownServerRpc(soulSwapCooldown.Value);
+                }
+            }
+        }
+
+        [ServerRpc(RequireOwnership = false)]
+        public void SetSoulSwapCooldownServerRpc(float cooldown)
+        {
+            soulSwapCooldown.Value = cooldown;
+        }
+
+        [ServerRpc(RequireOwnership = false)]
+        public void SwapSoulsServerRpc()
+        {
+            role.SwapCharacterModelRpc();
+
+            AudioSource.PlayClipAtPoint(soulSwapSound, transform.position);
+        }
+
+        private void Update()
+        {
+            if (soulSwapCooldown.Value > 0f)
+            {
+                soulSwapCooldown.Value -= Time.deltaTime;
+            }
+            if (soulSwapCooldown.Value < 0f)
+            {
+                soulSwapCooldown.Value = 0f;
+                role.ResetCharacterModelRpc();
+            }
+        }
+        #endregion
+
+        #region Moving Platform
+        public void SetMovingPlatform(LBMovingPlatform movingPlatform)
+        {
+            if (movingPlatform != null)
+            {
+                transform.SetParent(movingPlatform.transform);
+            }
+            else
+            {
+                transform.SetParent(null);
+            }
+        }
+        #endregion
     }
 }
