@@ -95,6 +95,7 @@ GameObject:
   - component: {fileID: 8357413500253098983}
   - component: {fileID: 8357413500253098982}
   - component: {fileID: 8357413500253098981}
+  - component: {fileID: 2860880923474799562}
   m_Layer: 0
   m_Name: Checkpoint
   m_TagString: Checkpoint
@@ -157,6 +158,27 @@ MonoBehaviour:
   activatedCheckpoint: {fileID: 8357413501180847712}
   checkpointPosition: {fileID: 8357413500253098983}
   checkpointActivated: {fileID: 8300000, guid: 111a349b9f7e828408e25b329ae61bd7, type: 3}
+--- !u!114 &2860880923474799562
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8357413500253098976}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 0
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
 --- !u!1 &8357413501180847712
 GameObject:
   m_ObjectHideFlags: 0

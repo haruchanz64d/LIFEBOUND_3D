@@ -11,8 +11,8 @@ public class GameManagerRPC : NetworkBehaviour
 {
     public static GameManagerRPC Instance { get; private set; }
 
-    public NetworkVariable<Transform> lastCheckpointInteracted = new NetworkVariable<Transform>(null);
-    
+    public NetworkVariable<NetworkObject> lastCheckpointInteracted = new NetworkVariable<NetworkObject>(null);
+
     public Transform originalSpawnpoint;
 
     void Awake()
@@ -24,24 +24,34 @@ public class GameManagerRPC : NetworkBehaviour
         Instance = this;
     }
 
-    public void SetCheckpoint(Transform checkpoint)
+    public void SetCheckpoint(NetworkObject checkpoint)
     {
         if (!IsServer)
         {
+            // Client-side prediction
             lastCheckpointInteracted.Value = checkpoint;
 
+            // Notify server
             SetCheckpointServerRpc(checkpoint);
         }
         else
         {
+            // Server-side validation
             lastCheckpointInteracted.Value = checkpoint;
 
-            SetCheckpointServerRpc(checkpoint);
+            // Notify clients
+            SetCheckpointClientRpc(checkpoint);
         }
     }
 
     [ServerRpc(RequireOwnership = false)]
-    public void SetCheckpointServerRpc(Transform checkpoint)
+    public void SetCheckpointServerRpc(NetworkObject checkpoint)
+    {
+        lastCheckpointInteracted.Value = checkpoint;
+    }
+
+    [ClientRpc]
+    public void SetCheckpointClientRpc(NetworkObject checkpoint)
     {
         lastCheckpointInteracted.Value = checkpoint;
     }
@@ -50,7 +60,7 @@ public class GameManagerRPC : NetworkBehaviour
     {
         if (lastCheckpointInteracted.Value != null)
         {
-            return lastCheckpointInteracted.Value.position;
+            return lastCheckpointInteracted.Value.transform.position;
         }
         else
         {

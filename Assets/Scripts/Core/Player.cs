@@ -179,7 +179,13 @@ namespace LB.Character
         {
             if (other.CompareTag("Checkpoint"))
             {
-                other.GetComponent<LBCheckpoint>().OnCheckpointActivated();
+                NetworkObject checkpoint = other.GetComponent<NetworkObject>();
+
+                if(checkpoint != null)
+                {
+                    GameManagerRPC.Instance.SetCheckpoint(checkpoint);
+                    other.GetComponent<LBCheckpoint>().OnCheckpointActivated();
+                }
             }
         }
 
@@ -303,20 +309,20 @@ namespace LB.Character
             {
                 isDead.Value = true;
 
-                SetPlayerDieServeRpc(isDead.Value);
+                SetPlayerDieServerRpc(isDead.Value);
             }
             else
             {
                 isDead.Value = true;
 
-                SetPlayerDieServeRpc(isDead.Value);
+                SetPlayerDieServerRpc(isDead.Value);
             }
 
             StartCoroutine(RespawnCoroutine());
         }
 
         [ServerRpc(RequireOwnership = false)]
-        public void SetPlayerDieServeRpc(bool isDead)
+        public void SetPlayerDieServerRpc(bool isDead)
         {
             this.isDead.Value = isDead;
         }
@@ -340,7 +346,7 @@ namespace LB.Character
             animator.SetTrigger("IsAlive");
             isDead.Value = false;
 
-            SetPlayerDieServeRpc(isDead.Value);
+            SetPlayerDieServerRpc(isDead.Value);
         }
 
         public void SetPlayerHealth(int health)
