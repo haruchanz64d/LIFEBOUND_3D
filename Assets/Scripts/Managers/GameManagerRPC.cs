@@ -11,9 +11,24 @@ public class GameManagerRPC : NetworkBehaviour
 {
     public static GameManagerRPC Instance { get; private set; }
 
+    [Header("Checkpoint System")]
     public Transform lastCheckpointInteracted;
 
     public Transform originalSpawnpoint;
+
+    [Header("Health System")]
+    public int maxHealth = 100;
+    public NetworkVariable<int> currentHealth = new NetworkVariable<int>(100, (NetworkVariableReadPermission)NetworkVariableWritePermission.Owner);
+
+    [Header("Death System")]
+    public NetworkVariable<bool> isDead = new NetworkVariable<bool>(false, (NetworkVariableReadPermission)NetworkVariableWritePermission.Owner);
+
+    [Header("Soul Swap System")]
+    public NetworkVariable<float> soulSwapCooldown = new NetworkVariable<float>(writePerm: NetworkVariableWritePermission.Owner);
+
+    [Header("Burning System")]
+    public int burningDamage = 2;
+    public float burningInterval = 10f;
 
     void Awake()
     {
@@ -33,7 +48,7 @@ public class GameManagerRPC : NetworkBehaviour
             lastCheckpointInteracted = checkpoint.transform;
 
             // Notify server
-            
+
         }
         else
         {
@@ -41,7 +56,7 @@ public class GameManagerRPC : NetworkBehaviour
             lastCheckpointInteracted = checkpoint.transform;
 
             // Notify clients
-            
+
         }
     }
 
@@ -55,5 +70,17 @@ public class GameManagerRPC : NetworkBehaviour
         {
             return originalSpawnpoint.position;
         }
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    public void SetPlayerDieServerRpc(bool isDead)
+    {
+        this.isDead.Value = isDead;
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    public void SetSoulSwapCooldownServerRpc(float cooldown)
+    {
+        soulSwapCooldown.Value = cooldown;
     }
 }

@@ -6,8 +6,6 @@ public class LBCanvasManager : MonoBehaviour
     [SerializeField] private Canvas mainCanvas;
     [SerializeField] private Canvas pauseCanvas;
 
-    private LBServerManager serverManager;
-
     private bool isGameplayPaused = false;
     public bool GetGameplayPaused { 
         get 
@@ -23,7 +21,7 @@ public class LBCanvasManager : MonoBehaviour
 
     private void Start()
     {
-        serverManager = FindObjectOfType<LBServerManager>();
+        
     }
 
     public void OnGameplayPause()
