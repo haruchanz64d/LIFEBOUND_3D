@@ -33,7 +33,8 @@ namespace LB.Character
         private float jumpHorizontalSpeed = 1f;
         [Space]
         [Header("Health Properties")]
-        [SerializeField] private NetworkVariable<int> currentHealth = new NetworkVariable<int>(100);
+        private int currentHealth;
+        private int maxHealth = 100;
         [SerializeField] private TextMeshProUGUI healthText;
         [Space]
         [Header("Death Properties")]
@@ -83,10 +84,31 @@ namespace LB.Character
             animator = GetComponent<Animator>();
         }
 
+        /// <summary>
+        /// Update is called every frame, if the MonoBehaviour is enabled.
+        /// </summary>
+        void Update()
+        {
+            UpdateHealth(currentHealth);
+            HandleSoulSwapCooldownServerRpc();
+        }
+
         private void LateUpdate()
         {
             HandleMovement();
+            HandleSoulSwapInput();
         }
+
+        #region Soul Swap Input
+        private void HandleSoulSwapInput()
+        {
+            if (!IsLocalPlayer) return;
+            if (soulSwapInput.action.WasPerformedThisFrame())
+            {
+                SwapSouls();
+            }
+        }
+        #endregion
 
         #region Movement
         /// <summary>
@@ -204,80 +226,21 @@ namespace LB.Character
         #region Health System
         public void Heal(int amount)
         {
-            if (!IsOwner)
+            currentHealth += amount;
+            if (currentHealth > maxHealth)
             {
-                // Server-side validation
-                int currentHealthValue = currentHealth.Value;
-                if (currentHealthValue + amount > 100)
-                {
-                    currentHealth.Value = 100;
-                }
-                else
-                {
-                    currentHealth.Value += amount;
-                }
-
-                // Notify clients of the health change
-                UpdateHealthServerRpc(currentHealth.Value);
-            }
-            else
-            {
-                // Client-side prediction
-                int currentHealthValue = currentHealth.Value;
-                if (currentHealthValue + amount > 100)
-                {
-                    currentHealth.Value = 100;
-                }
-                else
-                {
-                    currentHealth.Value += amount;
-                }
-
-                // Notify server
-                UpdateHealthServerRpc(currentHealth.Value);
+                currentHealth = maxHealth;
             }
         }
 
         public void TakeDamage(int damage)
         {
-            if (!IsOwner)
-            {
-                // Server-side validation
-                int currentHealthValue = currentHealth.Value;
-                if (currentHealthValue - damage < 0)
-                {
-                    currentHealth.Value = 0;
-                }
-                else
-                {
-                    currentHealth.Value -= damage;
-                }
-
-                // Notify clients of the health change
-                UpdateHealthServerRpc(currentHealth.Value);
-            }
-            else
-            {
-                // Client-side prediction
-                int currentHealthValue = currentHealth.Value;
-                if (currentHealthValue - damage < 0)
-                {
-                    currentHealth.Value = 0;
-                }
-                else
-                {
-                    currentHealth.Value -= damage;
-                }
-
-                // Notify server
-                UpdateHealthServerRpc(currentHealth.Value);
-            }
+            currentHealth -= damage;
         }
 
-        [ServerRpc(RequireOwnership = false)]
-        public void UpdateHealthServerRpc(int health)
+        public void UpdateHealth(int health)
         {
-            currentHealth.Value = health;
+            currentHealth = health;
             healthText.SetText($"Health: {health}");
         }
         #endregion
@@ -286,7 +249,7 @@ namespace LB.Character
         [ServerRpc(RequireOwnership = false)]
         public void ApplyBurningServerRpc(int damage, float interval)
         {
-            if (currentHealth.Value > 0)
+            if (currentHealth > 0)
             {
                 StartCoroutine(ApplyBurningCoroutine(damage, interval));
             }
@@ -294,7 +257,7 @@ namespace LB.Character
 
         IEnumerator ApplyBurningCoroutine(int damage, float interval)
         {
-            while (currentHealth.Value > 0)
+            while (currentHealth > 0)
             {
                 TakeDamage(damage);
                 yield return new WaitForSeconds(interval);
@@ -336,7 +299,7 @@ namespace LB.Character
             if (IsOwner)
             {
                 transform.position = GameManagerRPC.Instance.GetRespawnPosition();
-                currentHealth.Value = 100;
+                currentHealth = maxHealth;
             }
             else
             {
@@ -351,7 +314,7 @@ namespace LB.Character
 
         public void SetPlayerHealth(int health)
         {
-            currentHealth.Value = health;
+            currentHealth = health;
         }
         #endregion
 
@@ -394,7 +357,8 @@ namespace LB.Character
             AudioSource.PlayClipAtPoint(soulSwapSound, transform.position);
         }
 
-        private void Update()
+        [ServerRpc(RequireOwnership = false)]
+        private void HandleSoulSwapCooldownServerRpc()
         {
             if (soulSwapCooldown.Value > 0f)
             {
@@ -404,20 +368,6 @@ namespace LB.Character
             {
                 soulSwapCooldown.Value = 0f;
                 role.ResetCharacterModelRpc();
-            }
-        }
-        #endregion
-
-        #region Moving Platform
-        public void SetMovingPlatform(LBMovingPlatform movingPlatform)
-        {
-            if (movingPlatform != null)
-            {
-                transform.SetParent(movingPlatform.transform);
-            }
-            else
-            {
-                transform.SetParent(null);
             }
         }
         #endregion

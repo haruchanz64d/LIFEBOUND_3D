@@ -7,46 +7,27 @@ namespace LB.Environment.Objects
     public class LBMovingPlatform : NetworkBehaviour
     {
         [SerializeField] private Transform[] waypoints;
-        [SerializeField] private float movementSpeed = 6.9f;
+        [SerializeField] private float movementSpeed = 9.0f;
         private int currentWaypointIndex = 0;
-        private Vector3 lastPlatformPosition;
 
         public NetworkVariable<bool> hasPlayer = new NetworkVariable<bool>(false);
 
         public override void OnNetworkSpawn()
         {
             base.OnNetworkSpawn();
-
-            lastPlatformPosition = transform.position;
         }
-        private void FixedUpdate()
+        private void Update()
         {
-            MoveTowardsWaypoint();
-        }
-
-        private void MoveTowardsWaypoint()
-        {
-            transform.position = Vector3.MoveTowards(transform.position, waypoints[currentWaypointIndex].position, movementSpeed * Time.deltaTime);
-            if (Vector3.Distance(transform.position, waypoints[currentWaypointIndex].position) < 0.1f)
+            if(Vector3.Distance(waypoints[currentWaypointIndex].position, transform.position) < 0.1f)
             {
-                currentWaypointIndex = (currentWaypointIndex + 1) % waypoints.Length;
-
-                if (currentWaypointIndex == 0 && isPlatformReachedEnd())
+                currentWaypointIndex++;
+                if(currentWaypointIndex >= waypoints.Length)
                 {
-                    SwitchBackToStartingPosition();
+                    currentWaypointIndex = 0;
                 }
             }
-        }
 
-        private void SwitchBackToStartingPosition()
-        {
-            transform.position = waypoints[0].position;
-            currentWaypointIndex = 1;
-        }
-
-        private bool isPlatformReachedEnd()
-        {
-            return currentWaypointIndex == 0;
+            transform.position = Vector3.MoveTowards(transform.position, waypoints[currentWaypointIndex].position, movementSpeed * Time.deltaTime);
         }
 
         /// <summary>
@@ -57,12 +38,7 @@ namespace LB.Environment.Objects
         {
             if (other.CompareTag("Player"))
             {
-                Player player = other.GetComponent<Player>();
-                if (player != null)
-                {
-                    SetPlayerParentToMovingPlatformServerRpc(player.NetworkObjectId);
-                    player.SetMovingPlatform(this);
-                }
+                SetPlayerParentToMovingPlatformServerRpc(other.GetComponent<Player>().NetworkObjectId);
             }
         }
 
@@ -74,26 +50,22 @@ namespace LB.Environment.Objects
         {
             if (other.CompareTag("Player"))
             {
-                Player player = other.GetComponent<Player>();
-                if (player != null)
-                {
-                    player.SetMovingPlatform(null);
-                    SetPlayerParentToMovingPlatformServerRpc(default);
-                }
+                RemovePlayerParentFromMovingPlatformServerRpc(other.GetComponent<Player>().NetworkObjectId);
             }
         }
 
         [ServerRpc(RequireOwnership = false)]
         public void SetPlayerParentToMovingPlatformServerRpc(ulong playerid)
         {
-            if(playerid == default)
-            {
-                hasPlayer.Value = false;
-            }
-            else 
-            {
-                hasPlayer.Value = true;
-            }
+            var player = NetworkManager.Singleton.SpawnManager.SpawnedObjects[playerid].GetComponent<Player>();
+            player.transform.SetParent(transform);
+        }
+
+        [ServerRpc(RequireOwnership = false)]
+        public void RemovePlayerParentFromMovingPlatformServerRpc(ulong playerid)
+        {
+            var player = NetworkManager.Singleton.SpawnManager.SpawnedObjects[playerid].GetComponent<Player>();
+            player.transform.SetParent(null);
         }
     }
 }
