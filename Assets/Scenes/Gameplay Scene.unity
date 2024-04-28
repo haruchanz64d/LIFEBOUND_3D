@@ -39,7 +39,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.36520997, g: 0.021678902, b: 0.026158143, a: 1}
+  m_IndirectSpecularColor: {r: 0.36507285, g: 0.021680998, b: 0.026153572, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -124,37 +124,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &124916105
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 124916106}
-  m_Layer: 0
-  m_Name: Spawn Point (1)
-  m_TagString: Untagged
-  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &124916106
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 124916105}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -237.1, y: 20, z: 2730}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!1001 &204563223
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -576,9 +545,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ca48f0917ed01f419aef72af5b0af3e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnPoints:
-  - {fileID: 241659708}
-  - {fileID: 124916106}
+  spawnPoint: {fileID: 241659708}
   characterDatabase: {fileID: 11400000, guid: f951c2d48c59a85408f207de76310dfb, type: 2}
 --- !u!4 &453894899
 Transform:
@@ -909,8 +876,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2767ebb81cf8aa4d90b66ca2490c71d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lastCheckpointInteracted:
-    m_InternalValue: {fileID: 0}
+  lastCheckpointInteracted: {fileID: 0}
   originalSpawnpoint: {fileID: 0}
 --- !u!4 &789988447
 Transform:
@@ -4904,5 +4870,4 @@ SceneRoots:
   - {fileID: 1414533068}
   - {fileID: 1757242320878534493}
   - {fileID: 241659708}
-  - {fileID: 124916106}
   - {fileID: 1142457528}
