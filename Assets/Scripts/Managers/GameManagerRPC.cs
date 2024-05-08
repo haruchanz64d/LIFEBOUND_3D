@@ -97,11 +97,11 @@ public class GameManagerRPC : NetworkBehaviour
     [ServerRpc(RequireOwnership = false)]
     private void ApplyBurningCoroutineServerRpc()
     {
-        foreach(var players in NetworkManager.Singleton.ConnectedClientsList)
+        foreach(var players in NetworkManager.Singleton.ConnectedClientsIds)
         {
-            if(players.PlayerObject != null)
+            if(players != OwnerClientId)
             {
-                var player = players.PlayerObject.GetComponent<Player>();
+                var player = NetworkManager.Singleton.ConnectedClients[players].PlayerObject.GetComponent<Player>();
                 player.TakeDamage(dotDamage);
             }
         }

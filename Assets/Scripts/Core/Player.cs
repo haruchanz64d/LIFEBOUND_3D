@@ -263,12 +263,14 @@ namespace LB.Character
         #region Health System
         public void Heal(int amount)
         {
+            if(!IsLocalPlayer) return;
             currentHealth += amount;
             currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
         }
 
         public void TakeDamage(int damage)
         {
+            if(!IsLocalPlayer) return;
             currentHealth -= damage;
             cameraShake.ShakeCamera();
             audioManager.PlaySound(hurtSound);
@@ -369,6 +371,7 @@ namespace LB.Character
             GameManagerRPC.Instance.IsSoulSwapEnabled = true;
             role.SwapCharacterModelRpc();
             AudioSource.PlayClipAtPoint(soulSwapSound, transform.position);
+            HandleSoulSwapCooldownServerRpc();
         }
 
         [ServerRpc(RequireOwnership = false)]
