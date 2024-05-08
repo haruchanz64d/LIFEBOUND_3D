@@ -217,46 +217,35 @@ namespace LB.Character
                     other.GetComponent<LBCheckpoint>().OnCheckpointActivated();
                 }
             }
-            if (other.CompareTag("Platform"))
-            {
-                var platformNetworkObject = other.gameObject.GetComponent<NetworkObject>();
-                var playerNetworkObject = gameObject.GetComponent<NetworkObject>();
-
-                if (NetworkManager.Singleton.IsServer) { platformNetworkObject.ChangeOwnership(playerNetworkObject.OwnerClientId); }
-
-                platformNetworkObject.TrySetParent(playerNetworkObject);
-            }
             if(other.CompareTag("Aqua Totem"))
             {
                 Heal(2);
+            }
+            if(other.CompareTag("Platform"))
+            {
+                NetworkObject platform = other.GetComponent<NetworkObject>();
+                if(platform != null)
+                {
+                    platform.transform.SetParent(transform);
+                }
             }
         }
 
         private void OnTriggerStay(Collider other)
         {
-            if (other.CompareTag("Lava"))
+            if(other.CompareTag("Platform"))
             {
-                TakeDamage(2);
+                NetworkObject platform = other.GetComponent<NetworkObject>();
+                if(platform != null)
+                {
+                    platform.transform.SetParent(transform);
+                }
             }
         }
 
         void OnTriggerExit(Collider other)
         {
-            if (other.CompareTag("Platform"))
-            {
-                var platformNetworkObject = other.gameObject.GetComponent<NetworkObject>();
-                var playerNetworkObject = gameObject.GetComponent<NetworkObject>();
-
-                if (IsOwner)
-                {
-                    platformNetworkObject.TrySetParent(playerNetworkObject);
-                }
-                else
-                {
-                    platformNetworkObject.ChangeOwnership(playerNetworkObject.OwnerClientId);
-                    platformNetworkObject.TrySetParent(playerNetworkObject);
-                }
-            }
+            
         }
         #endregion
 
