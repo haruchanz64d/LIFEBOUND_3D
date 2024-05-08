@@ -33,7 +33,7 @@ public class GameManagerRPC : NetworkBehaviour
             isSoulSwapEnabled = value;
         }
     }
-     [Header("DoT")]
+    [Header("DoT")]
     public bool isDotActive = false;
     private int dotDamage = 2;
     private float dotTickInterval = 10f;
@@ -52,9 +52,11 @@ public class GameManagerRPC : NetworkBehaviour
 
     private void Update()
     {
-        if(isDotActive){
+        if (isDotActive)
+        {
             dotTimer += Time.deltaTime;
-            if(dotTimer >= dotTickInterval){
+            if (dotTimer >= dotTickInterval)
+            {
                 ApplyBurningCoroutineServerRpc();
                 dotTimer = 0f;
             }
@@ -97,13 +99,10 @@ public class GameManagerRPC : NetworkBehaviour
     [ServerRpc(RequireOwnership = false)]
     private void ApplyBurningCoroutineServerRpc()
     {
-        foreach(var players in NetworkManager.Singleton.ConnectedClientsIds)
+        foreach(NetworkClient player in NetworkManager.Singleton.ConnectedClientsList)
         {
-            if(players != OwnerClientId)
-            {
-                var player = NetworkManager.Singleton.ConnectedClients[players].PlayerObject.GetComponent<Player>();
-                player.TakeDamage(dotDamage);
-            }
+            player.PlayerObject.GetComponent<Player>().TakeDamage(dotDamage);
+            Debug.Log("Player took damage from DoT");
         }
     }
 }

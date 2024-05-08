@@ -226,6 +226,10 @@ namespace LB.Character
 
                 platformNetworkObject.TrySetParent(playerNetworkObject);
             }
+            if(other.CompareTag("Aqua Totem"))
+            {
+                Heal(2);
+            }
         }
 
         private void OnTriggerStay(Collider other)
@@ -233,10 +237,6 @@ namespace LB.Character
             if (other.CompareTag("Lava"))
             {
                 TakeDamage(2);
-            }
-            if (other.CompareTag("Aqua Totem"))
-            {
-                Heal(2);
             }
         }
 
@@ -263,14 +263,14 @@ namespace LB.Character
         #region Health System
         public void Heal(int amount)
         {
-            if(!IsLocalPlayer) return;
             currentHealth += amount;
             currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
+
+            UpdateHealth(currentHealth);
         }
 
         public void TakeDamage(int damage)
         {
-            if(!IsLocalPlayer) return;
             currentHealth -= damage;
             cameraShake.ShakeCamera();
             audioManager.PlaySound(hurtSound);
@@ -279,6 +279,8 @@ namespace LB.Character
                 Die();
             }
             currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
+
+            UpdateHealth(currentHealth);
         }
 
         public void UpdateHealth(int health)
