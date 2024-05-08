@@ -2227,11 +2227,11 @@ MonoBehaviour:
   role: {fileID: 875272409154985773}
   animator: {fileID: 984969665413130014}
   mainCanvas: {fileID: 4538814419571167397}
-  camera: {fileID: 0}
+  camera: {fileID: 8105785207372673053}
   cameraShake: {fileID: 8689260378421896929}
-  minimapCamera: {fileID: 0}
-  listener: {fileID: 0}
-  cameraTransform: {fileID: 0}
+  minimapCamera: {fileID: 7659465857936111731}
+  listener: {fileID: 2139651768797402897}
+  cameraTransform: {fileID: 7659465858287023355}
   soulSwapSound: {fileID: 0}
   hurtSound: {fileID: 8300000, guid: 2379b46edd7ff25498875b0f2c89d0f8, type: 3}
 --- !u!143 &565252882734960639
@@ -2784,12 +2784,12 @@ PrefabInstance:
     - target: {fileID: 2762543633544823908, guid: 6335bc88d7e50e641952c5b295cc886c,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.000000016662309
+      value: 0.000000016662309
       objectReference: {fileID: 0}
     - target: {fileID: 2762543633544823908, guid: 6335bc88d7e50e641952c5b295cc886c,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.0000000042926662
+      value: -0.0000000042926662
       objectReference: {fileID: 0}
     - target: {fileID: 4350738797685276802, guid: 6335bc88d7e50e641952c5b295cc886c,
         type: 3}
@@ -2814,21 +2814,51 @@ PrefabInstance:
     - target: {fileID: 7081107528445182135, guid: 6335bc88d7e50e641952c5b295cc886c,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.000000008331155
+      value: 0.0000000083311535
       objectReference: {fileID: 0}
     - target: {fileID: 7081107528445182135, guid: 6335bc88d7e50e641952c5b295cc886c,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.0000000021463336
+      value: -0.000000002146333
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6335bc88d7e50e641952c5b295cc886c, type: 3}
+--- !u!81 &2139651768797402897 stripped
+AudioListener:
+  m_CorrespondingSourceObject: {fileID: 5885347794045003662, guid: 6335bc88d7e50e641952c5b295cc886c,
+    type: 3}
+  m_PrefabInstance: {fileID: 5484651322015412383}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7659465857267814115 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2762543632475274876, guid: 6335bc88d7e50e641952c5b295cc886c,
     type: 3}
   m_PrefabInstance: {fileID: 5484651322015412383}
   m_PrefabAsset: {fileID: 0}
+--- !u!20 &7659465857936111731 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 2762543633144563948, guid: 6335bc88d7e50e641952c5b295cc886c,
+    type: 3}
+  m_PrefabInstance: {fileID: 5484651322015412383}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &7659465858287023355 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2762543633544823908, guid: 6335bc88d7e50e641952c5b295cc886c,
+    type: 3}
+  m_PrefabInstance: {fileID: 5484651322015412383}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &8105785207372673053 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4350738797685276802, guid: 6335bc88d7e50e641952c5b295cc886c,
+    type: 3}
+  m_PrefabInstance: {fileID: 5484651322015412383}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 319d2fe34a804e245819465c9505ea59, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
