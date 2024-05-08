@@ -34,6 +34,7 @@ namespace Assets.Scripts.Core
         private void Awake()
         {
             SetCharacterModel(characterName);
+            Debug.Log("Character Name: " + characterName);
         }
 
         public void SetCharacterModel(CharacterName name)

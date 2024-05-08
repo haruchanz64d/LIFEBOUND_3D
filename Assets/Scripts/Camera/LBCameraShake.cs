@@ -7,7 +7,7 @@ public class LBCameraShake : MonoBehaviour
 {
     [SerializeField] private CinemachineFreeLook virtualCamera;
     private CinemachineBasicMultiChannelPerlin virtualCameraNoise;
-    private float m_ShakeIntensity = 1f;
+    private float m_ShakeIntensity = 5f;
     private float m_ShakeTime = 0.2f;
     private float m_Timer;
 

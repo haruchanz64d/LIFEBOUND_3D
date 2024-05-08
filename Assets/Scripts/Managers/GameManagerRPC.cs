@@ -4,6 +4,8 @@ using TMPro;
 using LB.Character;
 using System.Collections.Generic;
 using System.Linq;
+using System.Collections;
+using UnityEngine.PlayerLoop;
 /// <summary>
 /// Manages the game logic and mechanics for the multiplayer game.
 /// </summary>
@@ -15,10 +17,6 @@ public class GameManagerRPC : NetworkBehaviour
     public Transform lastCheckpointInteracted;
 
     public Transform originalSpawnpoint;
-
-    [Header("Health System")]
-    public int maxHealth = 100;
-    public int currentHealth;
 
     [Header("Death System")]
     public bool isDead;
@@ -33,15 +31,13 @@ public class GameManagerRPC : NetworkBehaviour
         set
         {
             isSoulSwapEnabled = value;
-            if (isSoulSwapEnabled)
-            {
-                soulSwapCooldown = 0;
-            }
         }
     }
-    [Header("Burning System")]
-    public int burningDamage = 2;
-    public float burningInterval = 10f;
+     [Header("DoT")]
+    public bool isDotActive = false;
+    private int dotDamage = 2;
+    private float dotTickInterval = 10f;
+    [SerializeField] private float dotTimer = 0f;
 
     void Awake()
     {
@@ -51,8 +47,19 @@ public class GameManagerRPC : NetworkBehaviour
     public override void OnNetworkSpawn()
     {
         Instance = this;
+        isDotActive = true;
     }
 
+    private void Update()
+    {
+        if(isDotActive){
+            dotTimer += Time.deltaTime;
+            if(dotTimer >= dotTickInterval){
+                ApplyBurningCoroutineServerRpc();
+                dotTimer = 0f;
+            }
+        }
+    }
     public void SetCheckpoint(NetworkObject checkpoint)
     {
         lastCheckpointInteracted = checkpoint.transform;
@@ -85,5 +92,18 @@ public class GameManagerRPC : NetworkBehaviour
     public void SetSoulSwapCooldownServerRpc(float cooldown)
     {
         soulSwapCooldown = cooldown;
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void ApplyBurningCoroutineServerRpc()
+    {
+        foreach(var players in NetworkManager.Singleton.ConnectedClientsList)
+        {
+            if(players.PlayerObject != null)
+            {
+                var player = players.PlayerObject.GetComponent<Player>();
+                player.TakeDamage(dotDamage);
+            }
+        }
     }
 }
