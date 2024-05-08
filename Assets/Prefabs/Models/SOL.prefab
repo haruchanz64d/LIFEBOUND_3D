@@ -2222,7 +2222,11 @@ MonoBehaviour:
     type: 3}
   currentHealth: 0
   maxHealth: 100
+  healTickInterval: 2
+  healTimer: 0
   healthText: {fileID: 2478055541095770036}
+  damageTickInterval: 3
+  damageTimer: 0
   soulSwapImage: {fileID: 4116636133959886458}
   role: {fileID: 875272409154985773}
   animator: {fileID: 984969665413130014}
@@ -2545,7 +2549,7 @@ PrefabInstance:
     - target: {fileID: 3068632170743272764, guid: 813b90342604ee5428e900ad27e84cac,
         type: 3}
       propertyPath: m_AdditionalShaderChannelsFlag
-      value: 0
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 3208396656474393702, guid: 813b90342604ee5428e900ad27e84cac,
         type: 3}
@@ -2666,6 +2670,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -100.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7701371403948298746, guid: 813b90342604ee5428e900ad27e84cac,
+        type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 8771117243404054005}
+    - target: {fileID: 7701371403948298746, guid: 813b90342604ee5428e900ad27e84cac,
+        type: 3}
+      propertyPath: m_RenderMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7701371403948298746, guid: 813b90342604ee5428e900ad27e84cac,
+        type: 3}
+      propertyPath: m_UpdateRectTransformForStandalone
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2883,6 +2902,12 @@ Transform:
 --- !u!20 &8771117242785685886 stripped
 Camera:
   m_CorrespondingSourceObject: {fileID: 2762543633144563948, guid: 6335bc88d7e50e641952c5b295cc886c,
+    type: 3}
+  m_PrefabInstance: {fileID: 6912957692245059986}
+  m_PrefabAsset: {fileID: 0}
+--- !u!20 &8771117243404054005 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 2762543633544823911, guid: 6335bc88d7e50e641952c5b295cc886c,
     type: 3}
   m_PrefabInstance: {fileID: 6912957692245059986}
   m_PrefabAsset: {fileID: 0}

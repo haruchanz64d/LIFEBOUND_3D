@@ -2222,7 +2222,11 @@ MonoBehaviour:
     type: 3}
   currentHealth: 0
   maxHealth: 100
+  healTickInterval: 2
+  healTimer: 0
   healthText: {fileID: 5427815348091636291}
+  damageTickInterval: 3
+  damageTimer: 0
   soulSwapImage: {fileID: 5769553054528342925}
   role: {fileID: 875272409154985773}
   animator: {fileID: 984969665413130014}
@@ -2535,7 +2539,7 @@ PrefabInstance:
     - target: {fileID: 1827594871378036032, guid: 813b90342604ee5428e900ad27e84cac,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3208396656474393702, guid: 813b90342604ee5428e900ad27e84cac,
         type: 3}
@@ -2640,22 +2644,32 @@ PrefabInstance:
     - target: {fileID: 7017205240594780610, guid: 813b90342604ee5428e900ad27e84cac,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7017205240594780610, guid: 813b90342604ee5428e900ad27e84cac,
         type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7017205240594780610, guid: 813b90342604ee5428e900ad27e84cac,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 570
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7017205240594780610, guid: 813b90342604ee5428e900ad27e84cac,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -100.5
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7701371403948298746, guid: 813b90342604ee5428e900ad27e84cac,
+        type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 7659465858287023352}
+    - target: {fileID: 7701371403948298746, guid: 813b90342604ee5428e900ad27e84cac,
+        type: 3}
+      propertyPath: m_UpdateRectTransformForStandalone
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2794,12 +2808,12 @@ PrefabInstance:
     - target: {fileID: 2762543633544823908, guid: 6335bc88d7e50e641952c5b295cc886c,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.00000003366925
+      value: 0.00000003366925
       objectReference: {fileID: 0}
     - target: {fileID: 2762543633544823908, guid: 6335bc88d7e50e641952c5b295cc886c,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.0000000071147532
+      value: -0.0000000071147532
       objectReference: {fileID: 0}
     - target: {fileID: 4350738797685276802, guid: 6335bc88d7e50e641952c5b295cc886c,
         type: 3}
@@ -2814,12 +2828,12 @@ PrefabInstance:
     - target: {fileID: 5269874006270562433, guid: 6335bc88d7e50e641952c5b295cc886c,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.000000016468091
+      value: -0.000000016468091
       objectReference: {fileID: 0}
     - target: {fileID: 5269874006270562433, guid: 6335bc88d7e50e641952c5b295cc886c,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.0000000049861364
+      value: 0.0000000049861364
       objectReference: {fileID: 0}
     - target: {fileID: 7081107528445182135, guid: 6335bc88d7e50e641952c5b295cc886c,
         type: 3}
@@ -2834,12 +2848,12 @@ PrefabInstance:
     - target: {fileID: 7081107528445182135, guid: 6335bc88d7e50e641952c5b295cc886c,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.000000008417312
+      value: 0.000000008417314
       objectReference: {fileID: 0}
     - target: {fileID: 7081107528445182135, guid: 6335bc88d7e50e641952c5b295cc886c,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.0000000017786883
+      value: -0.0000000017786886
       objectReference: {fileID: 0}
     - target: {fileID: 7867440123362817007, guid: 6335bc88d7e50e641952c5b295cc886c,
         type: 3}
@@ -2866,6 +2880,12 @@ Transform:
 --- !u!20 &7659465857936111731 stripped
 Camera:
   m_CorrespondingSourceObject: {fileID: 2762543633144563948, guid: 6335bc88d7e50e641952c5b295cc886c,
+    type: 3}
+  m_PrefabInstance: {fileID: 5484651322015412383}
+  m_PrefabAsset: {fileID: 0}
+--- !u!20 &7659465858287023352 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 2762543633544823911, guid: 6335bc88d7e50e641952c5b295cc886c,
     type: 3}
   m_PrefabInstance: {fileID: 5484651322015412383}
   m_PrefabAsset: {fileID: 0}

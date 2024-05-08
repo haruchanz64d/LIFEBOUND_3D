@@ -1,16 +1,17 @@
 using UnityEngine;
 using Unity.Netcode;
-using TMPro;
 using LB.Character;
-using System.Collections.Generic;
-using System.Linq;
-using System.Collections;
-using UnityEngine.PlayerLoop;
-/// <summary>
-/// Manages the game logic and mechanics for the multiplayer game.
-/// </summary>
+
+public enum GameState
+{
+    Alive,
+    Dead,
+    SoulSwapping
+}
+
 public class GameManagerRPC : NetworkBehaviour
 {
+    private GameState gameState = GameState.Alive;
     public static GameManagerRPC Instance { get; private set; }
 
     [Header("Checkpoint System")]
@@ -33,11 +34,11 @@ public class GameManagerRPC : NetworkBehaviour
             isSoulSwapEnabled = value;
         }
     }
-    [Header("DoT")]
-    public bool isDotActive = false;
-    private int dotDamage = 2;
-    private float dotTickInterval = 10f;
-    [SerializeField] private float dotTimer = 0f;
+    [Header("Heat Wave")]
+    public bool isHeatWaveActive = false;
+    private int heatWaveDmg = 2;
+    private float heatTickInterval = 10f;
+    [SerializeField] private float heatWaveTimer = 0f;
 
     void Awake()
     {
@@ -47,18 +48,23 @@ public class GameManagerRPC : NetworkBehaviour
     public override void OnNetworkSpawn()
     {
         Instance = this;
-        isDotActive = true;
+        isHeatWaveActive = true;
     }
 
     private void Update()
     {
-        if (isDotActive)
+        HandleDoT();
+    }
+
+    public void HandleDoT()
+    {
+        if (isHeatWaveActive)
         {
-            dotTimer += Time.deltaTime;
-            if (dotTimer >= dotTickInterval)
+            heatWaveTimer += Time.deltaTime;
+            if (heatWaveTimer >= heatTickInterval)
             {
-                ApplyBurningCoroutineServerRpc();
-                dotTimer = 0f;
+                ApplyHeatwaveDamageServerRpc();
+                heatWaveTimer = 0f;
             }
         }
     }
@@ -87,21 +93,22 @@ public class GameManagerRPC : NetworkBehaviour
     [ServerRpc(RequireOwnership = false)]
     public void SetPlayerDieServerRpc(bool isDead)
     {
-        this.isDead = isDead;
+        gameState = isDead ? GameState.Dead : GameState.Alive;
     }
 
     [ServerRpc(RequireOwnership = false)]
-    public void SetSoulSwapCooldownServerRpc(float cooldown)
+    public void SetSoulSwapServerRpc(bool isSoulSwapEnabled)
     {
-        soulSwapCooldown = cooldown;
+        if (gameState == GameState.SoulSwapping) return;
+        gameState = GameState.SoulSwapping;
     }
 
     [ServerRpc(RequireOwnership = false)]
-    private void ApplyBurningCoroutineServerRpc()
+    public void ApplyHeatwaveDamageServerRpc()
     {
-        foreach(NetworkClient player in NetworkManager.Singleton.ConnectedClientsList)
+        foreach (NetworkClient player in NetworkManager.Singleton.ConnectedClientsList)
         {
-            player.PlayerObject.GetComponent<Player>().TakeDamage(dotDamage);
+            player.PlayerObject.GetComponent<Player>().UpdateHealthServerRpc(player.PlayerObject.GetComponent<Player>().currentHealth - heatWaveDmg);
             Debug.Log("Player took damage from DoT");
         }
     }

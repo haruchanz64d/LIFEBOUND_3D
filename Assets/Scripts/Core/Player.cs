@@ -7,14 +7,13 @@ using TMPro;
 using UnityEngine.UI;
 using Assets.Scripts.Managers;
 using Assets.Scripts.Core;
-using LB.Environment.Objects;
 namespace LB.Character
 {
-    /// <summary>
-    /// Represents the player character in the game.
-    /// </summary>
+
+    public enum PlayerState { Alive, Dead, SoulSwapping }
     public class Player : NetworkBehaviour
     {
+        private PlayerState playerState = PlayerState.Alive;
         [Header("Input Action References")]
         [SerializeField] private InputActionReference movementInput;
         [SerializeField] private InputActionReference jumpInput;
@@ -35,7 +34,16 @@ namespace LB.Character
         [Header("Health System")]
         public int currentHealth;
         public int maxHealth = 100;
+        private bool isHealingActive = false;
+        [SerializeField] private float healTickInterval = 2f;
+        [SerializeField] private float healTimer = 0f;
+        [Space]
         [SerializeField] private TextMeshProUGUI healthText;
+        [Space]
+        [Header("Damage System")]
+        private bool isDamageFromLavaActive = false;
+        [SerializeField] private float damageTickInterval = 3f;
+        [SerializeField] private float damageTimer = 0f;
         [Space]
         [Header("Soul Swap Properties")]
         [SerializeField] private Image soulSwapImage;
@@ -87,10 +95,6 @@ namespace LB.Character
             audioManager = FindObjectOfType<LBAudioManager>();
         }
 
-        /// <summary>
-        /// Start is called on the frame when a script is enabled just before
-        /// any of the Update methods is called the first time.
-        /// </summary>
         void Start()
         {
             currentHealth = maxHealth;
@@ -110,8 +114,7 @@ namespace LB.Character
         #region Soul Swap Input
         private void HandleSoulSwapInput()
         {
-            if (!IsLocalPlayer) return;
-            if (soulSwapInput.action.WasPerformedThisFrame() || GameManagerRPC.Instance.IsSoulSwapEnabled)
+            if (soulSwapInput.action.WasPerformedThisFrame())
             {
                 SwapSouls();
             }
@@ -217,39 +220,57 @@ namespace LB.Character
                     other.GetComponent<LBCheckpoint>().OnCheckpointActivated();
                 }
             }
-            if(other.CompareTag("Aqua Totem"))
+            if (other.CompareTag("Aqua Totem"))
             {
-                Heal(2);
-            }
-            if(other.CompareTag("Platform"))
-            {
-                NetworkObject platform = other.GetComponent<NetworkObject>();
-                if(platform != null)
-                {
-                    platform.transform.SetParent(transform);
-                }
+                isHealingActive = true;
+                ApplyHealOverTime();
             }
         }
 
         private void OnTriggerStay(Collider other)
         {
-            if(other.CompareTag("Platform"))
+            if (other.CompareTag("Lava"))
             {
-                NetworkObject platform = other.GetComponent<NetworkObject>();
-                if(platform != null)
-                {
-                    platform.transform.SetParent(transform);
-                }
+                isDamageFromLavaActive = true;
+                ApplyDamageOverTime();
             }
         }
 
         void OnTriggerExit(Collider other)
         {
-            
+            if (other.CompareTag("Platform"))
+            {
+                NetworkObject platform = other.GetComponent<NetworkObject>();
+                if (platform != null)
+                {
+                    platform.transform.SetParent(null);
+                }
+            }
+            if (other.CompareTag("Aqua Totem"))
+            {
+                isHealingActive = false;
+            }
+            if (other.CompareTag("Lava"))
+            {
+                isDamageFromLavaActive = false;
+            }
         }
         #endregion
 
         #region Health System
+        public void ApplyHealOverTime()
+        {
+            if (isHealingActive)
+            {
+                healTimer += Time.deltaTime;
+                if (healTimer >= healTickInterval)
+                {
+                    Heal(2);
+                    healTimer = 0f;
+                }
+            }
+        }
+
         public void Heal(int amount)
         {
             currentHealth += amount;
@@ -257,9 +278,25 @@ namespace LB.Character
 
             UpdateHealth(currentHealth);
         }
+        #endregion
+
+        #region Damage System
+        public void ApplyDamageOverTime()
+        {
+            if (isDamageFromLavaActive)
+            {
+                damageTimer += Time.deltaTime;
+                if (damageTimer >= damageTickInterval)
+                {
+                    TakeDamage(4);
+                    damageTimer = 0f;
+                }
+            }
+        }
 
         public void TakeDamage(int damage)
         {
+            if (!IsOwner) return; // only apply damage on the owner client
             currentHealth -= damage;
             cameraShake.ShakeCamera();
             audioManager.PlaySound(hurtSound);
@@ -270,6 +307,15 @@ namespace LB.Character
             currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
 
             UpdateHealth(currentHealth);
+            // call the server rpc to update the health on all clients
+            UpdateHealthServerRpc(currentHealth);
+        }
+
+        [ServerRpc(RequireOwnership = false)]
+        public void UpdateHealthServerRpc(int health)
+        {
+            currentHealth = health;
+            UpdateHealth(health);
         }
 
         public void UpdateHealth(int health)
@@ -282,20 +328,7 @@ namespace LB.Character
         #region Death System
         public void Die()
         {
-            if (!IsOwner)
-            {
-                GameManagerRPC.Instance.isDead = true;
-
-                SetPlayerDieServerRpc(GameManagerRPC.Instance.isDead);
-            }
-            else
-            {
-                GameManagerRPC.Instance.isDead = true;
-
-                SetPlayerDieServerRpc(GameManagerRPC.Instance.isDead);
-            }
-
-            StartCoroutine(RespawnCoroutine());
+            playerState = PlayerState.Dead;
         }
 
         [ServerRpc(RequireOwnership = false)]
@@ -304,25 +337,9 @@ namespace LB.Character
             GameManagerRPC.Instance.isDead = isDead;
         }
 
-        IEnumerator RespawnCoroutine()
+        public void RespawnToLastCheckpoint()
         {
-            animator.SetTrigger("IsDead");
-            yield return new WaitForSeconds(5f);
-
-            if (IsOwner)
-            {
-                transform.position = GameManagerRPC.Instance.GetRespawnPosition();
-                currentHealth = maxHealth;
-            }
-            else
-            {
-                transform.position = GameManagerRPC.Instance.GetRespawnPosition();
-                SetPlayerHealth(100);
-            }
-            animator.SetTrigger("IsAlive");
-            GameManagerRPC.Instance.isDead = false;
-
-            SetPlayerDieServerRpc(GameManagerRPC.Instance.isDead);
+            transform.position = GameManagerRPC.Instance.GetRespawnPosition();
         }
 
         public void SetPlayerHealth(int health)
@@ -335,17 +352,10 @@ namespace LB.Character
         #region Soul Swap
         public void SwapSouls()
         {
-            if (IsOwner)
-            {
-                if (GameManagerRPC.Instance.soulSwapCooldown <= 0f)
-                {
-                    animator.Play("Soul Swap", 0, 0f);
-                    SwapSoulsServerRpc();
-                    GameManagerRPC.Instance.soulSwapCooldown = 30f;
-
-                    SetSoulSwapCooldownServerRpc(GameManagerRPC.Instance.soulSwapCooldown);
-                }
-            }
+            animator.Play("Soul Swap", 0, 0f);
+            GameManagerRPC.Instance.soulSwapCooldown = 30f;
+            SetSoulSwapCooldownServerRpc(GameManagerRPC.Instance.soulSwapCooldown);
+            SwapSoulsServerRpc();
         }
 
         [ServerRpc(RequireOwnership = false)]
@@ -354,15 +364,20 @@ namespace LB.Character
             GameManagerRPC.Instance.soulSwapCooldown = cooldown;
         }
 
-
         [ServerRpc(RequireOwnership = false)]
         public void SwapSoulsServerRpc()
         {
             if (GameManagerRPC.Instance.IsSoulSwapEnabled) return;
             GameManagerRPC.Instance.IsSoulSwapEnabled = true;
-            role.SwapCharacterModelRpc();
+            SwapSoulsClientRpc();
             AudioSource.PlayClipAtPoint(soulSwapSound, transform.position);
             HandleSoulSwapCooldownServerRpc();
+        }
+
+        [ClientRpc]
+        public void SwapSoulsClientRpc()
+        {
+            role.SwapCharacterModelRpc();
         }
 
         [ServerRpc(RequireOwnership = false)]
