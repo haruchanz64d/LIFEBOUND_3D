@@ -2214,6 +2214,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 284ee18465c492142baba846f27eebd3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerState:
+    m_InternalValue: 0
   movementInput: {fileID: -4994890371925248262, guid: 577e95fc37a387d408b1137d106ecda7,
     type: 3}
   jumpInput: {fileID: -3088989869937338722, guid: 577e95fc37a387d408b1137d106ecda7,
@@ -2236,8 +2238,8 @@ MonoBehaviour:
   minimapCamera: {fileID: 8771117242785685886}
   listener: {fileID: 1027725364173753884}
   cameraTransform: {fileID: 8771117243404054006}
-  soulSwapSound: {fileID: 0}
-  hurtSound: {fileID: 8300000, guid: 3a037a5e7133a004a8745458a522e715, type: 3}
+  soulSwapSound: {fileID: 8300000, guid: c9421d952eb878c48bbd56013a46446b, type: 3}
+  hurtSound: {fileID: 8300000, guid: 989cd123e727edd4aafb388be8d946e8, type: 3}
 --- !u!143 &565252882734960639
 CharacterController:
   m_ObjectHideFlags: 0
@@ -2823,12 +2825,12 @@ PrefabInstance:
     - target: {fileID: 2762543633544823908, guid: 6335bc88d7e50e641952c5b295cc886c,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.00000003366925
+      value: -0.00000003366925
       objectReference: {fileID: 0}
     - target: {fileID: 2762543633544823908, guid: 6335bc88d7e50e641952c5b295cc886c,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.0000000071147532
+      value: 0.0000000071147532
       objectReference: {fileID: 0}
     - target: {fileID: 4350738797685276802, guid: 6335bc88d7e50e641952c5b295cc886c,
         type: 3}
@@ -2843,12 +2845,12 @@ PrefabInstance:
     - target: {fileID: 5269874006270562433, guid: 6335bc88d7e50e641952c5b295cc886c,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.000000016468091
+      value: -0.000000016468091
       objectReference: {fileID: 0}
     - target: {fileID: 5269874006270562433, guid: 6335bc88d7e50e641952c5b295cc886c,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.0000000049861364
+      value: 0.0000000049861364
       objectReference: {fileID: 0}
     - target: {fileID: 7081107528445182135, guid: 6335bc88d7e50e641952c5b295cc886c,
         type: 3}
@@ -2863,12 +2865,12 @@ PrefabInstance:
     - target: {fileID: 7081107528445182135, guid: 6335bc88d7e50e641952c5b295cc886c,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.000000008417314
+      value: -0.000000008417312
       objectReference: {fileID: 0}
     - target: {fileID: 7081107528445182135, guid: 6335bc88d7e50e641952c5b295cc886c,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.0000000017786886
+      value: 0.0000000017786883
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -11,7 +11,7 @@ public enum GameState
 
 public class GameManagerRPC : NetworkBehaviour
 {
-    private GameState gameState = GameState.Alive;
+    public NetworkVariable<GameState> gameState = new NetworkVariable<GameState>(GameState.Alive);
     public static GameManagerRPC Instance { get; private set; }
 
     [Header("Checkpoint System")]
@@ -24,16 +24,7 @@ public class GameManagerRPC : NetworkBehaviour
 
     [Header("Soul Swap System")]
     public float soulSwapCooldown = 30f;
-    private bool isSoulSwapEnabled;
 
-    public bool IsSoulSwapEnabled
-    {
-        get => isSoulSwapEnabled;
-        set
-        {
-            isSoulSwapEnabled = value;
-        }
-    }
     [Header("Heat Wave")]
     public bool isHeatWaveActive = false;
     private int heatWaveDmg = 2;
@@ -93,14 +84,21 @@ public class GameManagerRPC : NetworkBehaviour
     [ServerRpc(RequireOwnership = false)]
     public void SetPlayerDieServerRpc(bool isDead)
     {
-        gameState = isDead ? GameState.Dead : GameState.Alive;
+        if (isDead)
+        {
+            gameState.Value = GameState.Dead;
+        }
+        else
+        {
+            gameState.Value = GameState.Alive;
+        }
     }
 
     [ServerRpc(RequireOwnership = false)]
     public void SetSoulSwapServerRpc(bool isSoulSwapEnabled)
     {
-        if (gameState == GameState.SoulSwapping) return;
-        gameState = GameState.SoulSwapping;
+        if (gameState.Value == GameState.SoulSwapping) return;
+        gameState.Value = GameState.SoulSwapping;
     }
 
     [ServerRpc(RequireOwnership = false)]
@@ -108,7 +106,7 @@ public class GameManagerRPC : NetworkBehaviour
     {
         foreach (NetworkClient player in NetworkManager.Singleton.ConnectedClientsList)
         {
-            player.PlayerObject.GetComponent<Player>().UpdateHealthServerRpc(player.PlayerObject.GetComponent<Player>().currentHealth - heatWaveDmg);
+            player.PlayerObject.GetComponent<Player>().UpdateHealth(player.PlayerObject.GetComponent<Player>().currentHealth - heatWaveDmg);
             Debug.Log("Player took damage from DoT");
         }
     }
