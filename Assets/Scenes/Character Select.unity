@@ -540,6 +540,20 @@ PrefabInstance:
       propertyPath: m_text
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 2003661841, guid: 1db7cdd0c4733dc4abc82561aabb3257, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 3277e8667ae2453438954fa4b18506be,
+        type: 2}
+    - target: {fileID: 2003661841, guid: 1db7cdd0c4733dc4abc82561aabb3257, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -2239709557077189262, guid: 3277e8667ae2453438954fa4b18506be,
+        type: 2}
+    - target: {fileID: 2003661841, guid: 1db7cdd0c4733dc4abc82561aabb3257, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7558648331255568848, guid: 1db7cdd0c4733dc4abc82561aabb3257,
         type: 3}
       propertyPath: m_AnchorMax.y

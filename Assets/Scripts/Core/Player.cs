@@ -53,6 +53,7 @@ namespace LB.Character
         private LBAudioManager audioManager;
         [SerializeField] private Animator animator;
         [SerializeField] private GameObject mainCanvas;
+        [SerializeField] private GameObject signboardCanvas;
         [Space]
         [Header("Camera")]
         [SerializeField] private new CinemachineFreeLook camera;
@@ -81,6 +82,7 @@ namespace LB.Character
 
             if (!IsOwner) return;
             mainCanvas.SetActive(true);
+            signboardCanvas.SetActive(false);
         }
 
         private void Awake()
