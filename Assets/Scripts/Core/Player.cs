@@ -36,12 +36,16 @@ namespace LB.Character
         private bool isHealingActive = false;
         [SerializeField] private float healTickInterval = 2f;
         [SerializeField] private float healTimer = 0f;
-        [Space]
         [SerializeField] private TextMeshProUGUI healthText;
         [Space]
+        [Header("Heat Wave")]
+        public bool isHeatWaveActive = false;
+        private int heatWaveDmg = 2;
+        private float heatTickInterval = 10f;
+        [SerializeField] private float heatWaveTimer = 0f;
         [Header("Damage System")]
         private bool isDamageFromLavaActive = false;
-        [SerializeField] private float damageTickInterval = 3f;
+        [SerializeField] private float damageTickInterval = 0.5f;
         [SerializeField] private float damageTimer = 0f;
         [Space]
         [Header("Soul Swap Properties")]
@@ -112,11 +116,6 @@ namespace LB.Character
         {
             HandleMovement();
             HandleSoulSwapInput();
-
-            if (Input.GetKeyDown(KeyCode.R))
-            {
-                Die();
-            }
         }
 
 
@@ -214,7 +213,7 @@ namespace LB.Character
             if (soulSwapInput.action.WasPerformedThisFrame())
             {
                 if (isPlayerDead) return;
-                ActivateSkill();
+                Task task = ActivateSkill();
             }
         }
         #endregion
@@ -229,6 +228,14 @@ namespace LB.Character
                     gameManagerRPC.SetCheckpoint(checkpoint);
                     Debug.Log($"Checkpoint set to {checkpoint.NetworkObjectId}");
                     other.GetComponent<LBCheckpoint>().OnCheckpointActivated();
+                }
+            }
+            if(other.CompareTag("Platform"))
+            {
+                NetworkObject platform = other.GetComponent<NetworkObject>();
+                if (platform != null && IsServer)
+                {
+                    platform.transform.SetParent(this.transform);
                 }
             }
         }
@@ -290,6 +297,12 @@ namespace LB.Character
 
             UpdateHealth(currentHealth);
         }
+
+        public void UpdateHealth(int health)
+        {
+            currentHealth = health;
+            healthText.SetText($"Health: {health}");
+        }
         #endregion
 
         #region Damage System
@@ -300,7 +313,7 @@ namespace LB.Character
                 damageTimer += Time.deltaTime;
                 if (damageTimer >= damageTickInterval)
                 {
-                    TakeDamage(4);
+                    TakeDamage(3);
                     damageTimer = 0f;
                 }
             }
@@ -308,6 +321,8 @@ namespace LB.Character
 
         public void TakeDamage(int damage)
         {
+            if (isPlayerDead) return;
+            Debug.Log($"Player {OwnerClientId} took damage: {damage}");
             currentHealth -= damage;
             cameraShake.ShakeCamera();
             audioManager.PlaySound(hurtSound);
@@ -318,13 +333,6 @@ namespace LB.Character
             currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
 
             UpdateHealth(currentHealth);
-        }
-
-        public void UpdateHealth(int health)
-        {
-            if (!IsLocalPlayer) return;
-            currentHealth = health;
-            healthText.SetText($"Health: {health}");
         }
         #endregion
 
@@ -343,7 +351,7 @@ namespace LB.Character
         public async void SetDespawnPosition()
         {
             await Task.Delay(2500);
-            transform.position = gameManagerRPC.GetRespawnPosition();
+            this.transform.position = gameManagerRPC.GetRespawnPosition();
             currentHealth = maxHealth;
             animator.SetTrigger("IsAlive");
             mainCanvas.SetActive(true);
@@ -361,28 +369,33 @@ namespace LB.Character
         #endregion
 
         #region Soul Swap
-        public async void ActivateSkill()
+        public async Task ActivateSkill()
         {
             if (isSoulSwapInCooldown) return;
             animator.SetBool("IsSoulSwapEnabled", true);
             await Task.Delay(1000);
-            isSoulSwapActive = true;
-            StartCoroutine(HandleCooldown());
-            SwapPlayerModel();
+            await StartCooldown();
         }
 
-        private IEnumerator HandleCooldown()
+        private async Task StartCooldown()
         {
+            SwapPlayerModel();
             isSoulSwapInCooldown = true;
             soulSwapImage.fillAmount = 0;
-            float time = 0;
-            while (time < gameManagerRPC.soulSwapCooldown)
+
+            float cooldownTime = gameManagerRPC.soulSwapCooldown;
+            float startTime = Time.time;
+
+            while (Time.time - startTime < cooldownTime)
             {
-                time += Time.deltaTime;
-                soulSwapImage.fillAmount = time / gameManagerRPC.soulSwapCooldown;
-                yield return new WaitForSeconds(gameManagerRPC.soulSwapCooldown);
+                soulSwapImage.fillAmount = 1 - (Time.time - startTime) / cooldownTime;
+                await Task.Yield();
             }
+
             isSoulSwapInCooldown = false;
+            animator.SetBool("IsSoulSwapEnabled", false);
+            Debug.Log("Cooldown has ended. isSoulSwapInCooldown = " + isSoulSwapInCooldown);
+            ResetPlayerModel();
         }
 
         public void SwapPlayerModel()

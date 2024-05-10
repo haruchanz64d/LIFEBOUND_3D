@@ -9,7 +9,6 @@ namespace LB.Environment.Objects
         [SerializeField] private Transform[] waypoints;
         [SerializeField] private float movementSpeed = 14f;
         private int currentWaypointIndex = 0;
-
         public override void OnNetworkSpawn()
         {
             base.OnNetworkSpawn();

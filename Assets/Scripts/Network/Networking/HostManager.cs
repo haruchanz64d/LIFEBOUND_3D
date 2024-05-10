@@ -105,6 +105,6 @@ public class HostManager : NetworkBehaviour
     public void StartGame()
     {
         hasGameStarted = true;
-        NetworkManager.Singleton.SceneManager.LoadScene(developmentSceneName, LoadSceneMode.Single);
+        NetworkManager.Singleton.SceneManager.LoadScene(gameplaySceneName, LoadSceneMode.Single);
     }
 }

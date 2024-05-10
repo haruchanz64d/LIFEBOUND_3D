@@ -1,5 +1,6 @@
 using UnityEngine;
 using Unity.Netcode;
+using LB.Character;
 
 
 public class GameManagerRPC : NetworkBehaviour
@@ -90,6 +91,12 @@ public class GameManagerRPC : NetworkBehaviour
     [ServerRpc(RequireOwnership = false)]
     public void ApplyHeatwaveDamageServerRpc()
     {
-        
+        foreach (var player in NetworkManager.Singleton.ConnectedClientsList)
+        {
+            if (player.PlayerObject != null)
+            {
+                player.PlayerObject.GetComponent<Player>().TakeDamage(heatWaveDmg);
+            }
+        }
     }
 }
