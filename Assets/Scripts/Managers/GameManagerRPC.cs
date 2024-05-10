@@ -1,17 +1,9 @@
 using UnityEngine;
 using Unity.Netcode;
-using LB.Character;
 
-public enum GameState
-{
-    Alive,
-    Dead,
-    SoulSwapping
-}
 
 public class GameManagerRPC : NetworkBehaviour
 {
-    public NetworkVariable<GameState> gameState = new NetworkVariable<GameState>(GameState.Alive);
     public static GameManagerRPC Instance { get; private set; }
 
     [Header("Checkpoint System")]
@@ -73,41 +65,31 @@ public class GameManagerRPC : NetworkBehaviour
     {
         if (lastCheckpointInteracted != null)
         {
+            Debug.Log("Respawned at checkpoint: " + lastCheckpointInteracted.name);
             return lastCheckpointInteracted.transform.position;
         }
         else
         {
-            return originalSpawnpoint.position;
+            Debug.Log("Respawned at original spawnpoint");
+            return originalSpawnpoint.transform.position;
         }
     }
 
     [ServerRpc(RequireOwnership = false)]
     public void SetPlayerDieServerRpc(bool isDead)
     {
-        if (isDead)
-        {
-            gameState.Value = GameState.Dead;
-        }
-        else
-        {
-            gameState.Value = GameState.Alive;
-        }
+       
     }
 
     [ServerRpc(RequireOwnership = false)]
     public void SetSoulSwapServerRpc(bool isSoulSwapEnabled)
     {
-        if (gameState.Value == GameState.SoulSwapping) return;
-        gameState.Value = GameState.SoulSwapping;
+        
     }
 
     [ServerRpc(RequireOwnership = false)]
     public void ApplyHeatwaveDamageServerRpc()
     {
-        foreach (NetworkClient player in NetworkManager.Singleton.ConnectedClientsList)
-        {
-            player.PlayerObject.GetComponent<Player>().UpdateHealth(player.PlayerObject.GetComponent<Player>().currentHealth - heatWaveDmg);
-            Debug.Log("Player took damage from DoT");
-        }
+        
     }
 }

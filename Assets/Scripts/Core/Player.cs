@@ -7,12 +7,11 @@ using TMPro;
 using UnityEngine.UI;
 using Assets.Scripts.Managers;
 using Assets.Scripts.Core;
+using System.Threading.Tasks;
 namespace LB.Character
 {
-    public enum PlayerState { Alive, Dead, SoulSwapping }
     public class Player : NetworkBehaviour
     {
-        public NetworkVariable<PlayerState> playerState = new NetworkVariable<PlayerState>(PlayerState.Alive);
         [Header("Input Action References")]
         [SerializeField] private InputActionReference movementInput;
         [SerializeField] private InputActionReference jumpInput;
@@ -20,7 +19,7 @@ namespace LB.Character
         [Space]
         [Header("Movement Properties")]
         private float movementSpeed = 12f;
-        private float jumpHeight = 8f;
+        private float jumpHeight = 14f;
         private float jumpButtonGracePeriod;
         private float ySpeed;
         private float originalStepOffset;
@@ -31,6 +30,7 @@ namespace LB.Character
         private float jumpHorizontalSpeed = 1f;
         [Space]
         [Header("Health System")]
+        public bool isPlayerDead = false;
         public int currentHealth;
         public int maxHealth = 100;
         private bool isHealingActive = false;
@@ -46,6 +46,8 @@ namespace LB.Character
         [Space]
         [Header("Soul Swap Properties")]
         [SerializeField] private Image soulSwapImage;
+        [SerializeField] private bool isSoulSwapActive = false;
+        private bool isSoulSwapInCooldown = false;
         [Header("Components")]
         private CharacterController controller;
         [SerializeField] LBRole role;
@@ -53,7 +55,7 @@ namespace LB.Character
         private LBAudioManager audioManager;
         [SerializeField] private Animator animator;
         [SerializeField] private GameObject mainCanvas;
-        [SerializeField] private GameObject signboardCanvas;
+        [SerializeField] private GameObject fadeCanvas;
         [Space]
         [Header("Camera")]
         [SerializeField] private new CinemachineFreeLook camera;
@@ -82,7 +84,7 @@ namespace LB.Character
 
             if (!IsOwner) return;
             mainCanvas.SetActive(true);
-            signboardCanvas.SetActive(false);
+            fadeCanvas.SetActive(false);
         }
 
         private void Awake()
@@ -110,17 +112,13 @@ namespace LB.Character
         {
             HandleMovement();
             HandleSoulSwapInput();
-        }
 
-        #region Soul Swap Input
-        private void HandleSoulSwapInput()
-        {
-            if (soulSwapInput.action.WasPerformedThisFrame())
+            if (Input.GetKeyDown(KeyCode.R))
             {
-                SwapSouls();
+                Die();
             }
         }
-        #endregion
+
 
         #region Movement
         /// <summary>
@@ -129,6 +127,7 @@ namespace LB.Character
         private void HandleMovement()
         {
             if (!IsLocalPlayer) return;
+            if (isPlayerDead) return;
             Vector2 movement = movementInput.action.ReadValue<Vector2>();
             Vector3 direction = new Vector3(movement.x, 0f, movement.y);
             float magnitude = Mathf.Clamp01(direction.magnitude) * movementSpeed;
@@ -209,6 +208,17 @@ namespace LB.Character
         }
         #endregion
 
+        #region Soul Swap Input
+        private void HandleSoulSwapInput()
+        {
+            if (soulSwapInput.action.WasPerformedThisFrame())
+            {
+                if (isPlayerDead) return;
+                ActivateSkill();
+            }
+        }
+        #endregion
+
         #region Collision
         private void OnTriggerEnter(Collider other)
         {
@@ -221,11 +231,6 @@ namespace LB.Character
                     other.GetComponent<LBCheckpoint>().OnCheckpointActivated();
                 }
             }
-            if (other.CompareTag("Aqua Totem"))
-            {
-                isHealingActive = true;
-                ApplyHealOverTime();
-            }
         }
 
         private void OnTriggerStay(Collider other)
@@ -234,6 +239,12 @@ namespace LB.Character
             {
                 isDamageFromLavaActive = true;
                 ApplyDamageOverTime();
+            }
+
+            if (other.CompareTag("Aqua Totem"))
+            {
+                isHealingActive = true;
+                ApplyHealOverTime();
             }
         }
 
@@ -309,36 +320,37 @@ namespace LB.Character
             UpdateHealth(currentHealth);
         }
 
-        [ServerRpc(RequireOwnership = false)]
-        public void UpdateHealthServerRpc(int health)
-        {
-            currentHealth = health;
-            UpdateHealth(health);
-        }
-
         public void UpdateHealth(int health)
         {
-            if (!IsOwner) return;
+            if (!IsLocalPlayer) return;
             currentHealth = health;
             healthText.SetText($"Health: {health}");
         }
         #endregion
 
         #region Death System
-        public void Die()
+        public async void Die()
         {
-            playerState.Value = PlayerState.Dead;
-            SetDespawnPositionServerRpc();
+            animator.SetTrigger("IsDead");
+            isPlayerDead = true;
+            await Task.Delay(2500);
+            fadeCanvas.SetActive(true);
+            fadeCanvas.GetComponent<Animator>().Play("Fade_Out");
+            mainCanvas.SetActive(false);
+            SetDespawnPosition();
         }
 
-        [ServerRpc(RequireOwnership = false)]
-        public void SetDespawnPositionServerRpc()
+        public async void SetDespawnPosition()
         {
-            if (playerState.Value == PlayerState.Dead)
-            {
-                transform.position = gameManagerRPC.GetRespawnPosition();
-                playerState.Value = PlayerState.Alive;
-            }
+            await Task.Delay(2500);
+            transform.position = gameManagerRPC.GetRespawnPosition();
+            currentHealth = maxHealth;
+            animator.SetTrigger("IsAlive");
+            mainCanvas.SetActive(true);
+            await Task.Delay(2500);
+            fadeCanvas.GetComponent<Animator>().Play("Fade_In");
+            fadeCanvas.SetActive(false);
+            isPlayerDead = false;
         }
 
         public void SetPlayerHealth(int health)
@@ -349,47 +361,40 @@ namespace LB.Character
         #endregion
 
         #region Soul Swap
-        public void SwapSouls()
+        public async void ActivateSkill()
         {
+            if (isSoulSwapInCooldown) return;
             animator.SetBool("IsSoulSwapEnabled", true);
-            gameManagerRPC.soulSwapCooldown = 30f;
-            SetSoulSwapCooldownServerRpc(gameManagerRPC.soulSwapCooldown);
-            SwapSoulsServerRpc();
+            await Task.Delay(1000);
+            isSoulSwapActive = true;
+            StartCoroutine(HandleCooldown());
+            SwapPlayerModel();
         }
 
-        [ServerRpc(RequireOwnership = false)]
-        public void SetSoulSwapCooldownServerRpc(float cooldown)
+        private IEnumerator HandleCooldown()
         {
-            gameManagerRPC.soulSwapCooldown = cooldown;
+            isSoulSwapInCooldown = true;
+            soulSwapImage.fillAmount = 0;
+            float time = 0;
+            while (time < gameManagerRPC.soulSwapCooldown)
+            {
+                time += Time.deltaTime;
+                soulSwapImage.fillAmount = time / gameManagerRPC.soulSwapCooldown;
+                yield return new WaitForSeconds(gameManagerRPC.soulSwapCooldown);
+            }
+            isSoulSwapInCooldown = false;
         }
 
-        [ServerRpc(RequireOwnership = false)]
-        public void SwapSoulsServerRpc()
+        public void SwapPlayerModel()
         {
-            if (!IsOwner) return;
-            gameManagerRPC.gameState.Value = GameState.SoulSwapping;
+            audioManager.PlaySound(soulSwapSound);
             role.SwapCharacterModelRpc();
-            AudioSource.PlayClipAtPoint(soulSwapSound, transform.position);
-            HandleSoulSwapCooldownServerRpc();
         }
 
-        [ServerRpc(RequireOwnership = false)]
-        private void HandleSoulSwapCooldownServerRpc()
+        public void ResetPlayerModel()
         {
-            if (!IsOwner) return;
-            if (gameManagerRPC.soulSwapCooldown > 0f)
-            {
-                gameManagerRPC.soulSwapCooldown -= Time.deltaTime;
-                soulSwapImage.fillAmount = gameManagerRPC.soulSwapCooldown / 30f;
-            }
-            if (gameManagerRPC.soulSwapCooldown < 0f)
-            {
-                gameManagerRPC.soulSwapCooldown = 0f;
-                soulSwapImage.fillAmount = 0f;
-                role.ResetCharacterModelRpc();
-                animator.SetBool("IsSoulSwapEnabled", false);
-                gameManagerRPC.gameState.Value = GameState.Alive;
-            }
+            audioManager.PlaySound(soulSwapSound);
+            role.ResetCharacterModelRpc();
         }
         #endregion
     }

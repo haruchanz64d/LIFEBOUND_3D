@@ -7,7 +7,7 @@ namespace LB.Environment.Objects
     public class LBMovingPlatform : NetworkBehaviour
     {
         [SerializeField] private Transform[] waypoints;
-        [SerializeField] private float movementSpeed = 9.0f;
+        [SerializeField] private float movementSpeed = 14f;
         private int currentWaypointIndex = 0;
 
         public override void OnNetworkSpawn()
