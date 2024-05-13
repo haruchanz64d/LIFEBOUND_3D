@@ -170,7 +170,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 0
+  GlobalObjectIdHash: 925421888
   InScenePlacedSourceGlobalObjectIdHash: 0
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -190,7 +190,6 @@ GameObject:
   - component: {fileID: 8357413501180847719}
   - component: {fileID: 8357413501180847717}
   - component: {fileID: 8357413501180847718}
-  - component: {fileID: 8357413501180847723}
   - component: {fileID: 6682227681614197113}
   m_Layer: 0
   m_Name: Checkpoint - Activated
@@ -264,23 +263,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &8357413501180847723
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8357413501180847712}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 172515602e62fb746b5d573b38a5fe58, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_IsGlobal: 1
-  priority: 0
-  blendDistance: 0
-  weight: 1
-  sharedProfile: {fileID: 11400000, guid: c202e3a8573fb084b9e03b78ba0d9fda, type: 2}
 --- !u!65 &6682227681614197113
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -364,7 +346,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 4874126678125670354, guid: 43e66ea370a965b4cad72dddd6949722, type: 3}
+  - {fileID: -3846018093981099296, guid: 0f5749a9f1a404a4f93eb01da080146d, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

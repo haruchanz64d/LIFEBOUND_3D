@@ -33,7 +33,7 @@ namespace Assets.Scripts.Gameplay
             {
                 if (other.transform.position.y > transform.position.y)
                 {
-                    LBRole role = other.GetComponent<LBRole>();
+                    Role role = other.GetComponent<Role>();
                     if (role.GetCharacterName() == CharacterName.Sol && plateType == PlateVariants.SolPlate)
                     {
                         ActivatePlate();
@@ -54,7 +54,7 @@ namespace Assets.Scripts.Gameplay
         {
             if (!isActivated)
             {
-                LBAudioManager.Instance.PlaySound(plateActivated);
+                AudioManager.Instance.PlaySound(plateActivated);
                 unactivatedPlate.SetActive(false);
                 activatedPlate.SetActive(true);
                 isActivated = true;
