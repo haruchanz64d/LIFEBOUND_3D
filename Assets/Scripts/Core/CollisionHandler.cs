@@ -23,15 +23,9 @@ namespace Assets.Scripts.Core
         #region Collision
         private void OnTriggerEnter(Collider other)
         {
-            if (other.CompareTag("Checkpoint"))
-            {
-                if (!IsOwner) return;
-                other.gameObject.GetComponent<Checkpoint>().OnCheckpointActivated();
-                gameManager.LastInteractedCheckpointPosition = other.gameObject.GetComponent<Checkpoint>().SetCheckpointPosition();
-            }
             if (other.CompareTag("Platform"))
             {
-                // TODO: Parenting issue on the client side.
+                
             }
         }
 

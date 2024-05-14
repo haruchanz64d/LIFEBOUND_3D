@@ -3,6 +3,7 @@ using Unity.Netcode;
 using LB.Character;
 using Assets.Scripts.Core;
 using System;
+using TMPro;
 
 
 public class GameManager: NetworkBehaviour
@@ -18,15 +19,23 @@ public class GameManager: NetworkBehaviour
         set => lastInteractedCheckpointPosition = value;
     }
 
+    [Header("Countdown")]
+    private float countdownTimer = 5 * 60;
+    [SerializeField] private TMP_Text countdownText;
+    private float elapsedMinutes = 0f;
     [Header("Soul Swap")]
     private float soulSwapCooldown = 30f;
     public float SoulSwapCooldown => soulSwapCooldown;
 
     [Header("Heat Wave")]
     private bool isHeatWaveActivated;
-    private int heatWaveDamage = 2;
+    private int heatWaveDamage = 3;
     private float heatTickInterval = 10f;
     private float heatWaveTimer = 0f;
+
+    [Header("Regeneration")]
+    private float regenerationRate = 5f;
+    public float RegenerationRate => regenerationRate;
 
     public override void OnNetworkSpawn()
     {
@@ -47,18 +56,121 @@ public class GameManager: NetworkBehaviour
         }
     }
 
+
     private void Update()
     {
-        if(isHeatWaveActivated)
+        if (IsServer)
         {
-            heatWaveTimer += Time.deltaTime;
-            if(heatWaveTimer >= heatTickInterval)
+            if (countdownTimer > 0)
             {
-                ApplyHeatwaveDamageServerRpc();
-                heatWaveTimer = 0f;
+                countdownTimer -= Time.deltaTime;
+                elapsedMinutes += Time.deltaTime / 60f;
+                if (countdownTimer <= 0)
+                {
+                    countdownTimer = 0;
+                    ApplyCountdownEndServerRpc();
+                }
+
+                if (Mathf.FloorToInt(elapsedMinutes) > Mathf.FloorToInt(elapsedMinutes - Time.deltaTime / 60f))
+                {
+                    heatWaveDamage++;
+                    regenerationRate += 2f;
+                }
+            }
+
+            if (isHeatWaveActivated)
+            {
+                heatWaveTimer += Time.deltaTime;
+                if (heatWaveTimer >= heatTickInterval)
+                {
+                    ApplyHeatwaveDamageServerRpc();
+                    heatWaveTimer = 0f;
+                }
+            }
+        }
+
+        UpdateCountdownText();
+    }
+
+    private void UpdateCountdownText()
+    {
+        if (countdownText != null)
+        {
+            int minutes = Mathf.FloorToInt(countdownTimer / 60);
+            int seconds = Mathf.FloorToInt(countdownTimer % 60);
+            countdownText.SetText(string.Format("{0:00}:{1:00}", minutes, seconds));
+        }
+    }
+
+    #region Countdown
+    [ServerRpc(RequireOwnership = false)]
+    private void ApplyCountdownEndServerRpc()
+    {
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+        foreach (GameObject player in players)
+        {
+            if (player.TryGetComponent(out HealthSystem health))
+            {
+                ApplyCountdownEndClientRpc();
             }
         }
     }
+
+    [ClientRpc]
+    public void ApplyCountdownEndClientRpc()
+    {
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+        foreach (GameObject player in players)
+        {
+            if (player.TryGetComponent(out HealthSystem health))
+            {
+                health.KillPlayer();
+            }
+        }
+    }
+    #endregion
+
+    private void LateUpdate()
+    {
+        CheckForPlayerDeathStateServerRpc();
+    }
+
+    public void DisconnectAllPlayers()
+    {
+        NetworkManager.Singleton.Shutdown();
+        UnityEngine.SceneManagement.SceneManager.LoadScene(1);
+    }
+
+    #region Death System
+    [ServerRpc(RequireOwnership = false)]
+    private void CheckForPlayerDeathStateServerRpc()
+    {
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+        foreach (GameObject player in players)
+        {
+            if (player.TryGetComponent(out HealthSystem health))
+            {
+                if (health.IsPlayerDead)
+                {
+                    ApplyDeathStateClientRpc();
+                }
+            }
+        }
+    }
+
+    [ClientRpc]
+    public void ApplyDeathStateClientRpc()
+    {
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+        foreach (GameObject player in players)
+        {
+            if (player.TryGetComponent(out HealthSystem health))
+            {
+                health.KillPlayer();
+            }
+        }
+    }
+    #endregion
 
     #region RPCs (Heat Wave)
     [ServerRpc(RequireOwnership = false)]
@@ -86,6 +198,5 @@ public class GameManager: NetworkBehaviour
             }
         }
     }
-
     #endregion
 }

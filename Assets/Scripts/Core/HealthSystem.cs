@@ -5,6 +5,7 @@ using System.Collections;
 using TMPro;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace Assets.Scripts.Core
 {
@@ -16,11 +17,11 @@ namespace Assets.Scripts.Core
         private bool isPlayerDead = false;
         public bool IsPlayerDead => isPlayerDead;
         [Header("Regeneration System")]
-        private float regenerationRate = 2f;
+        private float regenerationRate;
         private float healTimer;
         [Header("Damage System - Lava")]
         [SerializeField] private ParticleSystem burningParticle;
-        private int lavaDamage = 10;
+        private int lavaDamage = 3;
         private float damageTimer = 2f;
         private float damageTickInterval = 2f;
         [Header("Components")]
@@ -32,17 +33,17 @@ namespace Assets.Scripts.Core
         [Header("Audio")]
         [SerializeField] private AudioClip hurtSound;
 
-        [Header("Respawn System")]
-        [SerializeField] private GameObject respawnCanvas;
-        [SerializeField] private TMP_Text respawnText;
-        private float respawnTimer;
-        private float respawnTime = 5f;
+        [Header("Death System")]
+        [SerializeField] private GameObject deathCanvas;
+        [SerializeField] private TMP_Text deathText;
+        private float disconnectTimer;
+        private float timeBeforeDisconnect = 8f;
         public override void OnNetworkSpawn()
         {
             base.OnNetworkSpawn();
             gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
             if (!IsOwner) return;
-            respawnCanvas.SetActive(false);
+            deathCanvas.SetActive(false);
             currentHealth = maxHealth;
             healthText.SetText($"Health: {currentHealth}");
         }
@@ -51,6 +52,11 @@ namespace Assets.Scripts.Core
         {
             animator = GetComponent<Animator>();
             burningParticle.Stop();
+        }
+
+        private void FixedUpdate()
+        {
+            regenerationRate = gameManager.RegenerationRate;
         }
 
         #region Health System
@@ -81,7 +87,6 @@ namespace Assets.Scripts.Core
         }
         #endregion
 
-
         #region Damage System
         public void ApplyLavaDoT()
         {
@@ -108,7 +113,7 @@ namespace Assets.Scripts.Core
             {
                 isPlayerDead = true;
                 animator.SetTrigger("IsDead");
-                StartRespawnTimer();
+                KillPlayer();
             }
 
             Debug.Log($"Player {gameObject.name} taking damage: {damage}");
@@ -133,40 +138,30 @@ namespace Assets.Scripts.Core
         #endregion
 
         #region Respawn System
-        public void StartRespawnTimer()
+        public void KillPlayer()
         {
-            respawnCanvas.SetActive(true);
-            respawnTimer = respawnTime;
-            StartCoroutine(UpdateRespawnTimer());
+            deathCanvas.SetActive(true);
+            isPlayerDead = true;
+            disconnectTimer = timeBeforeDisconnect;
+            StartCoroutine(ShowGameOverMessages());
         }
 
-        private IEnumerator UpdateRespawnTimer()
+        private IEnumerator ShowGameOverMessages()
         {
-            while (respawnTimer > 0f)
+            while(disconnectTimer > 0)
             {
-                respawnTimer -= Time.deltaTime;
-                respawnText.SetText($"Respawning in: {respawnTimer.ToString("F0")}");
-                yield return new WaitForSeconds(Time.deltaTime);
+                disconnectTimer -= Time.deltaTime;
+                deathText.SetText($"Returning to main menu in ({disconnectTimer:F0}) seconds...");
+                yield return null;
             }
-            RespawnPlayer();
+            DisconnectAllPlayers();
         }
 
-        private void RespawnPlayer()
+        private void DisconnectAllPlayers()
         {
-            respawnCanvas.SetActive(false);
-            // Set player position to last checkpoint 
-            // Note: Does not work in multiplayer.
-            if (gameManager.LastInteractedCheckpointPosition != null)
-            {
-                transform.position = gameManager.LastInteractedCheckpointPosition;
-            }
-            else
-            {
-                transform.position = gameManager.DefaultSpawn.transform.position;
-            }
-            isPlayerDead = false;
-            animator.SetTrigger("IsAlive");
-            currentHealth = maxHealth;
+            UnityEngine.Cursor.lockState = CursorLockMode.None;
+            UnityEngine.Cursor.visible = true;
+            gameManager.DisconnectAllPlayers();
         }
         #endregion
     }
