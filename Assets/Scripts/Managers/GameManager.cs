@@ -27,7 +27,6 @@ public class GameManager: NetworkBehaviour
     private bool isHeatWaveActivated;
     private int heatWaveDamage = 2;
     private float heatTickInterval = 10f;
-    private float damageTickInterval;
     private float heatWaveTimer = 0f;
 
     public override void OnNetworkSpawn()
