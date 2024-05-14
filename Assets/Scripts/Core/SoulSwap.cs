@@ -10,22 +10,23 @@ namespace Assets.Scripts.Core
 {
     public class SoulSwap : NetworkBehaviour
     {
+        /// <summary>
+        /// 1. Check if the player activates the soul swap skill
+        /// 2. If the player activates the soul swap skill, play the animation
+        /// 3. Set a flag during the animation to swap the player model that the player soul swapped.
+        /// 4. Reset the animation after the swap is complete.
+        /// </summary>
         [Header("Input Action Reference")]
         [SerializeField] private InputActionReference soulSwapInput;
         [Header("Soul Swap Properties")]
         [SerializeField] private Image soulSwapImage;
         [SerializeField] private bool isSoulSwapActive = false;
         private bool isSoulSwapInCooldown = false;
-        public float SoulSwapCooldown { get; set; }
-        private bool isSoulSwapReady;
-        public bool IsSoulSwapReady
+        private bool isSoulSwapActivated;
+        public bool IsSoulSwapActivated
         {
-            get => isSoulSwapReady = !isSoulSwapInCooldown;
-
-            set
-            {
-                isSoulSwapReady = value;
-            }
+            get => isSoulSwapActivated;
+            set => isSoulSwapActivated = value;
         }
         [Space]
         [Header("Audio")]
@@ -44,31 +45,85 @@ namespace Assets.Scripts.Core
 
         private void Update()
         {
-            if(!IsOwner) return;
-            if (soulSwapInput.action.triggered)
+            // Check if we activated the skill or one of the player already activated it.
+            if (!IsOwner) return;
+            if (soulSwapInput.action.triggered && !isSoulSwapActivated)
             {
                 ActivateSkill();
+                
             }
-            if (isSoulSwapInCooldown)
+            else if(!soulSwapInput.action.triggered && isSoulSwapActivated)
             {
-                soulSwapImage.fillAmount += 1 / gameManagerRPC.SoulSwapCooldown * Time.deltaTime;
+                ActivateSkill();     
             }
         }
 
         #region Soul Swap
-        public async void ActivateSkill()
+        // Play the soul swap animation
+        // Swap the player model
+        // After 30 seconds, reset the player model
+        public void ActivateSkill()
         {
-            if (isSoulSwapInCooldown) return;
-            PlaySoulSwapAnimationClientRpc();
-            await Task.Delay(1000);
-            SwapPlayerModelClientRpc();
-            SoulSwapCooldownRoutine();
+            // If the player already activated the skill, disable it.
+            if (isSoulSwapActivated)
+            {
+                isSoulSwapActivated = false;
+                // If the player is in cooldown, disable the cooldown.
+                if (isSoulSwapInCooldown)
+                {
+                    HandleSoulswapCooldownClientRpc();
+                }
+            }
+            // If the player did not activate the skill yet, enable it.
+            else
+            {
+                isSoulSwapActivated = true;
+                // Start the soul swap cooldown.
+                HandleSoulswapCooldownClientRpc();
+                // Play the soul swap animation.
+                PlaySoulSwapAnimationClientRpc();
+                // Wait for the animation to complete, then swap the player model.
+                StartCoroutine(SwapPlayerModelAfterDelay());
+            }
         }
 
-        private IEnumerator SoulSwapCooldownRoutine()
+        private IEnumerator SwapPlayerModelAfterDelay()
         {
-            yield return new WaitForSeconds(gameManagerRPC.SoulSwapCooldown);
-            soulSwapImage.fillAmount = 0;
+            // Wait for the animation to complete.
+            yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).length);
+            // Swap the player model.
+            SwapPlayerModelClientRpc();
+            // Wait for a while, then reset the player model.
+            yield return new WaitForSeconds(30f);
+            // Reset the player model.
+            ResetPlayerModelClientRpc();
+            // Reset the soul swap animation.
+            ResetSoulSwapAnimationClientRpc();
+        }
+
+        [ClientRpc]
+        public void HandleSoulswapCooldownClientRpc()
+        {
+            if (isSoulSwapActivated)
+            {
+                isSoulSwapInCooldown = true;
+
+                if (isSoulSwapInCooldown)
+                {
+                    soulSwapImage.fillAmount += 1 / GameManager.Instance.SoulSwapCooldown * Time.deltaTime;
+
+                    if (soulSwapImage.fillAmount >= 1)
+                    {
+                        isSoulSwapInCooldown = false;
+                        soulSwapImage.fillAmount = 0;
+                    }
+                }
+            }
+            else
+            {
+                isSoulSwapInCooldown = false;
+                soulSwapImage.fillAmount = 0;
+            }
         }
 
         [ClientRpc]

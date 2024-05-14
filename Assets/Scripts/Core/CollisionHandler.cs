@@ -23,11 +23,11 @@ namespace Assets.Scripts.Core
             {
                 if (!IsOwner) return;
                 other.gameObject.GetComponent<Checkpoint>().OnCheckpointActivated();
-                GameManager.Instance.LastInteractedCheckpointPosition = other.transform.position;
+                GameManager.Instance.LastInteractedCheckpointPosition = other.gameObject.GetComponent<Checkpoint>().GetCheckpointPosition().transform.position;
             }
             if (other.CompareTag("Platform"))
             {
-                
+                // TODO: Parenting issue on the client side.
             }
         }
 

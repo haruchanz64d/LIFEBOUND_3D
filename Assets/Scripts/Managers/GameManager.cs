@@ -71,7 +71,7 @@ public class GameManager: NetworkBehaviour
         {
             if(player.TryGetComponent(out HealthSystem health))
             {
-                ApplyHeatwaveDamageClientRpc(OwnerClientId, heatWaveDamage);
+                ApplyHeatwaveDamageClientRpc(heatWaveDamage);
             }
         }
     }
@@ -83,23 +83,7 @@ public class GameManager: NetworkBehaviour
         {
             if (players.PlayerObject.TryGetComponent(out SoulSwap swap))
             {
-                if (swap.IsSoulSwapReady)
-                {
-                    swap.IsSoulSwapReady = false;
-                    swap.SoulSwapCooldown = soulSwapCooldown;
-                    SwapPlayerModelClientRpc();
-                    PlaySoulSwapAnimationClientRpc();
-                }
-                else
-                {
-                    swap.SoulSwapCooldown -= Time.deltaTime;
-                    if (swap.SoulSwapCooldown <= 0)
-                    {
-                        swap.IsSoulSwapReady = true;
-                        ResetSoulSwapAnimationClientRpc();
-                        ResetPlayerModelClientRpc();
-                    }
-                }
+                // idk what to put here
             }
         }
     }
@@ -146,10 +130,15 @@ public class GameManager: NetworkBehaviour
 
     #region Client RPCs
     [ClientRpc]
-    public void ApplyHeatwaveDamageClientRpc(ulong playerNetworkId, int damage)
+    public void ApplyHeatwaveDamageClientRpc(int damage)
     {
-        HealthSystem health = NetworkManager.Singleton.ConnectedClients[playerNetworkId].PlayerObject.GetComponent<HealthSystem>();
-        health.TakeDamage(damage);
+       foreach(GameObject players in GameObject.FindGameObjectsWithTag("Player"))
+        {
+            if(players.TryGetComponent(out HealthSystem health))
+            {
+                health.TakeDamage(damage);
+            }
+        }
     }
 
     [ClientRpc]
