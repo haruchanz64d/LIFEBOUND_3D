@@ -12,8 +12,8 @@ namespace LB.Character
         [SerializeField] private InputActionReference jumpInput;
         [Space]
         [Header("Movement Properties")]
-        private float movementSpeed = 12f;
-        private float jumpHeight = 14f;
+        private float movementSpeed = 16f;
+        private float jumpHeight = 8f;
         private float jumpButtonGracePeriod;
         private float ySpeed;
         private float originalStepOffset;

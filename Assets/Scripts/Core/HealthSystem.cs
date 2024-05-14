@@ -169,7 +169,6 @@ namespace Assets.Scripts.Core
             player.GetComponent<SoulSwap>().enabled = true;
             player.GetComponent<HealthSystem>().SetPlayerHealth(maxHealth);
             
-            // Check if there are checkpoint interacted
             if(gameManagerRPC.LastInteractedCheckpointPosition != null)
             {
                 player.transform.position = gameManagerRPC.LastInteractedCheckpointPosition;

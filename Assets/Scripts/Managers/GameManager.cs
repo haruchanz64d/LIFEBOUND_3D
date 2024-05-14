@@ -83,7 +83,7 @@ public class GameManager: NetworkBehaviour
         {
             if (players.PlayerObject.TryGetComponent(out SoulSwap swap))
             {
-                // idk what to put here
+                swap.HandleSoulswapCooldownClientRpc();
             }
         }
     }

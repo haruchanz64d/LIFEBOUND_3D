@@ -45,16 +45,9 @@ namespace Assets.Scripts.Core
 
         private void Update()
         {
-            // Check if we activated the skill or one of the player already activated it.
-            if (!IsOwner) return;
             if (soulSwapInput.action.triggered && !isSoulSwapActivated)
             {
                 ActivateSkill();
-                
-            }
-            else if(!soulSwapInput.action.triggered && isSoulSwapActivated)
-            {
-                ActivateSkill();     
             }
         }
 
@@ -64,40 +57,30 @@ namespace Assets.Scripts.Core
         // After 30 seconds, reset the player model
         public void ActivateSkill()
         {
-            // If the player already activated the skill, disable it.
             if (isSoulSwapActivated)
             {
                 isSoulSwapActivated = false;
-                // If the player is in cooldown, disable the cooldown.
                 if (isSoulSwapInCooldown)
                 {
-                    HandleSoulswapCooldownClientRpc();
+                    GameManager.Instance.HandleSoulSwapCooldownServerRpc();
+                    StartCoroutine(SwapPlayerModelAfterDelay());
                 }
             }
-            // If the player did not activate the skill yet, enable it.
             else
             {
                 isSoulSwapActivated = true;
-                // Start the soul swap cooldown.
-                HandleSoulswapCooldownClientRpc();
-                // Play the soul swap animation.
+                GameManager.Instance.HandleSoulSwapCooldownServerRpc();
                 PlaySoulSwapAnimationClientRpc();
-                // Wait for the animation to complete, then swap the player model.
                 StartCoroutine(SwapPlayerModelAfterDelay());
             }
         }
 
         private IEnumerator SwapPlayerModelAfterDelay()
         {
-            // Wait for the animation to complete.
             yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).length);
-            // Swap the player model.
             SwapPlayerModelClientRpc();
-            // Wait for a while, then reset the player model.
-            yield return new WaitForSeconds(30f);
-            // Reset the player model.
+            yield return new WaitForSeconds(20f);
             ResetPlayerModelClientRpc();
-            // Reset the soul swap animation.
             ResetSoulSwapAnimationClientRpc();
         }
 
