@@ -8,7 +8,6 @@ using System;
 public class GameManager: NetworkBehaviour
 {
     public static GameManager Instance { get; private set; }
-
     [Header("Checkpoint")]
     [SerializeField] private GameObject defaultSpawn;
     public GameObject DefaultSpawn => defaultSpawn;
@@ -37,6 +36,7 @@ public class GameManager: NetworkBehaviour
     }
     private void Awake()
     {
+        if (!IsServer) return;
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
@@ -60,13 +60,12 @@ public class GameManager: NetworkBehaviour
         }
     }
 
-    #region Server RPCs
+    #region RPCs (Heat Wave)
     [ServerRpc(RequireOwnership = false)]
     private void ApplyHeatwaveDamageServerRpc()
     {
         GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
-
-        foreach(GameObject player in players)
+        foreach (GameObject player in players)
         {
             if(player.TryGetComponent(out HealthSystem health))
             {
@@ -75,119 +74,15 @@ public class GameManager: NetworkBehaviour
         }
     }
 
-    [ServerRpc(RequireOwnership = false)]
-    public void HandleSoulSwapCooldownServerRpc()
-    {
-        foreach (var players in NetworkManager.Singleton.ConnectedClientsList)
-        {
-            if (players.PlayerObject.TryGetComponent(out SoulSwap swap))
-            {
-                swap.HandleSoulswapCooldownClientRpc();
-            }
-        }
-    }
-
-    [ServerRpc(RequireOwnership = false)]
-    public void CheckForDeathServerRpc()
-    {
-        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
-
-        foreach(GameObject player in players)
-        {
-            HealthSystem health = player.GetComponent<HealthSystem>();
-            if(health.IsPlayerDead)
-            {
-                health.StartRespawnTimer(player.GetComponent<NetworkObject>().OwnerClientId);
-                break;
-            }
-        }
-    }
-
-    [ServerRpc(RequireOwnership = false)]
-    public void TeleportPlayerToDefaultSpawnServerRpc()
-    {
-        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
-
-        foreach(GameObject player in players)
-        {
-            player.transform.position = defaultSpawn.transform.position;
-        }
-    }
-
-
-    [ServerRpc(RequireOwnership = false)]
-    public void TeleportPlayersToCheckpointServerRpc()
-    {
-        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
-
-        foreach(GameObject player in players)
-        {
-            player.transform.position = lastInteractedCheckpointPosition;
-        }
-    }
-    #endregion
-
-    #region Client RPCs
     [ClientRpc]
     public void ApplyHeatwaveDamageClientRpc(int damage)
     {
-       foreach(GameObject players in GameObject.FindGameObjectsWithTag("Player"))
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+        foreach (GameObject player in players)
         {
-            if(players.TryGetComponent(out HealthSystem health))
+            if (player.TryGetComponent(out HealthSystem health))
             {
                 health.TakeDamage(damage);
-            }
-        }
-    }
-
-    [ClientRpc]
-    private void SwapPlayerModelClientRpc()
-    {
-        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
-        foreach(var player in players)
-        {
-            if(player.TryGetComponent(out SoulSwap swap))
-            {
-                swap.SwapPlayerModelClientRpc();
-            }
-        }
-    }
-
-    [ClientRpc]
-    private void ResetPlayerModelClientRpc()
-    {
-        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
-        foreach(var player in players)
-        {
-            if(player.TryGetComponent(out SoulSwap swap))
-            {
-                swap.ResetPlayerModelClientRpc();
-            }
-        }
-    }
-
-    [ClientRpc]
-    private void PlaySoulSwapAnimationClientRpc()
-    {
-        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
-        foreach (var player in players)
-        {
-            if (player.TryGetComponent(out SoulSwap swap))
-            {
-                swap.PlaySoulSwapAnimationClientRpc();
-            }
-        }
-    }
-
-    [ClientRpc]
-    private void ResetSoulSwapAnimationClientRpc()
-    {
-        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
-        foreach (var player in players)
-        {
-            if (player.TryGetComponent(out SoulSwap swap))
-            {
-                swap.ResetSoulSwapAnimationClientRpc();
             }
         }
     }

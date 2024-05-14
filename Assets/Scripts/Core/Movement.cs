@@ -64,6 +64,7 @@ namespace LB.Character
 
         private void LateUpdate()
         {
+            if (healthSystem.IsPlayerDead) return;
             HandleMovement();
         }
 

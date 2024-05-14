@@ -1,5 +1,6 @@
 ﻿using Assets.Scripts.Managers;
 using LB.Character;
+using System;
 using System.Collections;
 using TMPro;
 using Unity.Netcode;
@@ -10,22 +11,21 @@ namespace Assets.Scripts.Core
     public class HealthSystem : NetworkBehaviour
     {
         [Header("Health System")]
-        private NetworkVariable<int> currentHealth = new NetworkVariable<int>(100);
+        private int currentHealth;
         private int maxHealth = 100;
         private bool isPlayerDead = false;
         public bool IsPlayerDead => isPlayerDead;
-
         [Header("Regeneration System")]
         private float regenerationRate = 2f;
         private float healTimer;
-
         [Header("Damage System - Lava")]
-        private int lavaDamage = 5;
+        [SerializeField] private ParticleSystem burningParticle;
+        private int lavaDamage = 10;
         private float damageTimer = 2f;
         private float damageTickInterval = 2f;
         [Header("Components")]
         private Animator animator;
-        private GameManager gameManagerRPC;
+        private GameManager gameManager;
         [SerializeField] private TextMeshProUGUI healthText;
         [SerializeField] private CameraShake cameraShake;
 
@@ -36,36 +36,22 @@ namespace Assets.Scripts.Core
         [SerializeField] private GameObject respawnCanvas;
         [SerializeField] private TMP_Text respawnText;
         private float respawnTimer;
-        private bool isRespawning;
         private float respawnTime = 5f;
         public override void OnNetworkSpawn()
         {
             base.OnNetworkSpawn();
-
+            gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
             if (!IsOwner) return;
             respawnCanvas.SetActive(false);
-            currentHealth.Value = maxHealth;
-            healthText.SetText($"Health: {currentHealth.Value}");
+            currentHealth = maxHealth;
+            healthText.SetText($"Health: {currentHealth}");
         }
 
         private void Awake()
         {
             animator = GetComponent<Animator>();
-            gameManagerRPC = FindObjectOfType<GameManager>();
+            burningParticle.Stop();
         }
-
-        #region RPC
-        public void CheckForDeath()
-        {
-            CheckForPlayerDeathClientRpc();
-        }
-
-        [ClientRpc]
-        public void CheckForPlayerDeathClientRpc()
-        {
-            GameManager.Instance.CheckForDeathServerRpc();
-        }
-        #endregion
 
         #region Health System
         public void ApplyHealOverTime()
@@ -81,17 +67,17 @@ namespace Assets.Scripts.Core
         public void Heal(int amount)
         {
             if (!IsLocalPlayer) return;
-            currentHealth.Value += amount;
-            currentHealth.Value = Mathf.Clamp(currentHealth.Value, 0, maxHealth);
+            currentHealth += amount;
+            currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
 
-            UpdateHealth(currentHealth.Value);
+            UpdateHealth(currentHealth);
         }
 
         public void UpdateHealth(int health)
         {
-            currentHealth.Value = health;
+            currentHealth = health;
             healthText.SetText($"Health: {health}");
-            Mathf.Clamp(currentHealth.Value, 0, maxHealth);
+            Mathf.Clamp(currentHealth, 0, maxHealth);
         }
         #endregion
 
@@ -99,6 +85,7 @@ namespace Assets.Scripts.Core
         #region Damage System
         public void ApplyLavaDoT()
         {
+            burningParticle.Play();
             damageTimer += Time.deltaTime;
             if (damageTimer >= damageTickInterval)
             {
@@ -107,27 +94,32 @@ namespace Assets.Scripts.Core
             }
         }
 
+        public void StopLavaDoT()
+        {
+            burningParticle.Stop();
+        }
+
         public void TakeDamage(int damage)
         {
             if (!IsLocalPlayer) return;
             if (isPlayerDead) return;
 
-            if (currentHealth.Value <= 0)
+            if (currentHealth <= 0)
             {
                 isPlayerDead = true;
                 animator.SetTrigger("IsDead");
-                StartRespawnTimer(OwnerClientId);
+                StartRespawnTimer();
             }
 
             Debug.Log($"Player {gameObject.name} taking damage: {damage}");
 
-            currentHealth.Value -= damage;
+            currentHealth -= damage;
             cameraShake.ShakeCamera();
             AudioManager.Instance.PlaySound(hurtSound);
 
-            currentHealth.Value = Mathf.Clamp(currentHealth.Value, 0, maxHealth);
+            currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
 
-            UpdateHealth(currentHealth.Value);
+            UpdateHealth(currentHealth);
         }
         #endregion
 
@@ -135,48 +127,46 @@ namespace Assets.Scripts.Core
 
         public void SetPlayerHealth(int health)
         {
-            currentHealth.Value = health;
+            currentHealth = health;
             healthText.SetText($"Health: {health}");
         }
         #endregion
 
         #region Respawn System
-
-        public void StartRespawnTimer(ulong clientId)
+        public void StartRespawnTimer()
         {
-            NetworkObject player = NetworkManager.Singleton.ConnectedClients[clientId].PlayerObject;
-            player.GetComponent<Movement>().enabled = false;
-            player.GetComponent<HealthSystem>().enabled = false;
-            player.GetComponent<SoulSwap>().enabled = false;
-            UpdateRespawnTimer();
+            respawnCanvas.SetActive(true);
+            respawnTimer = respawnTime;
+            StartCoroutine(UpdateRespawnTimer());
         }
+
         private IEnumerator UpdateRespawnTimer()
-        {            
-            while(respawnTimer > 0f)
+        {
+            while (respawnTimer > 0f)
             {
                 respawnTimer -= Time.deltaTime;
                 respawnText.SetText($"Respawning in: {respawnTimer.ToString("F0")}");
                 yield return new WaitForSeconds(Time.deltaTime);
             }
-            RespawnPlayer(OwnerClientId);
+            RespawnPlayer();
         }
 
-        private void RespawnPlayer(ulong clientId)
+        private void RespawnPlayer()
         {
-            NetworkObject player = NetworkManager.Singleton.ConnectedClients[clientId].PlayerObject;
-            player.GetComponent<Movement>().enabled = true;
-            player.GetComponent<HealthSystem>().enabled = true;
-            player.GetComponent<SoulSwap>().enabled = true;
-            player.GetComponent<HealthSystem>().SetPlayerHealth(maxHealth);
-            
-            if(gameManagerRPC.LastInteractedCheckpointPosition != null)
+            respawnCanvas.SetActive(false);
+            // Set player position to last checkpoint 
+            // Note: Does not work in multiplayer.
+            if (gameManager.LastInteractedCheckpointPosition != null)
             {
-                player.transform.position = gameManagerRPC.LastInteractedCheckpointPosition;
+                transform.position = gameManager.LastInteractedCheckpointPosition;
             }
             else
             {
-                player.transform.position = gameManagerRPC.DefaultSpawn.transform.position;
+                transform.position = gameManager.DefaultSpawn.transform.position;
             }
+            isPlayerDead = false;
+            animator.SetTrigger("IsAlive");
+            currentHealth = maxHealth;
         }
         #endregion
     }

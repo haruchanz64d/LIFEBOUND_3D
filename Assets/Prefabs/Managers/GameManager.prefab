@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 794659519386672224}
   m_Layer: 0
   m_Name: GameManager
-  m_TagString: Untagged
+  m_TagString: GameManager
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 218515643
+  GlobalObjectIdHash: 4141745374
   InScenePlacedSourceGlobalObjectIdHash: 0
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -66,3 +66,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2767ebb81cf8aa4d90b66ca2490c71d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  defaultSpawn: {fileID: 0}

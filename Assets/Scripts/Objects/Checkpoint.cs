@@ -9,12 +9,11 @@ public class Checkpoint : MonoBehaviour
     [SerializeField] private GameObject activatedCheckpoint;
     [SerializeField] private Transform checkpointPosition;
     [SerializeField] private AudioClip checkpointActivated;
-    public Transform GetCheckpointPosition() { return checkpointPosition; }
 
     private void Awake()
     {
-        transform.position = checkpointPosition.position;
-        OnCheckpointDeactivated();
+        unactivatedCheckpoint.SetActive(true);
+        activatedCheckpoint.SetActive(false);
     }
     public void OnCheckpointActivated()
     {
@@ -23,9 +22,9 @@ public class Checkpoint : MonoBehaviour
         AudioManager.Instance.PlaySound(checkpointActivated);
     }
 
-    public void OnCheckpointDeactivated()
+    public Vector3 SetCheckpointPosition()
     {
-        unactivatedCheckpoint.SetActive(true);
-        activatedCheckpoint.SetActive(false);
+        Debug.Log($"Checkpoint position set to: {checkpointPosition.position}");
+        return checkpointPosition.position;
     }
 }

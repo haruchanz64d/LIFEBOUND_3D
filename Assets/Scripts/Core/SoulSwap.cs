@@ -34,21 +34,24 @@ namespace Assets.Scripts.Core
         [Header("Components")]
         private Role role;
         private Animator animator;
-        private GameManager gameManagerRPC;
+        private GameManager gameManager;
+        private HealthSystem healthSystem;
         private void Awake()
         {
             role = GetComponent<Role>();
             animator = GetComponent<Animator>();
-            gameManagerRPC = FindObjectOfType<GameManager>();
+            healthSystem = GetComponent<HealthSystem>();
         }
 
-
-        private void Update()
+        public override void OnNetworkSpawn()
         {
-            if (soulSwapInput.action.triggered && !isSoulSwapActivated)
-            {
-                ActivateSkill();
-            }
+            gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
+        }
+
+        private void LateUpdate()
+        {
+            if (healthSystem.IsPlayerDead) return;
+            if (soulSwapInput.action.triggered && !isSoulSwapActivated) ActivateSkill();
         }
 
         #region Soul Swap
@@ -62,14 +65,12 @@ namespace Assets.Scripts.Core
                 isSoulSwapActivated = false;
                 if (isSoulSwapInCooldown)
                 {
-                    GameManager.Instance.HandleSoulSwapCooldownServerRpc();
                     StartCoroutine(SwapPlayerModelAfterDelay());
                 }
             }
             else
             {
                 isSoulSwapActivated = true;
-                GameManager.Instance.HandleSoulSwapCooldownServerRpc();
                 PlaySoulSwapAnimationClientRpc();
                 StartCoroutine(SwapPlayerModelAfterDelay());
             }

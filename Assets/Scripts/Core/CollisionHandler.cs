@@ -8,12 +8,16 @@ namespace Assets.Scripts.Core
 {
     public class CollisionHandler : NetworkBehaviour
     {
-        private GameManager gameManagerRPC;
+        private GameManager gameManager;
         private HealthSystem health;
         private void Awake()
         {
             health = GetComponent<HealthSystem>();
-            gameManagerRPC = FindObjectOfType<GameManager>();
+        }
+
+        public override void OnNetworkSpawn()
+        {
+            gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
         }
 
         #region Collision
@@ -23,7 +27,7 @@ namespace Assets.Scripts.Core
             {
                 if (!IsOwner) return;
                 other.gameObject.GetComponent<Checkpoint>().OnCheckpointActivated();
-                GameManager.Instance.LastInteractedCheckpointPosition = other.gameObject.GetComponent<Checkpoint>().GetCheckpointPosition().transform.position;
+                gameManager.LastInteractedCheckpointPosition = other.gameObject.GetComponent<Checkpoint>().SetCheckpointPosition();
             }
             if (other.CompareTag("Platform"))
             {
@@ -43,6 +47,15 @@ namespace Assets.Scripts.Core
             {
                 if (!IsOwner) return;
                 health.ApplyHealOverTime();
+            }
+        }
+
+        private void OnTriggerExit(Collider other)
+        {
+            if (other.CompareTag("Lava"))
+            {
+                if (!IsOwner) return;
+                health.StopLavaDoT();
             }
         }
         #endregion
