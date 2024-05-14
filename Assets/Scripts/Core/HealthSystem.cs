@@ -17,7 +17,7 @@ namespace Assets.Scripts.Core
         private bool isPlayerDead = false;
         public bool IsPlayerDead => isPlayerDead;
         [Header("Regeneration System")]
-        private float regenerationRate;
+        private float regenerationRate = 0.1f;
         private float healTimer;
         [Header("Damage System - Lava")]
         [SerializeField] private ParticleSystem burningParticle;
@@ -54,18 +54,13 @@ namespace Assets.Scripts.Core
             burningParticle.Stop();
         }
 
-        private void FixedUpdate()
-        {
-            regenerationRate = gameManager.RegenerationRate;
-        }
-
         #region Health System
         public void ApplyHealOverTime()
         {
             healTimer += Time.deltaTime;
             if (healTimer >= regenerationRate)
             {
-                Heal(2);
+                Heal(1);
                 healTimer = 0f;
             }
         }

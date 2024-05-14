@@ -29,13 +29,9 @@ public class GameManager: NetworkBehaviour
 
     [Header("Heat Wave")]
     private bool isHeatWaveActivated;
-    private int heatWaveDamage = 3;
+    private int heatWaveDamage = 1;
     private float heatTickInterval = 10f;
     private float heatWaveTimer = 0f;
-
-    [Header("Regeneration")]
-    private float regenerationRate = 5f;
-    public float RegenerationRate => regenerationRate;
 
     public override void OnNetworkSpawn()
     {
@@ -73,8 +69,7 @@ public class GameManager: NetworkBehaviour
 
                 if (Mathf.FloorToInt(elapsedMinutes) > Mathf.FloorToInt(elapsedMinutes - Time.deltaTime / 60f))
                 {
-                    heatWaveDamage++;
-                    regenerationRate += 2f;
+                    heatWaveDamage += 1;
                 }
             }
 
