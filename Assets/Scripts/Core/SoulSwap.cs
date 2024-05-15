@@ -1,41 +1,32 @@
 ﻿using Assets.Scripts.Managers;
 using System.Collections;
-using System.Data;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.UI;
-using System.Threading.Tasks;
 using UnityEngine.InputSystem;
+
 namespace Assets.Scripts.Core
 {
     public class SoulSwap : NetworkBehaviour
     {
-        /// <summary>
-        /// 1. Check if the player activates the soul swap skill
-        /// 2. If the player activates the soul swap skill, play the animation
-        /// 3. Set a flag during the animation to swap the player model that the player soul swapped.
-        /// 4. Reset the animation after the swap is complete.
-        /// </summary>
         [Header("Input Action Reference")]
         [SerializeField] private InputActionReference soulSwapInput;
+
         [Header("Soul Swap Properties")]
         [SerializeField] private Image soulSwapImage;
-        [SerializeField] private bool isSoulSwapActive = false;
-        private bool isSoulSwapInCooldown = false;
         private bool isSoulSwapActivated;
-        public bool IsSoulSwapActivated
-        {
-            get => isSoulSwapActivated;
-            set => isSoulSwapActivated = value;
-        }
+        private bool isSoulSwapInCooldown = false;
+
         [Space]
         [Header("Audio")]
         [SerializeField] private AudioClip soulSwapSound;
+
         [Header("Components")]
         private Role role;
         private Animator animator;
         private GameManager gameManager;
         private HealthSystem healthSystem;
+
         private void Awake()
         {
             role = GetComponent<Role>();
@@ -51,90 +42,96 @@ namespace Assets.Scripts.Core
         private void LateUpdate()
         {
             if (healthSystem.IsPlayerDead) return;
-            if (soulSwapInput.action.triggered && !isSoulSwapActivated) ActivateSkill();
+
+            if (soulSwapInput.action.triggered && !isSoulSwapActivated && !isSoulSwapInCooldown)
+            {
+                ActivateSkill();
+            }
         }
 
-        #region Soul Swap
-        // Play the soul swap animation
-        // Swap the player model
-        // After 30 seconds, reset the player model
-        public void ActivateSkill()
+        private void ActivateSkill()
         {
-            if (isSoulSwapActivated)
+            isSoulSwapActivated = true;
+            isSoulSwapInCooldown = true;
+
+            PlaySoulSwapAnimationClientRpc();
+
+            NotifyOtherPlayerServerRpc();
+        }
+
+        [ServerRpc(RequireOwnership = false)]
+        private void NotifyOtherPlayerServerRpc()
+        {
+            NotifyOtherPlayerClientRpc();
+        }
+
+        [ClientRpc]
+        private void NotifyOtherPlayerClientRpc()
+        {
+            if (!isSoulSwapActivated)
             {
-                isSoulSwapActivated = false;
-                if (isSoulSwapInCooldown)
-                {
-                    StartCoroutine(SwapPlayerModelAfterDelay());
-                }
-            }
-            else
-            {
-                isSoulSwapActivated = true;
                 PlaySoulSwapAnimationClientRpc();
-                StartCoroutine(SwapPlayerModelAfterDelay());
             }
+
+            StartCoroutine(HandleCooldown());
         }
 
-        private IEnumerator SwapPlayerModelAfterDelay()
+        private IEnumerator HandleCooldown()
         {
+            float cooldownDuration = gameManager.SoulSwapCooldown;
+            float elapsedTime = 0f;
+
+            // Delay before swapping models to allow the animation to play
             yield return new WaitForSeconds(2f);
+
             SwapPlayerModelClientRpc();
-            yield return new WaitForSeconds(20f);
+
+            while (elapsedTime < cooldownDuration)
+            {
+                UpdateCooldownUIClientRpc(elapsedTime / cooldownDuration);
+                elapsedTime += Time.deltaTime;
+                yield return null;
+            }
+
+            UpdateCooldownUIClientRpc(1.0f);
+            isSoulSwapActivated = false;
+            isSoulSwapInCooldown = false;
+
+            // Reset models and animations after cooldown
             ResetPlayerModelClientRpc();
             ResetSoulSwapAnimationClientRpc();
         }
 
         [ClientRpc]
-        public void HandleSoulswapCooldownClientRpc()
-        {
-            if (isSoulSwapActivated)
-            {
-                isSoulSwapInCooldown = true;
-
-                if (isSoulSwapInCooldown)
-                {
-                    soulSwapImage.fillAmount += 1 / GameManager.Instance.SoulSwapCooldown * Time.deltaTime;
-
-                    if (soulSwapImage.fillAmount >= 1)
-                    {
-                        isSoulSwapInCooldown = false;
-                        soulSwapImage.fillAmount = 0;
-                    }
-                }
-            }
-            else
-            {
-                isSoulSwapInCooldown = false;
-                soulSwapImage.fillAmount = 0;
-            }
-        }
-
-        [ClientRpc]
-        public void PlaySoulSwapAnimationClientRpc()
+        private void PlaySoulSwapAnimationClientRpc()
         {
             animator.SetBool("IsSoulSwapEnabled", true);
         }
 
         [ClientRpc]
-        public void ResetSoulSwapAnimationClientRpc()
+        private void ResetSoulSwapAnimationClientRpc()
         {
             animator.SetBool("IsSoulSwapEnabled", false);
         }
 
         [ClientRpc]
-        public void SwapPlayerModelClientRpc()
+        private void SwapPlayerModelClientRpc()
         {
             AudioManager.Instance.PlaySound(soulSwapSound);
-            role.SwapCharacterModelRpc();
+            role.SwapCharacterModelClientRpc();
         }
 
         [ClientRpc]
-        public void ResetPlayerModelClientRpc()
+        private void ResetPlayerModelClientRpc()
         {
             AudioManager.Instance.PlaySound(soulSwapSound);
-            role.ResetCharacterModelRpc();
+            role.ResetCharacterModelClientRpc();
         }
-        #endregion
+
+        [ClientRpc]
+        private void UpdateCooldownUIClientRpc(float fillAmount)
+        {
+            soulSwapImage.fillAmount = fillAmount;
+        }
     }
 }

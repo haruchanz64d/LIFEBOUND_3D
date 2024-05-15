@@ -16,13 +16,20 @@ namespace Assets.Scripts.Core
         [Header("Character Name")]
         [SerializeField] private CharacterName characterName;
         private CharacterName originalCharacterName;
-        [Space] 
+        [Space]
         [Header("Character Model")]
         [SerializeField] private GameObject solModel;
         [SerializeField] private GameObject lunaModel;
         [Header("UI")]
         [SerializeField] private SpriteRenderer characterMinimapIcon;
         [SerializeField] private Sprite[] characterMinimapIcons;
+
+        private void Awake()
+        {
+            SetCharacterModel(characterName);
+            Debug.Log("Character Name: " + characterName);
+        }
+
         public void SetCharacterName(CharacterName name)
         {
             characterName = name;
@@ -32,12 +39,6 @@ namespace Assets.Scripts.Core
         public CharacterName GetCharacterName()
         {
             return characterName;
-        }
-
-        private void Awake()
-        {
-            SetCharacterModel(characterName);
-            Debug.Log("Character Name: " + characterName);
         }
 
         public void SetCharacterModel(CharacterName name)
@@ -57,8 +58,8 @@ namespace Assets.Scripts.Core
             }
         }
 
-        [Rpc(SendTo.ClientsAndHost, RequireOwnership = false)]
-        public void SwapCharacterModelRpc()
+        [ClientRpc]
+        public void SwapCharacterModelClientRpc()
         {
             switch (characterName)
             {
@@ -75,8 +76,8 @@ namespace Assets.Scripts.Core
             }
         }
 
-        [Rpc(SendTo.ClientsAndHost, RequireOwnership = false)]
-        public void ResetCharacterModelRpc()
+        [ClientRpc]
+        public void ResetCharacterModelClientRpc()
         {
             SetCharacterModel(originalCharacterName);
             characterName = originalCharacterName;

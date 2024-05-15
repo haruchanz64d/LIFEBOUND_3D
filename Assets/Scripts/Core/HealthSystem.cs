@@ -152,5 +152,13 @@ namespace Assets.Scripts.Core
             gameManager.DisconnectAllPlayers(OwnerClientId);
         }
         #endregion
+
+        public void ForceKillPlayer()
+        {
+            isPlayerDead = true;
+            animator.SetTrigger("IsDead");
+            KillPlayer();
+        }
+
     }
 }
