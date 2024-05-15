@@ -21,21 +21,6 @@ namespace Assets.Scripts.Core
         }
 
         #region Collision
-        private void OnTriggerEnter(Collider other)
-        {
-            if (other.CompareTag("Platform"))
-            {
-                NetworkObject networkObject = other.GetComponent<NetworkObject>();
-                if (networkObject == null) return;
-                if (networkObject.OwnerClientId != OwnerClientId) return;
-                if(networkObject.OwnerClientId == OwnerClientId)
-                {
-                    transform.SetParent(other.transform);
-                }
-            }
-        }
-
-
         private void OnTriggerStay(Collider other)
         {
             if (other.CompareTag("Lava"))

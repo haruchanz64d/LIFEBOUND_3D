@@ -1,4 +1,3 @@
-// MovingPlatform.cs
 using LB.Character;
 using System.Collections.Generic;
 using Unity.Netcode;
@@ -9,22 +8,47 @@ namespace LB.Environment.Objects
     public class MovingPlatform : NetworkBehaviour
     {
         [SerializeField] private Transform[] waypoints;
-        private float movementSpeed = 20f;
+        private float movementSpeed = 10f;
         private int currentWaypointIndex = 0;
 
-        private List<NetworkObject> players = new List<NetworkObject>();
+        private List<Transform> playersOnPlatform = new List<Transform>();
 
         public override void OnNetworkSpawn()
         {
             base.OnNetworkSpawn();
         }
 
+        private void Update()
+        {
+            MovePlatform();
+
+            foreach (var playerTransform in playersOnPlatform)
+            {
+                // Calculate the position of the player relative to the platform
+                Vector3 newPosition = playerTransform.position + (transform.position - transform.parent.position);
+                // Sync player position to all clients
+                UpdatePlayerPositionClientRpc(playerTransform.GetComponent<NetworkObject>().NetworkObjectId, newPosition);
+            }
+        }
+
+        private void MovePlatform()
+        {
+            if (Vector3.Distance(waypoints[currentWaypointIndex].position, transform.position) < 0.1f)
+            {
+                currentWaypointIndex = (currentWaypointIndex + 1) % waypoints.Length;
+            }
+
+            transform.position = Vector3.MoveTowards(transform.position, waypoints[currentWaypointIndex].position, movementSpeed * Time.deltaTime);
+        }
+
         private void OnTriggerEnter(Collider other)
         {
             if (other.CompareTag("Player"))
             {
-                NetworkObject player = other.GetComponent<NetworkObject>();
-                player.ChangeOwnership(NetworkManager.Singleton.LocalClientId);
+                Transform playerTransform = other.transform;
+                playersOnPlatform.Add(playerTransform);
+                // Set platform as parent to sync movement
+                playerTransform.SetParent(transform);
             }
         }
 
@@ -32,27 +56,10 @@ namespace LB.Environment.Objects
         {
             if (other.CompareTag("Player"))
             {
-                NetworkObject player = other.GetComponent<NetworkObject>();
-                player.RemoveOwnership();
-            }
-        }
-
-        private void Update()
-        {
-            if (Vector3.Distance(waypoints[currentWaypointIndex].position, transform.position) < 0.1f)
-            {
-                currentWaypointIndex++;
-                if (currentWaypointIndex >= waypoints.Length)
-                {
-                    currentWaypointIndex = 0;
-                }
-            }
-
-            transform.position = Vector3.MoveTowards(transform.position, waypoints[currentWaypointIndex].position, movementSpeed * Time.deltaTime);
-
-            foreach (var player in players)
-            {
-                UpdatePlayerPositionClientRpc(player.NetworkObjectId, player.transform.position);
+                Transform playerTransform = other.transform;
+                playersOnPlatform.Remove(playerTransform);
+                // Unset platform as parent
+                playerTransform.SetParent(null);
             }
         }
 
