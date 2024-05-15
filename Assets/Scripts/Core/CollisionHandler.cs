@@ -17,7 +17,7 @@ namespace Assets.Scripts.Core
 
         public override void OnNetworkSpawn()
         {
-            gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
+            gameManager = GameManager.Instance;
         }
 
         #region Collision
@@ -25,9 +25,16 @@ namespace Assets.Scripts.Core
         {
             if (other.CompareTag("Platform"))
             {
-                
+                NetworkObject networkObject = other.GetComponent<NetworkObject>();
+                if (networkObject == null) return;
+                if (networkObject.OwnerClientId != OwnerClientId) return;
+                if(networkObject.OwnerClientId == OwnerClientId)
+                {
+                    transform.SetParent(other.transform);
+                }
             }
         }
+
 
         private void OnTriggerStay(Collider other)
         {
@@ -50,6 +57,17 @@ namespace Assets.Scripts.Core
             {
                 if (!IsOwner) return;
                 health.StopLavaDoT();
+            }
+
+            if (other.CompareTag("Platform"))
+            {
+                NetworkObject networkObject = other.GetComponent<NetworkObject>();
+                if (networkObject == null) return;
+                if (networkObject.OwnerClientId != OwnerClientId) return;
+                if (networkObject.OwnerClientId == OwnerClientId)
+                {
+                    transform.SetParent(null);
+                }
             }
         }
         #endregion

@@ -22,7 +22,7 @@ public class HostManager : NetworkBehaviour
     private void Awake()
     {
         if (Instance != null && Instance != this) Destroy(gameObject);
-        else Instance = this; DontDestroyOnLoad(gameObject);
+        else Instance = this;
     }
 
     public async void StartHost()

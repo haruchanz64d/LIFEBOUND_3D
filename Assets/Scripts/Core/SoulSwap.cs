@@ -45,7 +45,7 @@ namespace Assets.Scripts.Core
 
         public override void OnNetworkSpawn()
         {
-            gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
+            gameManager = GameManager.Instance;
         }
 
         private void LateUpdate()
@@ -78,7 +78,7 @@ namespace Assets.Scripts.Core
 
         private IEnumerator SwapPlayerModelAfterDelay()
         {
-            yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).length);
+            yield return new WaitForSeconds(2f);
             SwapPlayerModelClientRpc();
             yield return new WaitForSeconds(20f);
             ResetPlayerModelClientRpc();

@@ -37,11 +37,11 @@ namespace Assets.Scripts.Core
         [SerializeField] private GameObject deathCanvas;
         [SerializeField] private TMP_Text deathText;
         private float disconnectTimer;
-        private float timeBeforeDisconnect = 8f;
+        private int timeBeforeDisconnect = 8;
         public override void OnNetworkSpawn()
         {
             base.OnNetworkSpawn();
-            gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
+            gameManager = GameManager.Instance;
             if (!IsOwner) return;
             deathCanvas.SetActive(false);
             currentHealth = maxHealth;
@@ -124,7 +124,6 @@ namespace Assets.Scripts.Core
         #endregion
 
         #region Death System
-
         public void SetPlayerHealth(int health)
         {
             currentHealth = health;
@@ -132,31 +131,25 @@ namespace Assets.Scripts.Core
         }
         #endregion
 
-        #region Respawn System
+        #region Kill System
         public void KillPlayer()
         {
-            deathCanvas.SetActive(true);
             isPlayerDead = true;
+            deathCanvas.SetActive(true);
+            UnityEngine.Cursor.lockState = CursorLockMode.None;
+            UnityEngine.Cursor.visible = true;
             disconnectTimer = timeBeforeDisconnect;
             StartCoroutine(ShowGameOverMessages());
         }
 
         private IEnumerator ShowGameOverMessages()
         {
-            while(disconnectTimer > 0)
+            while (disconnectTimer > 0)
             {
-                disconnectTimer -= Time.deltaTime;
-                deathText.SetText($"Returning to main menu in ({disconnectTimer:F0}) seconds...");
-                yield return null;
+                yield return new WaitForSeconds(1f);
+                disconnectTimer--;
             }
-            DisconnectAllPlayers();
-        }
-
-        private void DisconnectAllPlayers()
-        {
-            UnityEngine.Cursor.lockState = CursorLockMode.None;
-            UnityEngine.Cursor.visible = true;
-            gameManager.DisconnectAllPlayers();
+            gameManager.DisconnectAllPlayers(OwnerClientId);
         }
         #endregion
     }

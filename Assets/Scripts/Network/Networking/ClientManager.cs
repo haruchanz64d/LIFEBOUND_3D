@@ -13,7 +13,7 @@ public class ClientManager : MonoBehaviour
     private void Awake()
     {
         if (Instance != null && Instance != this) Destroy(gameObject);
-        else Instance = this; DontDestroyOnLoad(gameObject);
+        else Instance = this;
     }
 
     public async void StartClient(string joinCode)

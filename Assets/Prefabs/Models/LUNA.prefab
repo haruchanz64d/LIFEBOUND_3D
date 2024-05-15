@@ -2174,6 +2174,7 @@ GameObject:
   - component: {fileID: 4095145896313375353}
   - component: {fileID: 8184158131678941723}
   - component: {fileID: 4128820738420951863}
+  - component: {fileID: 8226598460142491211}
   m_Layer: 0
   m_Name: LUNA
   m_TagString: Player
@@ -2194,12 +2195,12 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 2605136897086192142}
   - {fileID: 7659465857267814115}
   - {fileID: 5088575775252102036}
   - {fileID: 3280986727314133952}
   - {fileID: 2224058040418065393}
   - {fileID: 803738267279202691}
-  - {fileID: 2605136897086192142}
   - {fileID: 4956523627762538751}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2412,6 +2413,19 @@ MonoBehaviour:
   soulSwapImage: {fileID: 3341422079039444181}
   isSoulSwapActive: 0
   soulSwapSound: {fileID: 8300000, guid: c9421d952eb878c48bbd56013a46446b, type: 3}
+--- !u!114 &8226598460142491211
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8771117243489437324}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ffbcbdfad64d3c48b776fd607e27410, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  countdownText: {fileID: 5511879039822688471}
 --- !u!1 &8849888477724693569
 GameObject:
   m_ObjectHideFlags: 0
@@ -2746,6 +2760,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &5511879039822688471 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7773160970887161138, guid: 813b90342604ee5428e900ad27e84cac,
+    type: 3}
+  m_PrefabInstance: {fileID: 2855828004807218661}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &5484651322015412383
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2872,12 +2898,12 @@ PrefabInstance:
     - target: {fileID: 2762543633544823908, guid: 6335bc88d7e50e641952c5b295cc886c,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.00000003366925
+      value: 0.00000003366925
       objectReference: {fileID: 0}
     - target: {fileID: 2762543633544823908, guid: 6335bc88d7e50e641952c5b295cc886c,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.0000000071147532
+      value: -0.0000000071147532
       objectReference: {fileID: 0}
     - target: {fileID: 3158899332448274775, guid: 6335bc88d7e50e641952c5b295cc886c,
         type: 3}
@@ -2992,12 +3018,12 @@ PrefabInstance:
     - target: {fileID: 7081107528445182135, guid: 6335bc88d7e50e641952c5b295cc886c,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.000000008417314
+      value: 0.000000008417312
       objectReference: {fileID: 0}
     - target: {fileID: 7081107528445182135, guid: 6335bc88d7e50e641952c5b295cc886c,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.0000000017786886
+      value: -0.0000000017786883
       objectReference: {fileID: 0}
     - target: {fileID: 7867440123362817007, guid: 6335bc88d7e50e641952c5b295cc886c,
         type: 3}

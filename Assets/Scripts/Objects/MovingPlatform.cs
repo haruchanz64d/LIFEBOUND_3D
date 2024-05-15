@@ -18,6 +18,25 @@ namespace LB.Environment.Objects
         {
             base.OnNetworkSpawn();
         }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            if (other.CompareTag("Player"))
+            {
+                NetworkObject player = other.GetComponent<NetworkObject>();
+                player.ChangeOwnership(NetworkManager.Singleton.LocalClientId);
+            }
+        }
+
+        private void OnTriggerExit(Collider other)
+        {
+            if (other.CompareTag("Player"))
+            {
+                NetworkObject player = other.GetComponent<NetworkObject>();
+                player.RemoveOwnership();
+            }
+        }
+
         private void Update()
         {
             if (Vector3.Distance(waypoints[currentWaypointIndex].position, transform.position) < 0.1f)
