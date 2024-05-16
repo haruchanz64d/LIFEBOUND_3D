@@ -16,7 +16,7 @@ public class CharacterSpawner : NetworkBehaviour
             if (character != null)
             {
                 Vector3 lookPosition = lookPoint.position;
-                var characterInstance = Instantiate(character.GameplayPrefab, spawnPoint.position, Quaternion.LookRotation(lookPosition));
+                var characterInstance = Instantiate(character.GameplayPrefab, spawnPoint.position, Quaternion.identity);
                 characterInstance.SpawnAsPlayerObject(client.Value.clientId);
             }
         }
