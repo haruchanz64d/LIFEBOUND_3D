@@ -18,7 +18,7 @@ namespace LB.Environment.Objects
             base.OnNetworkSpawn();
         }
 
-        private void Update()
+        private void FixedUpdate()
         {
             MovePlatform();
         }
@@ -35,24 +35,40 @@ namespace LB.Environment.Objects
 
         private void OnTriggerEnter(Collider other)
         {
-            if (other.gameObject.CompareTag("Player"))
+            if (IsServer)
             {
-                player = other.gameObject.GetComponent<NetworkObject>();
-                if (player != null)
+                NetworkObject networkObject = other.GetComponent<NetworkObject>();
+                if (networkObject != null)
                 {
-                    RequestParentToPlatformServerRpc(player.NetworkObjectId);
+                    networkObject.transform.SetParent(transform);
+                }
+            }
+            else
+            {
+                NetworkObject networkObject = other.GetComponent<NetworkObject>();
+                if (networkObject != null)
+                {
+                    RequestParentToPlatformServerRpc(networkObject.NetworkObjectId);
                 }
             }
         }
 
         private void OnTriggerExit(Collider other)
         {
-            if (other.gameObject.CompareTag("Player"))
+            if (IsServer)
             {
-                player = other.gameObject.GetComponent<NetworkObject>();
-                if (player != null)
+                NetworkObject networkObject = other.GetComponent<NetworkObject>();
+                if (networkObject != null)
                 {
-                    RequestUnparentFromPlatformServerRpc(player.NetworkObjectId);
+                    networkObject.transform.SetParent(null);
+                }
+            }
+            else
+            {
+                NetworkObject networkObject = other.GetComponent<NetworkObject>();
+                if (networkObject != null)
+                {
+                    RequestUnparentFromPlatformServerRpc(networkObject.NetworkObjectId);
                 }
             }
         }
