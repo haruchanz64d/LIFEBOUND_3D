@@ -1,11 +1,8 @@
 ﻿using Assets.Scripts.Managers;
-using LB.Character;
-using System;
 using System.Collections;
 using TMPro;
 using Unity.Netcode;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 namespace Assets.Scripts.Core
 {
@@ -16,14 +13,17 @@ namespace Assets.Scripts.Core
         private int maxHealth = 100;
         private bool isPlayerDead = false;
         public bool IsPlayerDead => isPlayerDead;
+
         [Header("Regeneration System")]
         private float regenerationRate = 0.1f;
         private float healTimer;
+
         [Header("Damage System - Lava")]
         [SerializeField] private ParticleSystem burningParticle;
         private int lavaDamage = 3;
         private float damageTimer = 2f;
         private float damageTickInterval = 2f;
+
         [Header("Components")]
         private Animator animator;
         private GameManager gameManager;
@@ -38,6 +38,7 @@ namespace Assets.Scripts.Core
         [SerializeField] private TMP_Text deathText;
         private float disconnectTimer;
         private int timeBeforeDisconnect = 8;
+
         public override void OnNetworkSpawn()
         {
             base.OnNetworkSpawn();
@@ -159,6 +160,5 @@ namespace Assets.Scripts.Core
             animator.SetTrigger("IsDead");
             KillPlayer();
         }
-
     }
 }

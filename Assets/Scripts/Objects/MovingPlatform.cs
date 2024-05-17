@@ -8,10 +8,10 @@ namespace LB.Environment.Objects
     public class MovingPlatform : NetworkBehaviour
     {
         [SerializeField] private Transform[] waypoints;
-        private float movementSpeed = 10f;
+        private float movementSpeed = 8f;
         private int currentWaypointIndex = 0;
 
-        private List<Transform> playersOnPlatform = new List<Transform>();
+        [SerializeField] private NetworkObject player;
 
         public override void OnNetworkSpawn()
         {
@@ -21,14 +21,6 @@ namespace LB.Environment.Objects
         private void Update()
         {
             MovePlatform();
-
-            foreach (var playerTransform in playersOnPlatform)
-            {
-                // Calculate the position of the player relative to the platform
-                Vector3 newPosition = playerTransform.position + (transform.position - transform.parent.position);
-                // Sync player position to all clients
-                UpdatePlayerPositionClientRpc(playerTransform.GetComponent<NetworkObject>().NetworkObjectId, newPosition);
-            }
         }
 
         private void MovePlatform()
@@ -43,31 +35,46 @@ namespace LB.Environment.Objects
 
         private void OnTriggerEnter(Collider other)
         {
-            if (other.CompareTag("Player"))
+            if (other.gameObject.CompareTag("Player"))
             {
-                Transform playerTransform = other.transform;
-                playersOnPlatform.Add(playerTransform);
-                // Set platform as parent to sync movement
-                playerTransform.SetParent(transform);
+                player = other.gameObject.GetComponent<NetworkObject>();
+                if (player != null)
+                {
+                    RequestParentToPlatformServerRpc(player.NetworkObjectId);
+                }
             }
         }
 
         private void OnTriggerExit(Collider other)
         {
-            if (other.CompareTag("Player"))
+            if (other.gameObject.CompareTag("Player"))
             {
-                Transform playerTransform = other.transform;
-                playersOnPlatform.Remove(playerTransform);
-                // Unset platform as parent
-                playerTransform.SetParent(null);
+                player = other.gameObject.GetComponent<NetworkObject>();
+                if (player != null)
+                {
+                    RequestUnparentFromPlatformServerRpc(player.NetworkObjectId);
+                }
             }
         }
 
-        [ClientRpc]
-        private void UpdatePlayerPositionClientRpc(ulong playerNetId, Vector3 position)
+        [ServerRpc(RequireOwnership = false)]
+        private void RequestParentToPlatformServerRpc(ulong playerNetworkObjectId)
         {
-            var playerNetObj = NetworkManager.Singleton.SpawnManager.SpawnedObjects[playerNetId];
-            playerNetObj.transform.position = position;
+            NetworkObject playerNetworkObject = GetNetworkObject(playerNetworkObjectId);
+            if (playerNetworkObject != null)
+            {
+                playerNetworkObject.transform.SetParent(transform);
+            }
+        }
+
+        [ServerRpc(RequireOwnership = false)]
+        private void RequestUnparentFromPlatformServerRpc(ulong playerNetworkObjectId)
+        {
+            NetworkObject playerNetworkObject = GetNetworkObject(playerNetworkObjectId);
+            if (playerNetworkObject != null)
+            {
+                playerNetworkObject.transform.SetParent(null);
+            }
         }
     }
 }

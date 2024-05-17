@@ -1,6 +1,4 @@
-﻿// CollisionHandler.cs
-using LB.Environment.Objects;
-using System.Collections;
+﻿using System.Collections;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -10,6 +8,7 @@ namespace Assets.Scripts.Core
     {
         private GameManager gameManager;
         private HealthSystem health;
+
         private void Awake()
         {
             health = GetComponent<HealthSystem>();
@@ -21,6 +20,7 @@ namespace Assets.Scripts.Core
         }
 
         #region Collision
+
         private void OnTriggerStay(Collider other)
         {
             if (other.CompareTag("Lava"))
@@ -33,6 +33,7 @@ namespace Assets.Scripts.Core
             {
                 if (!IsOwner) return;
                 health.ApplyHealOverTime();
+                HealOtherPlayerNearby();
             }
         }
 
@@ -43,22 +44,26 @@ namespace Assets.Scripts.Core
                 if (!IsOwner) return;
                 health.StopLavaDoT();
             }
-
-            if (other.CompareTag("Platform"))
-            {
-                NetworkObject networkObject = other.GetComponent<NetworkObject>();
-                if (networkObject == null) return;
-                if (networkObject.OwnerClientId != OwnerClientId) return;
-                if (networkObject.OwnerClientId == OwnerClientId)
-                {
-                    transform.SetParent(null);
-                }
-            }
         }
         #endregion
 
-        #region RPC Functions
+        #region Custom Methods
+        private void HealOtherPlayerNearby()
+        {
+            if (!IsOwner) return;
 
+            GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+            foreach (GameObject player in players)
+            {
+                if (player == gameObject) continue;
+
+                HealthSystem otherHealth = player.GetComponent<HealthSystem>();
+                if (otherHealth != null)
+                {
+                    otherHealth.ApplyHealOverTime();
+                }
+            }
+        }
         #endregion
     }
 }
