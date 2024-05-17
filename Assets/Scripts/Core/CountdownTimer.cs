@@ -7,7 +7,7 @@ using UnityEngine;
 public class CountdownTimer : NetworkBehaviour
 {
     [Header("Countdown")]
-    private NetworkVariable<float> countdownTimer = new NetworkVariable<float>(10 * 60f);
+    private NetworkVariable<float> countdownTimer = new NetworkVariable<float>(20 * 60f);
     [SerializeField] private TMP_Text countdownText;
     private float elapsedMinutes = 0f;
     private HealthSystem healthSystem;
@@ -34,7 +34,7 @@ public class CountdownTimer : NetworkBehaviour
         if (IsServer)
         {
             // Initialize the countdown timer on the server
-            countdownTimer.Value = 10 * 60f;
+            countdownTimer.Value = 20 * 60f;
         }
 
         // Subscribe to the NetworkVariable value change event
@@ -80,10 +80,6 @@ public class CountdownTimer : NetworkBehaviour
             countdownTimer.Value -= Time.deltaTime;
             elapsedMinutes += Time.deltaTime / 60f;
 
-            if(countdownTimer.Value <= 60f)
-            {
-                countdownText.color = Color.red;
-            }
             if (countdownTimer.Value <= 0)
             {
                 countdownTimer.Value = 0;

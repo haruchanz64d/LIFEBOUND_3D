@@ -18,6 +18,18 @@ public class GameManager: NetworkBehaviour
     private float heatTickInterval = 10f;
     private float heatWaveTimer = 0f;
 
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            Instance = this;
+        }
+    }
+
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
@@ -27,14 +39,6 @@ public class GameManager: NetworkBehaviour
         networkManagerGameObject = GameObject.FindGameObjectWithTag("NetworkManager");
 
         if (!IsServer) return;
-        if (Instance != null && Instance != this)
-        {
-            Destroy(gameObject);
-        }
-        else
-        {
-            Instance = this;
-        }
     }
 
     private void Update()
@@ -96,7 +100,7 @@ public class GameManager: NetworkBehaviour
     [ServerRpc(RequireOwnership = false)]
     public void ApplyCountdownEndServerRpc()
     {
-        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+        Debug.Log($"Countdown has ended...");
         ApplyCountdownEndClientRpc();
     }
 
@@ -124,7 +128,6 @@ public class GameManager: NetworkBehaviour
             {
                 if (networkObject.OwnerClientId == clientId)
                 {
-                    NetworkManager.Singleton.DisconnectClient(clientId);
                     DisconnectAllPlayersToMainMenu();
                 }
             }
@@ -133,6 +136,7 @@ public class GameManager: NetworkBehaviour
 
     public void DisconnectAllPlayersToMainMenu()
     {
+        if (IsClient) { UnityEngine.SceneManagement.SceneManager.LoadScene(0); }
         Destroy(networkManagerGameObject);
         UnityEngine.SceneManagement.SceneManager.LoadScene(0);
     }
