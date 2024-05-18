@@ -9,7 +9,7 @@ namespace LB.Environment.Objects
     public class MovingPlatform : NetworkBehaviour
     {
         [SerializeField] private Transform[] waypoints;
-        private float movementSpeed = 8f;
+        private float movementSpeed = 10f;
         private int currentWaypointIndex = 0;
 
         private void FixedUpdate()
