@@ -96,10 +96,10 @@ GameObject:
   - component: {fileID: 1259186521709744065}
   - component: {fileID: 2124617748011919416}
   - component: {fileID: 6576799380262337466}
-  - component: {fileID: 521043162644241994}
   - component: {fileID: 6862990742498905023}
   - component: {fileID: 3805381599967665160}
   - component: {fileID: 66621130054553509}
+  - component: {fileID: 31321377659313442}
   m_Layer: 0
   m_Name: Moving Platform
   m_TagString: Platform
@@ -189,33 +189,12 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 11.888164, y: 2.1630163, z: 6.1389093}
   m_Center: {x: -0.01171875, y: 0.1934874, z: -0.023356318}
---- !u!65 &521043162644241994
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8351917929329753025}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 11.888164, y: 0.97, z: 6.1389093}
-  m_Center: {x: -0.01171875, y: 0.88, z: -0.023356318}
 --- !u!114 &6862990742498905023
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -284,3 +263,25 @@ MonoBehaviour:
   InLocalSpace: 0
   Interpolate: 1
   SlerpPosition: 0
+--- !u!64 &31321377659313442
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8351917929329753025}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 8715961311554189830, guid: 037dbf16c922f58469868b3a120e0713, type: 3}
