@@ -23,26 +23,11 @@ namespace Assets.Scripts.Core
 
         private void OnTriggerStay(Collider other)
         {
-            if (other.CompareTag("Lava"))
-            {
-                if (!IsOwner) return;
-                health.ApplyLavaDoT();
-            }
-
             if (other.CompareTag("Aqua Totem"))
             {
                 if (!IsOwner) return;
                 health.ApplyHealOverTime();
                 HealOtherPlayerNearby();
-            }
-        }
-
-        private void OnTriggerExit(Collider other)
-        {
-            if (other.CompareTag("Lava"))
-            {
-                if (!IsOwner) return;
-                health.StopLavaDoT();
             }
         }
         #endregion

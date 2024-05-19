@@ -18,12 +18,6 @@ namespace Assets.Scripts.Core
         private float regenerationRate = 0.1f;
         private float healTimer;
 
-        [Header("Damage System - Lava")]
-        [SerializeField] private ParticleSystem burningParticle;
-        private int lavaDamage = 3;
-        private float damageTimer = 2f;
-        private float damageTickInterval = 2f;
-
         [Header("Components")]
         private Animator animator;
         private GameManager gameManager;
@@ -52,7 +46,6 @@ namespace Assets.Scripts.Core
         private void Awake()
         {
             animator = GetComponent<Animator>();
-            burningParticle.Stop();
         }
 
         #region Health System
@@ -84,21 +77,6 @@ namespace Assets.Scripts.Core
         #endregion
 
         #region Damage System
-        public void ApplyLavaDoT()
-        {
-            burningParticle.Play();
-            damageTimer += Time.deltaTime;
-            if (damageTimer >= damageTickInterval)
-            {
-                TakeDamage(lavaDamage);
-                damageTimer = 0f;
-            }
-        }
-
-        public void StopLavaDoT()
-        {
-            burningParticle.Stop();
-        }
 
         public void TakeDamage(int damage)
         {
@@ -150,7 +128,7 @@ namespace Assets.Scripts.Core
                 yield return new WaitForSeconds(1f);
                 disconnectTimer--;
             }
-            gameManager.DisconnectAllPlayers(OwnerClientId);
+            GameManager.Instance.DisconnectAllPlayers(OwnerClientId);
         }
         #endregion
 

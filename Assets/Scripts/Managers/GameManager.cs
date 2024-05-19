@@ -136,9 +136,9 @@ public class GameManager: NetworkBehaviour
 
     public void DisconnectAllPlayersToMainMenu()
     {
-        if (IsClient) { UnityEngine.SceneManagement.SceneManager.LoadScene(0); }
+        if (IsClient) { UnityEngine.SceneManagement.SceneManager.LoadScene(1); }
         Destroy(networkManagerGameObject);
-        UnityEngine.SceneManagement.SceneManager.LoadScene(0);
+        UnityEngine.SceneManagement.SceneManager.LoadScene(1);
     }
 
     #region Death System
@@ -206,6 +206,27 @@ public class GameManager: NetworkBehaviour
             if (player.TryGetComponent(out HealthSystem health))
             {
                 health.TakeDamage(damage);
+            }
+        }
+    }
+    #endregion
+
+    #region Lava Kill Zone
+    [ServerRpc(RequireOwnership = false)]
+    public void KillAllPlayersDueToLavaServerRpc()
+    {
+        ApplyLavaDeathClientRpc();
+    }
+
+    [ClientRpc]
+    private void ApplyLavaDeathClientRpc()
+    {
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+        foreach (GameObject player in players)
+        {
+            if (player.TryGetComponent(out HealthSystem health))
+            {
+                health.ForceKillPlayer();
             }
         }
     }
