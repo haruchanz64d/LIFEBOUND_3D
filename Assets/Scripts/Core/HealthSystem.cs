@@ -115,8 +115,8 @@ namespace Assets.Scripts.Core
         {
             isPlayerDead = true;
             deathCanvas.SetActive(true);
-            UnityEngine.Cursor.lockState = CursorLockMode.None;
-            UnityEngine.Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
             disconnectTimer = timeBeforeDisconnect;
             StartCoroutine(ShowGameOverMessages());
         }

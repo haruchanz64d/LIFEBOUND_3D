@@ -1,5 +1,3 @@
-using LB.Character;
-using System.Collections;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -11,13 +9,20 @@ namespace LB.Environment.Objects
         private float movementSpeed = 10f;
         private int currentWaypointIndex = 0;
 
-        private Vector3 lastPosition;
 
-        private void Start()
+        private void Update()
         {
-            lastPosition = transform.position;
+            if (IsServer)
+            {
+               RequestParentToPlatformServerRpc();
+                RequestUnparentFromPlatformServerRpc();
+            }
+            if (IsClient)
+            {
+                ParentPlayerToPlatformClientRpc();
+                UnparentPlayerFromPlatformClientRpc();
+            }
         }
-
         private void FixedUpdate()
         {
             MovePlatform();
@@ -38,14 +43,8 @@ namespace LB.Environment.Objects
             NetworkObject networkObject = other.GetComponent<NetworkObject>();
             if (networkObject != null)
             {
-                if (IsServer)
-                {
-                    AttachToPlatform(networkObject);
-                }
-                else
-                {
-                    RequestParentToPlatformServerRpc(networkObject.NetworkObjectId);
-                }
+                if(IsServer) { AttachToPlatform(networkObject); }
+                if(IsClient) { RequestParentToPlatformServerRpc(); }
             }
         }
 
@@ -54,69 +53,43 @@ namespace LB.Environment.Objects
             NetworkObject networkObject = other.GetComponent<NetworkObject>();
             if (networkObject != null)
             {
-                if (IsServer)
-                {
-                    DetachFromPlatform(networkObject);
-                }
-                else
-                {
-                    RequestUnparentFromPlatformServerRpc(networkObject.NetworkObjectId);
-                }
+                if(IsServer) { DetachFromPlatform(networkObject); }
+                if(IsClient) { RequestUnparentFromPlatformServerRpc(); }
             }
         }
 
         [ServerRpc(RequireOwnership = false)]
-        private void RequestParentToPlatformServerRpc(ulong playerNetworkObjectId)
+        private void RequestParentToPlatformServerRpc()
         {
-            NetworkObject playerNetworkObject = NetworkManager.Singleton.SpawnManager.SpawnedObjects[playerNetworkObjectId];
-            if (playerNetworkObject != null)
-            {
-                AttachToPlatform(playerNetworkObject);
-            }
+            ParentPlayerToPlatformClientRpc();
         }
 
         [ServerRpc(RequireOwnership = false)]
-        private void RequestUnparentFromPlatformServerRpc(ulong playerNetworkObjectId)
+        private void RequestUnparentFromPlatformServerRpc()
         {
-            NetworkObject playerNetworkObject = NetworkManager.Singleton.SpawnManager.SpawnedObjects[playerNetworkObjectId];
-            if (playerNetworkObject != null)
-            {
-                DetachFromPlatform(playerNetworkObject);
-            }
+            UnparentPlayerFromPlatformClientRpc();
+        }
+
+        [ClientRpc]
+        private void ParentPlayerToPlatformClientRpc()
+        {
+            AttachToPlatform(GetComponent<NetworkObject>());
+        }
+
+        [ClientRpc]
+        private void UnparentPlayerFromPlatformClientRpc()
+        {
+            DetachFromPlatform(GetComponent<NetworkObject>());
         }
 
         private void AttachToPlatform(NetworkObject networkObject)
         {
             networkObject.transform.SetParent(transform);
-
-            CharacterController controller = networkObject.GetComponent<CharacterController>();
-            if (controller != null)
-            {
-                StartCoroutine(MovePlayerWithPlatform(controller));
-            }
         }
 
         private void DetachFromPlatform(NetworkObject networkObject)
         {
             networkObject.transform.SetParent(null);
-
-            CharacterController controller = networkObject.GetComponent<CharacterController>();
-            if (controller != null)
-            {
-                StopCoroutine(MovePlayerWithPlatform(controller));
-            }
-        }
-
-        private IEnumerator MovePlayerWithPlatform(CharacterController controller)
-        {
-            while (true)
-            {
-                Vector3 movement = transform.position - lastPosition;
-                lastPosition = transform.position;
-
-                controller.Move(movement);
-                yield return new WaitForFixedUpdate();
-            }
         }
     }
 }

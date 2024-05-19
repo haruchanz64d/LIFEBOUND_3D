@@ -526,15 +526,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2003661840, guid: 1db7cdd0c4733dc4abc82561aabb3257, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2003661840, guid: 1db7cdd0c4733dc4abc82561aabb3257, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2003661840, guid: 1db7cdd0c4733dc4abc82561aabb3257, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 25
+      value: -72
       objectReference: {fileID: 0}
     - target: {fileID: 2003661841, guid: 1db7cdd0c4733dc4abc82561aabb3257, type: 3}
       propertyPath: m_text
@@ -550,6 +550,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: -2239709557077189262, guid: 3277e8667ae2453438954fa4b18506be,
         type: 2}
+    - target: {fileID: 2003661841, guid: 1db7cdd0c4733dc4abc82561aabb3257, type: 3}
+      propertyPath: m_HorizontalAlignment
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 2003661841, guid: 1db7cdd0c4733dc4abc82561aabb3257, type: 3}
       propertyPath: m_hasFontAssetChanged
       value: 0
@@ -668,6 +672,11 @@ PrefabInstance:
         type: 3}
       propertyPath: GlobalObjectIdHash
       value: 1950209966
+      objectReference: {fileID: 0}
+    - target: {fileID: 8103310837846289159, guid: 1db7cdd0c4733dc4abc82561aabb3257,
+        type: 3}
+      propertyPath: InScenePlacedSourceGlobalObjectIdHash
+      value: 3023362425
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
