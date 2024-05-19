@@ -1,6 +1,5 @@
 using LB.Character;
 using System.Collections;
-using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -11,6 +10,13 @@ namespace LB.Environment.Objects
         [SerializeField] private Transform[] waypoints;
         private float movementSpeed = 10f;
         private int currentWaypointIndex = 0;
+
+        private Vector3 lastPosition;
+
+        private void Start()
+        {
+            lastPosition = transform.position;
+        }
 
         private void FixedUpdate()
         {
@@ -105,7 +111,9 @@ namespace LB.Environment.Objects
         {
             while (true)
             {
-                Vector3 movement = transform.position - transform.position; // Calculate movement since last frame
+                Vector3 movement = transform.position - lastPosition;
+                lastPosition = transform.position;
+
                 controller.Move(movement);
                 yield return new WaitForFixedUpdate();
             }
