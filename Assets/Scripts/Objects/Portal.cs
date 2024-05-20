@@ -8,14 +8,7 @@ public class Portal : NetworkBehaviour
     private int maxPlayers = 2;
     private HashSet<NetworkObject> playersInTrigger = new HashSet<NetworkObject>();
     private GameManager instance;
-    [SerializeField] private MeshRenderer portalObject;
-    [SerializeField] private MeshCollider portalCollider;
 
-    private void Awake()
-    {
-        portalObject.gameObject.SetActive(false);
-        portalCollider.isTrigger = false;
-    }
     private void Update()
     {
         if (!IsServer) return;
@@ -24,17 +17,6 @@ public class Portal : NetworkBehaviour
         {
             instance = GameManager.Instance;
         }
-
-        if(instance.IsCollectionGoalReached)
-        {
-            ActivatePortal();
-        }
-    }
-
-    private void ActivatePortal()
-    {
-        portalObject.gameObject.SetActive(true);
-        portalCollider.isTrigger = true;
     }
 
     private void OnTriggerEnter(Collider other)

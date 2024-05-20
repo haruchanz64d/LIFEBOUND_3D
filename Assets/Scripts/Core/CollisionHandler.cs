@@ -27,6 +27,7 @@ namespace Assets.Scripts.Core
             {
                 if (!IsOwner) return;
                 gameManager.UpdateCollectionCount();
+                Destroy(other.gameObject);
             }
         }
 

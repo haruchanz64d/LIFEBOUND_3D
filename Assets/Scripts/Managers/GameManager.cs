@@ -3,6 +3,7 @@ using Unity.Netcode;
 using Assets.Scripts.Core;
 using TMPro;
 using System.Collections;
+using Assets.Scripts.Managers;
 
 public class GameManager: NetworkBehaviour
 {
@@ -21,13 +22,16 @@ public class GameManager: NetworkBehaviour
     private float heatWaveTimer = 0f;
 
     [Header("Collection System")]
-    [SerializeField] private int collectionGoal = 20;
+    [SerializeField] private int collectionGoal = 14;
+    private int maxHeartsScatteredOnTheMap = 20;
     [SerializeField] private int currentCollectionCount;
     public int CurrentCollectionCount => currentCollectionCount;
     [SerializeField] private bool isCollectionGoalReached;
     public bool IsCollectionGoalReached => isCollectionGoalReached;
     [SerializeField] private TMP_Text collectionText;
     [SerializeField] private TMP_Text announcementText;
+    private AudioClip collectionReached;
+    [SerializeField] private GameObject portalObject;
 
     private void Awake()
     {
@@ -52,6 +56,17 @@ public class GameManager: NetworkBehaviour
         if (!IsServer) return;
     }
 
+
+    private void Start()
+    {
+        if (IsServer)
+        {
+            currentCollectionCount = 0;
+            collectionText.text = "Collection Progress: 0%";
+            announcementText.text = string.Empty;
+            portalObject.SetActive(false);
+        }
+    }
     private void Update()
     {
         if (IsServer)
@@ -246,21 +261,29 @@ public class GameManager: NetworkBehaviour
     #region Collection System
     public void UpdateCollectionCount()
     {
-        currentCollectionCount++;
-        float percentage = (currentCollectionCount / (float)collectionGoal) * 100f;
-        collectionText.text = $"Hearts Collected: {percentage:F2}%";
-        if (currentCollectionCount >= collectionGoal)
+        if (IsServer)
         {
-            isCollectionGoalReached = true;
-            StartCoroutine(AnnounceCollectionGoalReached());
+            currentCollectionCount++;
+            int percentage = Mathf.Min((currentCollectionCount * 100) / maxHeartsScatteredOnTheMap, 100);
+            collectionText.text = $"Collection Progress: {percentage}%";
+
+            int seventyPercentThreshold = Mathf.CeilToInt(maxHeartsScatteredOnTheMap * 0.7f);
+
+            if (currentCollectionCount >= seventyPercentThreshold && !isCollectionGoalReached)
+            {
+                isCollectionGoalReached = true;
+                StartCoroutine(AnnounceCollectionGoalReached());
+            }
         }
     }
 
     private IEnumerator AnnounceCollectionGoalReached()
     {
+        AudioManager.Instance.PlaySound(collectionReached);
         announcementText.text = "Collection Goal Reached!";
         yield return new WaitForSeconds(3f);
         announcementText.text = string.Empty;
+        portalObject.SetActive(true);
     }
     #endregion
 }

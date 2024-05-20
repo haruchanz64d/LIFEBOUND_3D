@@ -90,8 +90,6 @@ namespace Assets.Scripts.Core
                 KillPlayer();
             }
 
-            Debug.Log($"Player {gameObject.name} taking damage: {damage}");
-
             currentHealth -= damage;
             cameraShake.ShakeCamera();
             AudioManager.Instance.PlaySound(hurtSound);
