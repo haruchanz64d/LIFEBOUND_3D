@@ -8,18 +8,17 @@ public class TutorialImages : MonoBehaviour
     [SerializeField] Sprite[] images;
     [SerializeField] Image imageComponent;
     [SerializeField] GameObject nextButton;
-    [SerializeField] GameObject closeButton;
+    [SerializeField] GameObject previousButton;
     private int currentIndex = 0;
 
     void Start()
     {   
-        nextButton.SetActive(true);
-        closeButton.SetActive(false);
-
         if (images.Length > 0 && imageComponent != null)
         {
             imageComponent.sprite = images[currentIndex];
         }
+
+        previousButton.SetActive(false);
     }
 
     public void NextImage()
@@ -30,7 +29,21 @@ public class TutorialImages : MonoBehaviour
         if (currentIndex == images.Length - 1)
         {
             nextButton.SetActive(false);
-            closeButton.SetActive(true);
         }
+
+        previousButton.SetActive(true);
+    }
+
+    public void PreviousImage()
+    {
+        currentIndex = (currentIndex - 1 + images.Length) % images.Length;
+        imageComponent.sprite = images[currentIndex];
+
+        if (currentIndex == 0)
+        {
+            previousButton.SetActive(false);
+        }
+
+        nextButton.SetActive(true);
     }
 }
