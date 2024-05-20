@@ -59,7 +59,7 @@ public class GameManager: NetworkBehaviour
 
     private void Start()
     {
-        if (IsServer)
+        if (IsServer && IsClient)
         {
             currentCollectionCount = 0;
             collectionText.text = "Collection Progress: 0%";
@@ -265,8 +265,7 @@ public class GameManager: NetworkBehaviour
         {
             currentCollectionCount++;
             int percentage = Mathf.Min((currentCollectionCount * 100) / maxHeartsScatteredOnTheMap, 100);
-            collectionText.text = $"Collection Progress: {percentage}%";
-
+            UpdateCollectionCountClientRpc(percentage);
             int seventyPercentThreshold = Mathf.CeilToInt(maxHeartsScatteredOnTheMap * 0.7f);
 
             if (currentCollectionCount >= seventyPercentThreshold && !isCollectionGoalReached)
@@ -277,13 +276,38 @@ public class GameManager: NetworkBehaviour
         }
     }
 
+    [ClientRpc]
+    private void UpdateCollectionCountClientRpc(int percentage)
+    {
+        collectionText.text = $"Collection Progress: {percentage}%";
+    }
+
     private IEnumerator AnnounceCollectionGoalReached()
     {
         AudioManager.Instance.PlaySound(collectionReached);
-        announcementText.text = "Collection Goal Reached!";
+        AnnounceCollectionGoalReachedClientRpc();
         yield return new WaitForSeconds(3f);
+        ClearAnnouncementClientRpc();
+        ActivatePortalClientRpc();
+    }
+
+    [ClientRpc]
+    private void AnnounceCollectionGoalReachedClientRpc()
+    {
+        announcementText.text = "Collection Goal Reached!";
+    }
+
+    [ClientRpc]
+    private void ClearAnnouncementClientRpc()
+    {
         announcementText.text = string.Empty;
+    }
+
+    [ClientRpc]
+    private void ActivatePortalClientRpc()
+    {
         portalObject.SetActive(true);
     }
+
     #endregion
 }

@@ -16,7 +16,7 @@ namespace Assets.Scripts
         {
             if (other.CompareTag("Player"))
             {
-                audio.Play();
+                //audio.Play();
             }
         }
 
@@ -24,7 +24,7 @@ namespace Assets.Scripts
         {
             if (other.CompareTag("Player"))
             {
-                audio.Stop();
+               // audio.Stop();
             }
         }
     }
