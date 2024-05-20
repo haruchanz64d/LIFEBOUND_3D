@@ -21,6 +21,15 @@ namespace Assets.Scripts.Core
 
         #region Collision
 
+        private void OnTriggerEnter(Collider other)
+        {
+            if (other.CompareTag("Collectible"))
+            {
+                if (!IsOwner) return;
+                gameManager.UpdateCollectionCount();
+            }
+        }
+
         private void OnTriggerStay(Collider other)
         {
             if (other.CompareTag("Aqua Totem"))
