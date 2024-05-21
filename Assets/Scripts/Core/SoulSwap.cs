@@ -1,5 +1,4 @@
 ﻿using Assets.Scripts.Managers;
-using System.Collections;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.UI;
@@ -13,27 +12,19 @@ namespace Assets.Scripts.Core
         [SerializeField] private InputActionReference soulSwapInput;
 
         [Header("Soul Swap Properties")]
-        [SerializeField] private Image soulSwapImage;
-        private bool isSoulSwapActivated;
-        private bool isSoulSwapInCooldown = false;
-
-        [Space]
-        [Header("Audio")]
-        [SerializeField] private AudioClip soulSwapSound;
-
+        [SerializeField] public Image soulSwapImage;
+        public bool isSoulSwapActivated;
+        public bool isSoulSwapInCooldown = false;
+        public AudioClip soulSwapAudioClip;
         [Header("Components")]
-        private Role role;
-        private Animator animator;
-        private GameManager gameManager;
         private HealthSystem healthSystem;
+        private GameManager gameManager;
 
         private void Awake()
         {
-            role = GetComponent<Role>();
-            animator = GetComponent<Animator>();
             healthSystem = GetComponent<HealthSystem>();
         }
-
+        
         public override void OnNetworkSpawn()
         {
             gameManager = GameManager.Instance;
@@ -43,95 +34,27 @@ namespace Assets.Scripts.Core
         {
             if (healthSystem.IsPlayerDead) return;
 
-            if (soulSwapInput.action.triggered && !isSoulSwapActivated && !isSoulSwapInCooldown)
+            if (soulSwapInput.action.triggered)
             {
-                ActivateSkill();
+                RequestActivateSkillServerRpc();
             }
-        }
-
-        private void ActivateSkill()
-        {
-            isSoulSwapActivated = true;
-            isSoulSwapInCooldown = true;
-
-            PlaySoulSwapAnimationClientRpc();
-
-            NotifyOtherPlayerServerRpc();
         }
 
         [ServerRpc(RequireOwnership = false)]
-        private void NotifyOtherPlayerServerRpc()
+        private void RequestActivateSkillServerRpc()
         {
-            NotifyOtherPlayerClientRpc();
+            if (!isSoulSwapActivated && !isSoulSwapInCooldown)
+            {
+                gameManager.ActivateSoulSwapClientRpc();
+                gameManager.StartSoulSwapCooldown();
+            }
         }
 
-        [ClientRpc]
-        private void NotifyOtherPlayerClientRpc()
+        public void ResetSoulSwapState()
         {
-            if (!isSoulSwapActivated)
-            {
-                PlaySoulSwapAnimationClientRpc();
-            }
-
-            StartCoroutine(HandleCooldown());
-        }
-
-        private IEnumerator HandleCooldown()
-        {
-            float cooldownDuration = gameManager.SoulSwapCooldown;
-            float elapsedTime = 0f;
-
-            // Delay before swapping models to allow the animation to play
-            yield return new WaitForSeconds(2f);
-
-            SwapPlayerModelClientRpc();
-
-            while (elapsedTime < cooldownDuration)
-            {
-                UpdateCooldownUIClientRpc(elapsedTime / cooldownDuration);
-                elapsedTime += Time.deltaTime;
-                yield return null;
-            }
-
-            UpdateCooldownUIClientRpc(1.0f);
             isSoulSwapActivated = false;
             isSoulSwapInCooldown = false;
-
-            // Reset models and animations after cooldown
-            ResetPlayerModelClientRpc();
-            ResetSoulSwapAnimationClientRpc();
-        }
-
-        [ClientRpc]
-        private void PlaySoulSwapAnimationClientRpc()
-        {
-            animator.SetBool("IsSoulSwapEnabled", true);
-        }
-
-        [ClientRpc]
-        private void ResetSoulSwapAnimationClientRpc()
-        {
-            animator.SetBool("IsSoulSwapEnabled", false);
-        }
-
-        [ClientRpc]
-        private void SwapPlayerModelClientRpc()
-        {
-            AudioManager.Instance.PlaySound(soulSwapSound);
-            role.SwapCharacterModelClientRpc();
-        }
-
-        [ClientRpc]
-        private void ResetPlayerModelClientRpc()
-        {
-            AudioManager.Instance.PlaySound(soulSwapSound);
-            role.ResetCharacterModelClientRpc();
-        }
-
-        [ClientRpc]
-        private void UpdateCooldownUIClientRpc(float fillAmount)
-        {
-            soulSwapImage.fillAmount = fillAmount;
+            soulSwapImage.fillAmount = 0f;
         }
     }
 }

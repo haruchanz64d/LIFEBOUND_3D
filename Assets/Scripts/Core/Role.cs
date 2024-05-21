@@ -57,9 +57,7 @@ namespace Assets.Scripts.Core
                     break;
             }
         }
-
-        [ClientRpc]
-        public void SwapCharacterModelClientRpc()
+        public void SwapCharacterModel()
         {
             switch (characterName)
             {
@@ -76,11 +74,16 @@ namespace Assets.Scripts.Core
             }
         }
 
-        [ClientRpc]
-        public void ResetCharacterModelClientRpc()
+        public void ResetCharacterModel()
         {
             SetCharacterModel(originalCharacterName);
             characterName = originalCharacterName;
+        }
+
+        [ClientRpc]
+        public void ResetCharacterModelClientRpc()
+        {
+            ResetCharacterModel();
         }
     }
 }

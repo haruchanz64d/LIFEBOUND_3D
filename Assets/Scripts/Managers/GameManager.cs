@@ -4,14 +4,16 @@ using Assets.Scripts.Core;
 using TMPro;
 using System.Collections;
 using Assets.Scripts.Managers;
+using System.Collections.Generic;
 
 public class GameManager: NetworkBehaviour
 {
-    [SerializeField] private GameObject networkManagerGameObject;
+    private GameObject networkManagerGameObject;
     public static GameManager Instance { get; private set; }
 
     [Header("Soul Swap")]
     private float soulSwapCooldown = 30f;
+    private List<SoulSwap> soulSwaps = new List<SoulSwap>();
     public float SoulSwapCooldown => soulSwapCooldown;
 
     [Header("Heat Wave")]
@@ -53,6 +55,11 @@ public class GameManager: NetworkBehaviour
         isCountdownActivated = true;
         networkManagerGameObject = GameObject.FindGameObjectWithTag("NetworkManager");
 
+        if (IsServer)
+        {
+            portalObject.SetActive(false);
+        }
+
         if (!IsServer) return;
     }
 
@@ -63,8 +70,7 @@ public class GameManager: NetworkBehaviour
         {
             currentCollectionCount = 0;
             collectionText.text = "Collection Progress: 0%";
-            announcementText.text = string.Empty;
-            portalObject.SetActive(false);
+            announcementText.text = "";
         }
     }
     private void Update()
@@ -81,6 +87,11 @@ public class GameManager: NetworkBehaviour
                 }
             }
         }
+
+        if (portalObject.activeSelf)
+        {
+            UpdatePlayerDistances();
+        }
     }
 
     private void LateUpdate()
@@ -94,6 +105,61 @@ public class GameManager: NetworkBehaviour
         }
         CheckForPlayerDeathStateServerRpc();
     }
+
+    #region Soul Swap
+    [ClientRpc]
+    public void ActivateSoulSwapClientRpc()
+    {
+        foreach (var soulSwap in soulSwaps)
+        {
+            soulSwap.isSoulSwapActivated = true;
+            soulSwap.isSoulSwapInCooldown = true;
+
+            var animator = soulSwap.GetComponent<Animator>();
+            var role = soulSwap.GetComponent<Role>();
+
+            animator.SetBool("IsSoulSwapEnabled", true);
+            role.SwapCharacterModel();
+            AudioManager.Instance.PlaySound(soulSwap.soulSwapAudioClip);
+        }
+    }
+
+    public void StartSoulSwapCooldown()
+    {
+        StartCoroutine(HandleSoulSwapCooldown());
+    }
+
+    private IEnumerator HandleSoulSwapCooldown()
+    {
+        float cooldownDuration = SoulSwapCooldown;
+        float elapsedTime = 0f;
+
+        yield return new WaitForSeconds(2f);
+
+        foreach (var soulSwap in soulSwaps)
+        {
+            soulSwap.GetComponent<Role>().SwapCharacterModel();
+        }
+
+        while (elapsedTime < cooldownDuration)
+        {
+            foreach (var soulSwap in soulSwaps)
+            {
+                soulSwap.soulSwapImage.fillAmount = elapsedTime / cooldownDuration;
+            }
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        foreach (var soulSwap in soulSwaps)
+        {
+            soulSwap.soulSwapImage.fillAmount = 1.0f;
+            soulSwap.GetComponent<Animator>().SetBool("IsSoulSwapEnabled", false);
+            soulSwap.GetComponent<Role>().ResetCharacterModelClientRpc();
+            soulSwap.ResetSoulSwapState();
+        }
+    }
+    #endregion
 
     #region Countdown
     [ServerRpc(RequireOwnership = false)]
@@ -308,6 +374,20 @@ public class GameManager: NetworkBehaviour
     {
         portalObject.SetActive(true);
     }
+
+    private void UpdatePlayerDistances()
+    {
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+        foreach (GameObject player in players)
+        {
+            if (player.TryGetComponent(out MeterSystem meterSystem))
+            {
+                float distance = Vector3.Distance(player.transform.position, portalObject.transform.position);
+                meterSystem.UpdateDistance(distance);
+            }
+        }
+    }
+
 
     #endregion
 }
