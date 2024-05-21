@@ -13,7 +13,6 @@ public class GameManager: NetworkBehaviour
 
     [Header("Soul Swap")]
     private float soulSwapCooldown = 30f;
-    private List<SoulSwap> soulSwaps = new List<SoulSwap>();
     public float SoulSwapCooldown => soulSwapCooldown;
 
     [Header("Heat Wave")]
@@ -105,61 +104,6 @@ public class GameManager: NetworkBehaviour
         }
         CheckForPlayerDeathStateServerRpc();
     }
-
-    #region Soul Swap
-    [ClientRpc]
-    public void ActivateSoulSwapClientRpc()
-    {
-        foreach (var soulSwap in soulSwaps)
-        {
-            soulSwap.isSoulSwapActivated = true;
-            soulSwap.isSoulSwapInCooldown = true;
-
-            var animator = soulSwap.GetComponent<Animator>();
-            var role = soulSwap.GetComponent<Role>();
-
-            animator.SetBool("IsSoulSwapEnabled", true);
-            role.SwapCharacterModel();
-            AudioManager.Instance.PlaySound(soulSwap.soulSwapAudioClip);
-        }
-    }
-
-    public void StartSoulSwapCooldown()
-    {
-        StartCoroutine(HandleSoulSwapCooldown());
-    }
-
-    private IEnumerator HandleSoulSwapCooldown()
-    {
-        float cooldownDuration = SoulSwapCooldown;
-        float elapsedTime = 0f;
-
-        yield return new WaitForSeconds(2f);
-
-        foreach (var soulSwap in soulSwaps)
-        {
-            soulSwap.GetComponent<Role>().SwapCharacterModel();
-        }
-
-        while (elapsedTime < cooldownDuration)
-        {
-            foreach (var soulSwap in soulSwaps)
-            {
-                soulSwap.soulSwapImage.fillAmount = elapsedTime / cooldownDuration;
-            }
-            elapsedTime += Time.deltaTime;
-            yield return null;
-        }
-
-        foreach (var soulSwap in soulSwaps)
-        {
-            soulSwap.soulSwapImage.fillAmount = 1.0f;
-            soulSwap.GetComponent<Animator>().SetBool("IsSoulSwapEnabled", false);
-            soulSwap.GetComponent<Role>().ResetCharacterModelClientRpc();
-            soulSwap.ResetSoulSwapState();
-        }
-    }
-    #endregion
 
     #region Countdown
     [ServerRpc(RequireOwnership = false)]

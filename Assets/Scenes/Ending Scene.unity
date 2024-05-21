@@ -260,7 +260,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   videoPlayer: {fileID: 443852551}
-  mainMenuSceneName: MainMenu
+  sceneName: Main Menu
 --- !u!1 &417960561
 GameObject:
   m_ObjectHideFlags: 0
@@ -650,6 +650,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e343b198c4794234f8a8e5f6a6699d4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hoverButton: {fileID: 0}
+  pressedButton: {fileID: 0}
 --- !u!4 &667049777
 Transform:
   m_ObjectHideFlags: 0

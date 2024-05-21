@@ -81,6 +81,12 @@ namespace Assets.Scripts.Core
         }
 
         [ClientRpc]
+        public void SwapCharacterModelClientRpc()
+        {
+            SwapCharacterModel();
+        }
+
+        [ClientRpc]
         public void ResetCharacterModelClientRpc()
         {
             ResetCharacterModel();

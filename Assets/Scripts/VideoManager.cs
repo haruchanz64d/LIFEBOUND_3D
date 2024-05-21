@@ -9,7 +9,7 @@ public class VideoManager : MonoBehaviour
 {
     [SerializeField]
     private VideoPlayer videoPlayer;
-
+    [SerializeField] private string sceneName;
     private void Awake()
     {
         if (videoPlayer == null)
@@ -56,6 +56,6 @@ public class VideoManager : MonoBehaviour
 
         yield return new WaitForSeconds(1);
 
-        SceneManager.LoadScene("Main Menu");
+        SceneManager.LoadScene(sceneName);
     }
 }
