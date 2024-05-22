@@ -7,15 +7,15 @@ public class Portal : NetworkBehaviour
 {
     private int maxPlayers = 2;
     private int currentPlayers;
-    private GameManager instance;
+    private GameManager gameManager;
 
     private void Update()
     {
         if (!IsServer) return;
 
-        if (instance == null)
+        if (gameManager == null)
         {
-            instance = GameManager.Instance;
+            gameManager = GameManager.Instance;
         }
 
         CheckAndLoadNextScene();
@@ -41,7 +41,10 @@ public class Portal : NetworkBehaviour
     {
         if (currentPlayers >= maxPlayers)
         {
-            NetworkManager.Singleton.SceneManager.LoadScene("Ending Scene", UnityEngine.SceneManagement.LoadSceneMode.Single);
+            if(gameManager.IsCollectionGoalReached)
+            {
+                NetworkManager.Singleton.SceneManager.LoadScene("Ending Scene", UnityEngine.SceneManagement.LoadSceneMode.Single);
+            }
         }
     }
 }

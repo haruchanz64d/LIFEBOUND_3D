@@ -5,12 +5,13 @@ using TMPro;
 using System.Collections;
 using Assets.Scripts.Managers;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 public class GameManager: NetworkBehaviour
 {
     private GameObject networkManagerGameObject;
     public static GameManager Instance { get; private set; }
-
+    private HostManager hostManager;
     [Header("Soul Swap")]
     private float soulSwapCooldown = 30f;
     public float SoulSwapCooldown => soulSwapCooldown;
@@ -44,6 +45,8 @@ public class GameManager: NetworkBehaviour
         {
             Instance = this;
         }
+
+        hostManager = GameObject.FindObjectOfType<HostManager>();
     }
 
     public override void OnNetworkSpawn()
@@ -53,12 +56,6 @@ public class GameManager: NetworkBehaviour
         isHeatWaveActivated = true;
         isCountdownActivated = true;
         networkManagerGameObject = GameObject.FindGameObjectWithTag("NetworkManager");
-
-        if (IsServer)
-        {
-            portalObject.SetActive(false);
-        }
-
         if (!IsServer) return;
     }
 
@@ -85,11 +82,6 @@ public class GameManager: NetworkBehaviour
                     heatWaveTimer = 0f;
                 }
             }
-        }
-
-        if (portalObject.activeSelf)
-        {
-            UpdatePlayerDistances();
         }
     }
 
@@ -155,26 +147,30 @@ public class GameManager: NetworkBehaviour
 
     #endregion
 
-    public void DisconnectAllPlayers(ulong clientId)
+    public void DisconnectAllPlayers()
     {
-        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
-        foreach (GameObject player in players)
-        {
-            if(player.TryGetComponent(out NetworkObject networkObject))
-            {
-                if (networkObject.OwnerClientId == clientId)
-                {
-                    DisconnectAllPlayersToMainMenu();
-                }
-            }
-        }
+        StartCoroutine(DisconnectAllPlayersToMainMenu());
     }
 
-    public void DisconnectAllPlayersToMainMenu()
+    public IEnumerator DisconnectAllPlayersToMainMenu()
     {
-        if (IsClient) { UnityEngine.SceneManagement.SceneManager.LoadScene(1); }
-        Destroy(networkManagerGameObject);
-        UnityEngine.SceneManagement.SceneManager.LoadScene(1);
+        if (NetworkManager.Singleton != null)
+        {
+            if (NetworkManager.Singleton.IsServer)
+            {
+                NetworkManager.Singleton.Shutdown();
+                hostManager.OnClientDisconnect(hostManager.ClientData.Keys.GetEnumerator().Current);
+                NetworkManager.Singleton.ConnectionApprovalCallback -= hostManager.ApprovalCheck;
+            }
+            else if (NetworkManager.Singleton.IsClient)
+            {
+                NetworkManager.Singleton.Shutdown();
+            }
+        }
+
+        yield return new WaitForSeconds(1);
+
+        SceneManager.LoadScene(1);
     }
 
     #region Death System
@@ -298,7 +294,6 @@ public class GameManager: NetworkBehaviour
         AnnounceCollectionGoalReachedClientRpc();
         yield return new WaitForSeconds(3f);
         ClearAnnouncementClientRpc();
-        ActivatePortalClientRpc();
     }
 
     [ClientRpc]
@@ -312,26 +307,6 @@ public class GameManager: NetworkBehaviour
     {
         announcementText.text = string.Empty;
     }
-
-    [ClientRpc]
-    private void ActivatePortalClientRpc()
-    {
-        portalObject.SetActive(true);
-    }
-
-    private void UpdatePlayerDistances()
-    {
-        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
-        foreach (GameObject player in players)
-        {
-            if (player.TryGetComponent(out MeterSystem meterSystem))
-            {
-                float distance = Vector3.Distance(player.transform.position, portalObject.transform.position);
-                meterSystem.UpdateDistance(distance);
-            }
-        }
-    }
-
 
     #endregion
 }

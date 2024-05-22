@@ -1,4 +1,4 @@
-﻿﻿using Assets.Scripts.Managers;
+﻿using Assets.Scripts.Managers;
 using System.Collections;
 using Unity.Netcode;
 using UnityEngine;
@@ -38,6 +38,7 @@ namespace Assets.Scripts.Core
         {
             gameManager = GameManager.Instance;
         }
+
         private void LateUpdate()
         {
             if (healthSystem.IsPlayerDead) return;
@@ -54,7 +55,6 @@ namespace Assets.Scripts.Core
             isSoulSwapInCooldown = true;
 
             PlaySoulSwapAnimationClientRpc();
-
             NotifyOtherPlayerServerRpc();
         }
 
@@ -93,13 +93,12 @@ namespace Assets.Scripts.Core
             }
 
             UpdateCooldownUIClientRpc(1.0f);
+            ResetSoulSwapImageFillAmount();
+
+            ResetPlayerModel();
+            ResetSoulSwapAnimationClientRpc();
             isSoulSwapActivated = false;
             isSoulSwapInCooldown = false;
-
-            // Reset models and animations after cooldown
-            ResetSoulSwapImageFillAmount();
-            ResetPlayerModelClientRpc();
-            ResetSoulSwapAnimationClientRpc();
         }
 
         private void ResetSoulSwapImageFillAmount()
@@ -124,6 +123,14 @@ namespace Assets.Scripts.Core
         {
             AudioManager.Instance.PlaySound(soulSwapSound);
             role.SwapCharacterModelClientRpc();
+        }
+
+        private void ResetPlayerModel()
+        {
+            if (IsServer)
+            {
+                ResetPlayerModelClientRpc();
+            }
         }
 
         [ClientRpc]

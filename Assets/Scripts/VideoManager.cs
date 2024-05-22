@@ -10,8 +10,13 @@ public class VideoManager : MonoBehaviour
     [SerializeField]
     private VideoPlayer videoPlayer;
     [SerializeField] private string sceneName;
+    private HostManager hostManager;
     private void Awake()
     {
+        if (hostManager == null)
+        {
+            Debug.LogError("HostManager not assigned or found on the GameObject.");
+        }
         if (videoPlayer == null)
         {
             videoPlayer = GetComponent<VideoPlayer>();
@@ -25,6 +30,8 @@ public class VideoManager : MonoBehaviour
         {
             Debug.LogError("VideoPlayer component not assigned or found on the GameObject.");
         }
+
+        hostManager = GameObject.FindObjectOfType<HostManager>();
     }
 
     private void OnDestroy()
@@ -52,6 +59,7 @@ public class VideoManager : MonoBehaviour
             {
                 NetworkManager.Singleton.Shutdown();
             }
+            NetworkManager.Singleton.ConnectionApprovalCallback -= hostManager.ApprovalCheck;
         }
 
         yield return new WaitForSeconds(1);

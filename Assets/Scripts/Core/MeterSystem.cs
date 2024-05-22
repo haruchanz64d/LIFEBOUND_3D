@@ -15,8 +15,6 @@ namespace Assets.Scripts.Core
             {
                 portalTransform = portal.transform;
             }
-
-            distanceText.gameObject.SetActive(false);
         }
 
         public void UpdateDistance(float distance)

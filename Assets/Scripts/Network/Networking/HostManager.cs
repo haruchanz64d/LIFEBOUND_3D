@@ -23,10 +23,13 @@ public class HostManager : NetworkBehaviour
     {
         if (Instance != null && Instance != this) Destroy(gameObject);
         else Instance = this;
+        DontDestroyOnLoad(gameObject);
     }
 
     public async void StartHost()
     {
+        CleanupNetworkManager();
+
         Allocation allocation;
         try
         {
@@ -65,7 +68,7 @@ public class HostManager : NetworkBehaviour
         NetworkManager.Singleton.StartHost();
     }
 
-    private void ApprovalCheck(NetworkManager.ConnectionApprovalRequest request, NetworkManager.ConnectionApprovalResponse response)
+    public void ApprovalCheck(NetworkManager.ConnectionApprovalRequest request, NetworkManager.ConnectionApprovalResponse response)
     {
         if (ClientData.Count >= maxConnectionCount || hasGameStarted) { response.Approved = false; return; } 
         response.Approved = true;
@@ -83,7 +86,7 @@ public class HostManager : NetworkBehaviour
         NetworkManager.Singleton.SceneManager.LoadScene(characterSelectName, LoadSceneMode.Single); 
     }
 
-    private void OnClientDisconnect(ulong clientId)
+    public void OnClientDisconnect(ulong clientId)
     {
         if (ClientData.ContainsKey(clientId))
         {
@@ -107,4 +110,27 @@ public class HostManager : NetworkBehaviour
         hasGameStarted = true;
         NetworkManager.Singleton.SceneManager.LoadScene(gameplaySceneName, LoadSceneMode.Single);
     }
+
+    private void CleanupNetworkManager()
+    {
+        if (NetworkManager.Singleton != null)
+        {
+            NetworkManager.Singleton.OnServerStarted -= OnNetworkReady;
+            NetworkManager.Singleton.ConnectionApprovalCallback -= ApprovalCheck;
+            NetworkManager.Singleton.OnClientDisconnectCallback -= OnClientDisconnect;
+
+            if (NetworkManager.Singleton.IsHost || NetworkManager.Singleton.IsClient)
+            {
+                NetworkManager.Singleton.Shutdown();
+            }
+        }
+
+        hasGameStarted = false;
+        ClientData?.Clear();
+    }
+    private void OnDestroy()
+    {
+        CleanupNetworkManager();
+    }
+
 }

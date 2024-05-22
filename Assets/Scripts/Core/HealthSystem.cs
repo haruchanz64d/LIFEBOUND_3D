@@ -31,7 +31,7 @@ namespace Assets.Scripts.Core
         [SerializeField] private GameObject deathCanvas;
         [SerializeField] private TMP_Text deathText;
         private float disconnectTimer;
-        private int timeBeforeDisconnect = 8;
+        private int timeBeforeDisconnect = 3;
 
         public override void OnNetworkSpawn()
         {
@@ -126,7 +126,7 @@ namespace Assets.Scripts.Core
                 yield return new WaitForSeconds(1f);
                 disconnectTimer--;
             }
-            GameManager.Instance.DisconnectAllPlayers(OwnerClientId);
+            GameManager.Instance.DisconnectAllPlayers();
         }
         #endregion
 
