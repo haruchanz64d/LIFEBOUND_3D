@@ -54,12 +54,13 @@ public class VideoManager : MonoBehaviour
             if (NetworkManager.Singleton.IsServer)
             {
                 NetworkManager.Singleton.Shutdown();
+                hostManager.OnClientDisconnect(hostManager.ClientData.Keys.GetEnumerator().Current);
+                NetworkManager.Singleton.ConnectionApprovalCallback -= hostManager.ApprovalCheck;
             }
             else if (NetworkManager.Singleton.IsClient)
             {
-                NetworkManager.Singleton.Shutdown();
+                SceneManager.LoadScene(1);
             }
-            NetworkManager.Singleton.ConnectionApprovalCallback -= hostManager.ApprovalCheck;
         }
 
         yield return new WaitForSeconds(1);

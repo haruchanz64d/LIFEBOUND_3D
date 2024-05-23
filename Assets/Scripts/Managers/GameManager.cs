@@ -162,9 +162,9 @@ public class GameManager: NetworkBehaviour
                 hostManager.OnClientDisconnect(hostManager.ClientData.Keys.GetEnumerator().Current);
                 NetworkManager.Singleton.ConnectionApprovalCallback -= hostManager.ApprovalCheck;
             }
-            else if (NetworkManager.Singleton.IsClient)
+            if (NetworkManager.Singleton.IsClient)
             {
-                NetworkManager.Singleton.Shutdown();
+                SceneManager.LoadScene(1);
             }
         }
 

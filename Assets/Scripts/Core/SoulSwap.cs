@@ -54,6 +54,7 @@ namespace Assets.Scripts.Core
             isSoulSwapActivated = true;
             isSoulSwapInCooldown = true;
 
+            Debug.Log("Activating Soul Swap");
             PlaySoulSwapAnimationClientRpc();
             NotifyOtherPlayerServerRpc();
         }
@@ -61,12 +62,14 @@ namespace Assets.Scripts.Core
         [ServerRpc(RequireOwnership = false)]
         private void NotifyOtherPlayerServerRpc()
         {
+            Debug.Log("Notifying Other Player");
             NotifyOtherPlayerClientRpc();
         }
 
         [ClientRpc]
         private void NotifyOtherPlayerClientRpc()
         {
+            Debug.Log("Client Notified of Soul Swap");
             if (!isSoulSwapActivated)
             {
                 PlaySoulSwapAnimationClientRpc();
@@ -83,6 +86,7 @@ namespace Assets.Scripts.Core
             // Delay before swapping models to allow the animation to play
             yield return new WaitForSeconds(2f);
 
+            Debug.Log("Swapping Player Model");
             SwapPlayerModelClientRpc();
 
             while (elapsedTime < cooldownDuration)
@@ -95,6 +99,7 @@ namespace Assets.Scripts.Core
             UpdateCooldownUIClientRpc(1.0f);
             ResetSoulSwapImageFillAmount();
 
+            Debug.Log("Resetting Player Model");
             ResetPlayerModel();
             ResetSoulSwapAnimationClientRpc();
             isSoulSwapActivated = false;
@@ -109,33 +114,28 @@ namespace Assets.Scripts.Core
         [ClientRpc]
         private void PlaySoulSwapAnimationClientRpc()
         {
+            Debug.Log("Playing Soul Swap Animation");
             animator.SetBool("IsSoulSwapEnabled", true);
         }
 
         [ClientRpc]
         private void ResetSoulSwapAnimationClientRpc()
         {
+            Debug.Log("Resetting Soul Swap Animation");
             animator.SetBool("IsSoulSwapEnabled", false);
         }
 
         [ClientRpc]
         private void SwapPlayerModelClientRpc()
         {
+            Debug.Log("Swapping Character Model");
             AudioManager.Instance.PlaySound(soulSwapSound);
             role.SwapCharacterModelClientRpc();
         }
 
         private void ResetPlayerModel()
         {
-            if (IsServer)
-            {
-                ResetPlayerModelClientRpc();
-            }
-        }
-
-        [ClientRpc]
-        private void ResetPlayerModelClientRpc()
-        {
+            Debug.Log("Client Resetting Player Model");
             AudioManager.Instance.PlaySound(soulSwapSound);
             role.ResetCharacterModelClientRpc();
         }
