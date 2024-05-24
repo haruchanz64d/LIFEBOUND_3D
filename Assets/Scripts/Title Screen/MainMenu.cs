@@ -11,11 +11,6 @@ public class MainMenu : MonoBehaviour
     [SerializeField] private GameObject titleMenu;
     [SerializeField] private GameObject controlMenu;
     [SerializeField] private GameObject audioMenu;
-    [SerializeField] private GameObject keyboardVisual;
-    [SerializeField] private GameObject xboxVisual;
-    [SerializeField] private GameObject ps4Visual;
-    [SerializeField] private GameObject controllers;
-
     [SerializeField] private AudioClip hoverButton;
     [SerializeField] private AudioClip pressedButton;
 
@@ -53,8 +48,6 @@ public class MainMenu : MonoBehaviour
     {
         optionMenu.SetActive(false);
         titleMenu.SetActive(true);
-        xboxVisual.SetActive(false);
-        ps4Visual.SetActive(false);
     }
 
     public void Options()
@@ -67,44 +60,13 @@ public class MainMenu : MonoBehaviour
     public void Controls()
     {
         controlMenu.SetActive(true);
-        keyboardVisual.SetActive(true);
         audioMenu.SetActive(false);
-        controllers.SetActive(false);
     }
 
     public void AudioMenu()
     {
         audioMenu.SetActive(true);
         controlMenu.SetActive(false);
-    }
-
-    public void Controllers()
-    {
-        controllers.SetActive(true);
-        Xbox();
-    }
-
-    // CONTROLLERS
-    public void Keyboard()
-    {
-        keyboardVisual.SetActive(true);
-        xboxVisual.SetActive(false);
-        ps4Visual.SetActive(false);
-        controllers.SetActive(false);
-    }
-
-    public void Xbox()
-    {
-        keyboardVisual.SetActive(false);
-        xboxVisual.SetActive(true);
-        ps4Visual.SetActive(false);
-    }
-
-    public void Ps4()
-    {
-        keyboardVisual.SetActive(false);
-        xboxVisual.SetActive(false);
-        ps4Visual.SetActive(true);
     }
 
     private IEnumerator LoadingScreenBeforeSceneLoad(string sceneName)
