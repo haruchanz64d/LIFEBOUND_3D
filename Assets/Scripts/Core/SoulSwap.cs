@@ -99,12 +99,18 @@ namespace Assets.Scripts.Core
             UpdateCooldownUIClientRpc(1.0f);
             ResetSoulSwapImageFillAmount();
 
-            Debug.Log("Resetting Player Model");
+            // Delay before resetting the player model to ensure animation completion
+            yield return new WaitForSeconds(0.5f);
+
+            // Reset the player model and soul swap animation
             ResetPlayerModelServerRpc();
             ResetSoulSwapAnimationClientRpc();
+
+            // Reset activation flags
             isSoulSwapActivated = false;
             isSoulSwapInCooldown = false;
         }
+
 
         private void ResetSoulSwapImageFillAmount()
         {
