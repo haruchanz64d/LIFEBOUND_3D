@@ -31,7 +31,7 @@ namespace Assets.Scripts.Core
         [SerializeField] private GameObject deathCanvas;
         [SerializeField] private TMP_Text deathText;
         private float disconnectTimer;
-        private int timeBeforeDisconnect = 3;
+        private int timeBeforeDisconnect = 5;
 
         public override void OnNetworkSpawn()
         {

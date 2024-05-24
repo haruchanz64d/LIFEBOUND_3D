@@ -100,7 +100,7 @@ namespace Assets.Scripts.Core
             ResetSoulSwapImageFillAmount();
 
             Debug.Log("Resetting Player Model");
-            ResetPlayerModel();
+            ResetPlayerModelServerRpc();
             ResetSoulSwapAnimationClientRpc();
             isSoulSwapActivated = false;
             isSoulSwapInCooldown = false;
@@ -133,7 +133,15 @@ namespace Assets.Scripts.Core
             role.SwapCharacterModelClientRpc();
         }
 
-        private void ResetPlayerModel()
+        [ServerRpc(RequireOwnership = false)]
+        private void ResetPlayerModelServerRpc()
+        {
+            Debug.Log("Server Resetting Player Model");
+            ResetPlayerModelClientRpc();
+        }
+
+        [ClientRpc]
+        private void ResetPlayerModelClientRpc()
         {
             Debug.Log("Client Resetting Player Model");
             AudioManager.Instance.PlaySound(soulSwapSound);

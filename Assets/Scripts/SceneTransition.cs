@@ -11,7 +11,7 @@ public class SceneTransition : MonoBehaviour
 
     private IEnumerator Transition()
     {
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(8f);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 }
