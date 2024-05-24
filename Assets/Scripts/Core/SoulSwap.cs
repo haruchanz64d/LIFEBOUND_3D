@@ -120,14 +120,14 @@ namespace Assets.Scripts.Core
         [ClientRpc]
         private void PlaySoulSwapAnimationClientRpc()
         {
-            Debug.Log("Playing Soul Swap Animation");
+            Debug.Log("Playing Soul Swap Animation - Client");
             animator.SetBool("IsSoulSwapEnabled", true);
         }
 
         [ClientRpc]
         private void ResetSoulSwapAnimationClientRpc()
         {
-            Debug.Log("Resetting Soul Swap Animation");
+            Debug.Log("Resetting Soul Swap Animation - Client");
             animator.SetBool("IsSoulSwapEnabled", false);
         }
 
@@ -146,7 +146,7 @@ namespace Assets.Scripts.Core
             role.SwapCharacterModel();
         }
 
-        [ServerRpc(RequireOwnership = false)]
+        [ServerRpc(RequireOwnership = true)]
         private void ResetPlayerModelServerRpc()
         {
             Debug.Log("Server Resetting Player Model");
