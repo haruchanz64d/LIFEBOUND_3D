@@ -164,13 +164,13 @@ public class GameManager: NetworkBehaviour
             }
             if (NetworkManager.Singleton.IsClient)
             {
-                SceneManager.LoadScene(1);
+                SceneManager.LoadScene(2);
             }
         }
 
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(1f);
 
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene(2);
     }
 
     #region Death System
