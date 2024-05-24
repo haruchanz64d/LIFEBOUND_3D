@@ -8,6 +8,7 @@ using System;
 using Unity.Networking.Transport.Relay;
 using Unity.Netcode.Transports.UTP;
 using UnityEditor;
+using TMPro;
 public class HostManager : NetworkBehaviour
 {
     [Header("Scene Names")]
@@ -18,6 +19,7 @@ public class HostManager : NetworkBehaviour
     public static HostManager Instance { get; private set; }
     private bool hasGameStarted;
     public string joinCode { get; private set; }
+    public string warningText { get; private set; }
     public Dictionary<ulong, ClientData> ClientData { get; private set; }
     private void Awake()
     {
@@ -33,7 +35,7 @@ public class HostManager : NetworkBehaviour
         Allocation allocation;
         try
         {
-             allocation = await RelayService.Instance.CreateAllocationAsync(maxConnectionCount);
+            allocation = await RelayService.Instance.CreateAllocationAsync(maxConnectionCount);
         }
         catch (Exception e)
         {
@@ -70,7 +72,7 @@ public class HostManager : NetworkBehaviour
 
     public void ApprovalCheck(NetworkManager.ConnectionApprovalRequest request, NetworkManager.ConnectionApprovalResponse response)
     {
-        if (ClientData.Count >= maxConnectionCount || hasGameStarted) { response.Approved = false; return; } 
+        if (ClientData.Count >= maxConnectionCount || hasGameStarted) { response.Approved = false; return; }
         response.Approved = true;
         response.CreatePlayerObject = false;
         response.Pending = false;
@@ -83,7 +85,7 @@ public class HostManager : NetworkBehaviour
     private void OnNetworkReady()
     {
         NetworkManager.Singleton.OnClientDisconnectCallback += OnClientDisconnect;
-        NetworkManager.Singleton.SceneManager.LoadScene(characterSelectName, LoadSceneMode.Single); 
+        NetworkManager.Singleton.SceneManager.LoadScene(characterSelectName, LoadSceneMode.Single);
     }
 
     public void OnClientDisconnect(ulong clientId)
@@ -107,6 +109,7 @@ public class HostManager : NetworkBehaviour
 
     public void StartGame()
     {
+
         hasGameStarted = true;
         NetworkManager.Singleton.SceneManager.LoadScene(gameplaySceneName, LoadSceneMode.Single);
     }

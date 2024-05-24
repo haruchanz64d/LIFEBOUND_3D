@@ -87,7 +87,7 @@ namespace Assets.Scripts.Core
             yield return new WaitForSeconds(2f);
 
             Debug.Log("Swapping Player Model");
-            SwapPlayerModelClientRpc();
+            SwapPlayerModelServerRpc();
 
             while (elapsedTime < cooldownDuration)
             {
@@ -125,12 +125,19 @@ namespace Assets.Scripts.Core
             animator.SetBool("IsSoulSwapEnabled", false);
         }
 
+        [ServerRpc(RequireOwnership = false)]
+        private void SwapPlayerModelServerRpc()
+        {
+            Debug.Log("Server Swapping Player Model");
+            SwapPlayerModelClientRpc();
+        }
+
         [ClientRpc]
         private void SwapPlayerModelClientRpc()
         {
-            Debug.Log("Swapping Character Model");
+            Debug.Log("Client Swapping Character Model");
             AudioManager.Instance.PlaySound(soulSwapSound);
-            role.SwapCharacterModelClientRpc();
+            role.SwapCharacterModel();
         }
 
         [ServerRpc(RequireOwnership = false)]
@@ -145,7 +152,7 @@ namespace Assets.Scripts.Core
         {
             Debug.Log("Client Resetting Player Model");
             AudioManager.Instance.PlaySound(soulSwapSound);
-            role.ResetCharacterModelClientRpc();
+            role.ResetCharacterModel();
         }
 
         [ClientRpc]

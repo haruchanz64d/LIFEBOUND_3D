@@ -15,7 +15,7 @@ public class LBCharacterSelectDisplay : NetworkBehaviour
     [SerializeField] private Transform introSpawpoint;
     [SerializeField] private Button lockinButton;
     [SerializeField] private TMP_Text joinCodeText;
-
+    [SerializeField] private TMP_Text errorText;
 
     private GameObject introInstance;
 
@@ -57,6 +57,7 @@ public class LBCharacterSelectDisplay : NetworkBehaviour
         if (IsHost)
         {
             joinCodeText.SetText(HostManager.Instance.joinCode);
+            errorText.SetText(HostManager.Instance.warningText);
         }
     }
 

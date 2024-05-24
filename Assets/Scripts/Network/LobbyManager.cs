@@ -4,16 +4,18 @@ using Unity.Services.Core;
 using Unity.Services.Authentication;
 using TMPro;
 using System;
-
+using System.Collections;
 public class LobbyManager : MonoBehaviour
 {
     [Header("Pre-Lobby")]
     [SerializeField] private GameObject preJoinLobbyCanvas;
     [SerializeField] private TMP_InputField inputField;
-
+    [SerializeField] private GameObject errorMessagePanel;
+    [SerializeField] private TMP_Text errorMessageText;
     private void Awake()
     {
         preJoinLobbyCanvas.SetActive(true);
+        errorMessagePanel.SetActive(false);
     }
 
     private async void Start()
@@ -27,7 +29,9 @@ public class LobbyManager : MonoBehaviour
 
         catch (Exception e)
         {
-            Debug.LogError($"{e.Message}");
+            errorMessagePanel.SetActive(true);
+            errorMessageText.SetText($"Failed to authenticate player! Please check your Internet connection.");
+            StartCoroutine(HideErrorMessage());
         }
     }
 
@@ -38,6 +42,22 @@ public class LobbyManager : MonoBehaviour
 
     public void JoinGame()
     {
-        ClientManager.Instance.StartClient(inputField.text);
+        if(inputField.text.Length == 0)
+        {
+            errorMessagePanel.SetActive(true);
+            errorMessageText.SetText("Please enter a valid join code.");
+            StartCoroutine(HideErrorMessage());
+            return;
+        }
+        else
+        {
+            ClientManager.Instance.StartClient(inputField.text);
+        }
+    }
+
+    private IEnumerator HideErrorMessage()
+    {
+        yield return new WaitForSeconds(3f);
+        errorMessagePanel.SetActive(false);
     }
 }
