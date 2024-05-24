@@ -146,7 +146,7 @@ namespace Assets.Scripts.Core
             role.SwapCharacterModel();
         }
 
-        [ServerRpc(RequireOwnership = true)]
+        [ServerRpc(RequireOwnership = false)]
         private void ResetPlayerModelServerRpc()
         {
             Debug.Log("Server Resetting Player Model");
