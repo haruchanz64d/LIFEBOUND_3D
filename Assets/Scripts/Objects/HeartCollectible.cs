@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Assets.Scripts.Managers;
 using LB.Character;
 using Unity.Netcode;
 using UnityEngine;
@@ -8,6 +9,8 @@ public class HeartCollectible : NetworkBehaviour
 {
     private float rotationSpeed = 50f;
     private GameManager gameManager;
+
+    [SerializeField] private AudioClip collectHeartSoundEffect;
 
     public override void OnNetworkSpawn()
     {
@@ -29,6 +32,7 @@ public class HeartCollectible : NetworkBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            AudioManager.Instance.PlaySound(collectHeartSoundEffect);
             gameManager.UpdateCollectionCount();
             CollectHeartServerRpc();
         }

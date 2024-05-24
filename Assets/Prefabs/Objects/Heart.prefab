@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 6596103221564928360}
   - component: {fileID: 3396217412236928513}
   - component: {fileID: 6539818989933817534}
-  - component: {fileID: 3380292775339248476}
   - component: {fileID: 7128859043097227113}
+  - component: {fileID: 3380292775339248476}
   - component: {fileID: 550154955340797867}
   m_Layer: 0
   m_Name: Heart
@@ -109,18 +109,6 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -3873697633519408227, guid: 43e66ea370a965b4cad72dddd6949722, type: 3}
---- !u!114 &3380292775339248476
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8460219737955093468}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c89045d8ef461224e8144920f171e4ed, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &7128859043097227113
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -142,6 +130,20 @@ MonoBehaviour:
   SpawnWithObservers: 1
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
+--- !u!114 &3380292775339248476
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8460219737955093468}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c89045d8ef461224e8144920f171e4ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  collectHeartSoundEffect: {fileID: 8300000, guid: 111a349b9f7e828408e25b329ae61bd7,
+    type: 3}
 --- !u!114 &550154955340797867
 MonoBehaviour:
   m_ObjectHideFlags: 0
