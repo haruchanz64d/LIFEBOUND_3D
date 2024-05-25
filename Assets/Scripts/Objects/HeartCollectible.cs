@@ -34,7 +34,14 @@ public class HeartCollectible : NetworkBehaviour
         {
             AudioManager.Instance.PlaySound(collectHeartSoundEffect);
             gameManager.UpdateCollectionCount();
-            CollectHeartServerRpc();
+            if(IsServer)
+            {
+                CollectHeartServerRpc();
+            }
+            else
+            {
+                CollectHeartClientRpc();
+            }
         }
     }
 
@@ -42,6 +49,16 @@ public class HeartCollectible : NetworkBehaviour
     private void CollectHeartServerRpc()
     {
         if (IsServer)
+        {
+            NetworkObject.Despawn();
+            Destroy(gameObject);
+        }
+    }
+
+    [ClientRpc]
+    private void CollectHeartClientRpc()
+    {
+         if (IsClient)
         {
             NetworkObject.Despawn();
             Destroy(gameObject);

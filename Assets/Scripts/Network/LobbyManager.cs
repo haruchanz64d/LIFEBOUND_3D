@@ -20,6 +20,7 @@ public class LobbyManager : MonoBehaviour
 
     private async void Start()
     {
+        if (AuthenticationService.Instance.IsSignedIn) return;
         try
         {
             await UnityServices.InitializeAsync();
