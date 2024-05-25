@@ -20,7 +20,6 @@ public class LobbyManager : MonoBehaviour
 
     private async void Start()
     {
-        if (AuthenticationService.Instance.IsSignedIn) return;
         try
         {
             await UnityServices.InitializeAsync();
@@ -30,6 +29,7 @@ public class LobbyManager : MonoBehaviour
 
         catch (Exception e)
         {
+            if (AuthenticationService.Instance.IsSignedIn) return;
             errorMessagePanel.SetActive(true);
             errorMessageText.SetText($"Failed to authenticate player! Please check your Internet connection.");
             StartCoroutine(HideErrorMessage());
